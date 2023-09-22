@@ -35,18 +35,19 @@ export default function RouteNavigation() {
   );
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {isLoggedIn
-          ? <Stack.Screen
-              name="home-screen"
-              component={HomeScreen}
-              options={{ headerShown: false }}
-            />
-          : <Stack.Screen
-              name="sign-in-screen"
-              component={SignInScreen}
-              options={{ headerShown: false }}
-            />}
+      <Stack.Navigator
+        initialRouteName={isLoggedIn ? "home-screen" : "sign-in-screen"}
+      >
+        <Stack.Screen
+          name="home-screen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="sign-in-screen"
+          component={SignInScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
