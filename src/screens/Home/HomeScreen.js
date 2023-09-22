@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logout } from "../../redux/reducres/authSlice";
+import styles from "./HomeScreen.styles";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -21,14 +22,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignContent: "center",
-        alignItems: "center"
-      }}
-    >
+    <View style={styles.container}>
       <Text>Home Screen</Text>
       <Text>
         Welcome, {personalData ? personalData.name : "Guest"}{" "}

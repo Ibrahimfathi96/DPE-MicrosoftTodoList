@@ -40,13 +40,3 @@ export const {
   togglePasswordVisibility
 } = authSlice.actions;
 export default authSlice.reducer;
-
-/**
- * {
-    email: "ibrahim@gmail.com",
-    password: "123456",
-    userName: "Ibrahim Fathi",
-    photo: "../../../assets/personal-image.jpg"
-  },
- * 
-*/
