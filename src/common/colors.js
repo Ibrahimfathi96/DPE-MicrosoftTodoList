@@ -1,5 +1,5 @@
 const Colors = {
-  blueColor: '#3881A2',
-  blueColor2:"#2A617F",
-}
+  blueColor: "#48ADF0",
+  blueColor2: "#195ABD"
+};
 export default Colors;

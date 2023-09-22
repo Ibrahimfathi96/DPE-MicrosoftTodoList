@@ -1,23 +1,13 @@
 import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignInScreen from "./src/screens/SignIn/SignInScreen";
+import { Provider } from "react-redux";
 import Colors from "./src/common/colors";
-
-const Stack = createNativeStackNavigator();
+import RouteNavigation from "./src/Navigation/RouteNavigation";
+import store from "./src/redux/store";
 export default function App() {
   return (
-    <>
-    <StatusBar barStyle="default" backgroundColor={Colors.blueColor}/>
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="sign-in-screen"
-          component={SignInScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-    </>
+    <Provider store={store}>
+      <StatusBar barStyle="default" backgroundColor={Colors.blueColor} />
+      <RouteNavigation />
+    </Provider>
   );
 }

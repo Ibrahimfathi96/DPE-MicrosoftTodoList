@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   text: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "500"
   },
   textInput: {
@@ -59,6 +59,11 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderRadius: 4,
     marginTop: 4
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    fontWeight: "500"
   }
 });
 
