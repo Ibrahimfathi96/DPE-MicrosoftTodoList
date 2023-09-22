@@ -10,37 +10,46 @@ import {
 import styles from "./SignIn.Styles";
 import Checkbox from "expo-checkbox";
 import Colors from "../../common/colors";
-import { personalData } from "../../common/PersonalData";
+import personalData from "../../common/PersonalData";
 import {
   login,
   setError,
+  setPersonalData,
   togglePasswordVisibility
 } from "../../redux/reducres/authSlice.js";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isShownPassword = useSelector(state => state.auth.isShownPassword);
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const error = useSelector(state => state.auth.error);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const handlePasswordVisibilityToggle = () => {
     dispatch(togglePasswordVisibility());
   };
-  const handleSignIn = () => {
-    if (!email || !password) {
-      dispatch(setError("Email and password are required!!"));
-    } else if (
-      email === personalData.email &&
-      password === personalData.password
-    ) {
-      dispatch(login());
-      dispatch(setError(null));
-      navigation.navigate("home-screen", { personalData });
-    } else {
-      dispatch(setError("Invalid email or password"));
+
+  const handleSignIn = async () => {
+    try {
+      if (!email || !password) {
+        dispatch(setError("Email and password are required!!"));
+      } else if (
+        email === personalData.email &&
+        password === personalData.password
+      ) {
+        await AsyncStorage.setItem("isLoggedIn", "true");
+        dispatch(login());
+        dispatch(setPersonalData(personalData));
+        dispatch(setError(null));
+        navigation.navigate("home-screen");
+      } else {
+        dispatch(setError("Invalid email or password!!"));
+      }
+    } catch (error) {
+      console.error("Error storing authentication state:", error);
     }
   };
   return (
