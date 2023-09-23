@@ -1,3 +1,5 @@
+import { Icon } from "react-native-elements";
+
 const personalData = {
   name: "Ibrahim Fathi",
   email: "ibrahim@gmail.com",
