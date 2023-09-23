@@ -201,14 +201,14 @@ const HomeScreen = () => {
             <Icon
               name="add"
               type="material"
-              color={Colors.blueColor3}
+              color={Colors.blueColor}
               size={30}
             />
             <Text
               style={{
                 fontSize: 18,
                 fontWeight: "bold",
-                color: Colors.blueColor3,
+                color: Colors.blueColor,
                 marginLeft: 16
               }}
             >
@@ -217,9 +217,9 @@ const HomeScreen = () => {
           </View>
         </TouchableOpacity>
         <Icon
-          name="queue"
+          name="post-add"
           type="material"
-          color={Colors.blueColor3}
+          color={Colors.blueColor}
           size={30}
           onPress={() => {
             console.log("ADD NEW GROUP");
