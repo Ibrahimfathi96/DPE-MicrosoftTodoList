@@ -36,7 +36,20 @@ export const dummyListOfTodos = [
     name: "Important",
     iconName: "star-border",
     iconColor: "#8A3655",
-    todos: {}
+    todos: {
+      notDone: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ],
+      done: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ]
+    }
   },
   {
     id: 2,
@@ -50,21 +63,60 @@ export const dummyListOfTodos = [
     name: "Assigned to me",
     iconName: "person",
     iconColor: "#235C47",
-    todos: {}
+    todos: {
+      notDone: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ],
+      done: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ]
+    }
   },
   {
     id: 4,
     name: "Flagged emails",
     iconName: "outlined-flag",
     iconColor: "#235C47",
-    todos: {}
+    todos: {
+      notDone: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ],
+      done: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ]
+    }
   },
   {
     id: 5,
     name: "Tasks",
     iconName: "check-box",
     iconColor: "#5E6585",
-    todos: {}
+    todos: {
+      notDone: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ],
+      done: [
+        {
+          todoTitle: "",
+          todoDesc: ""
+        }
+      ]
+    }
   }
 ];
 export const addedLists = [
