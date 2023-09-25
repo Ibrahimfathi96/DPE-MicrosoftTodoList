@@ -25,6 +25,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "white"
+  },
+  separatorText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 18,
+    paddingHorizontal: 16
+  },
+  separatorNum: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 14
   }
 });
 export default styles;

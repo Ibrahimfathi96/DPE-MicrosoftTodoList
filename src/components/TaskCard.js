@@ -16,17 +16,17 @@ export default function TaskCard({
       <View style={styles.container}>
         <TouchableOpacity onPress={() => pressHandler(taskId)}>
           <View
-            style={taskstatus ? styles.notDoneTaskCard : styles.doneTaskcard}
+            style={taskstatus ? styles.doneTaskcard : styles.notDoneTaskCard}
           >
-            {!taskstatus && <Icon name="check" size={20} color="white" />}
+            {taskstatus && <Icon name="check" size={20} color="white" />}
           </View>
         </TouchableOpacity>
         <View style={styles.titleTextView}>
           <Text
             style={
               taskstatus
-                ? styles.text
-                : [styles.text, { textDecorationLine: "line-through" }]
+                ? [styles.text, { textDecorationLine: "line-through" }]
+                : styles.text
             }
           >
             {taskTitle}
