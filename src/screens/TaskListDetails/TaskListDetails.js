@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  markTaskAsCompleted,
+  uncompleteTask,
+  addIncompleteTask
+} from "../../redux/reducres/tasksDetailsSlice";
 import TaskCard from "../../components/TaskCard";
 import styles from "./TaskListDetails.styles";
 import { Icon } from "react-native-elements";
@@ -8,27 +14,25 @@ const TaskListDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
+  const dispatch = useDispatch();
 
-  // Separate state variables for incomplete and completed todos
-  const [incompleteTasks, setIncompleteTasks] = useState(item.todos);
-  const [completedTasks, setCompletedTasks] = useState([]);
+  const incompleteTasks = useSelector(state => item.todos);
+  const completedTasks = useSelector(state => state.tasks.completedTasks);
 
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
-  // Function to toggle the visibility of completed tasks
   const toggleCompletedTasks = () => {
     setShowCompletedTasks(!showCompletedTasks);
   };
 
-  // Function to mark a task as completed and move it to the completed list
-  const markTaskAsCompleted = taskId => {
-    const taskToComplete = incompleteTasks.find(task => task.id === taskId);
-    if (taskToComplete) {
-      taskToComplete.taskstatus = true;
-      setCompletedTasks([...completedTasks, taskToComplete]);
-      setIncompleteTasks(incompleteTasks.filter(task => task.id !== taskId));
-    }
+  const markTaskAsCompletedRedux = taskId => {
+    dispatch(markTaskAsCompleted(taskId));
   };
+
+  const uncompleteTaskRedux = taskId => {
+    dispatch(uncompleteTask(taskId));
+  };
+
   console.log("ITEM:====================>", item);
   return (
     <View style={styles.container}>
@@ -45,23 +49,40 @@ const TaskListDetails = () => {
           <Text style={styles.headerText}>
             {item.name}
           </Text>
-          <Icon name="more-vert" color="white" onPress={() => {}} />
+          <View style={{ flexDirection: "row" }}>
+            <View style={styles.iconView}>
+              <Icon
+                name="person-add-alt-1"
+                color="white"
+                size={22}
+                onPress={() => {}}
+              />
+            </View>
+            <View style={styles.iconView}>
+              <Icon
+                name="more-horiz"
+                color="white"
+                size={30}
+                onPress={() => {}}
+              />
+            </View>
+          </View>
         </View>
       </View>
-      {/* Two FlatList Of Incompleted/Completed Tasks   keyboard_arrow_right*/}
+      {/* Two FlatList Of Incompleted/Completed Tasks */}
       <View style={{ width: "100%" }}>
         {/* Incompleted Tasks */}
         <FlatList
           data={incompleteTasks}
-          keyExtractor={todo => todo.id.toString()}
+          keyExtractor={todo => todo.todoId.toString()}
           renderItem={({ item: todo }) =>
             <TaskCard
-              taskId={todo.id}
+              taskId={todo.todoId}
               taskTitle={todo.todoTitle}
               listName={item.name}
               iconName={item.iconName}
-              pressHandler={() => markTaskAsCompleted(todo.id)}
-              taskstatus={todo.taskstatus}
+              pressHandler={() => markTaskAsCompletedRedux(todo.todoId)}
+              taskstatus={false}
             />}
         />
         {/* Seperator between two FlatLists */}
@@ -90,15 +111,15 @@ const TaskListDetails = () => {
         {showCompletedTasks &&
           <FlatList
             data={completedTasks}
-            keyExtractor={todo => todo.id.toString()}
+            keyExtractor={todo => todo.todoId.toString()}
             renderItem={({ item: todo }) =>
               <TaskCard
-                taskId={todo.id}
+                taskId={todo.todoId}
                 taskTitle={todo.todoTitle}
                 listName={item.name}
                 iconName={item.iconName}
-                pressHandler={() => {}}
-                taskstatus={true} // Marked as completed
+                pressHandler={() => uncompleteTaskRedux(todo.todoId)}
+                taskstatus={true}
               />}
           />}
       </View>

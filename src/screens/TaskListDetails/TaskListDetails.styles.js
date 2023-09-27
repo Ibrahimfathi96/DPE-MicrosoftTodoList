@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     height: 70,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10
+    paddingLeft: 10
   },
   centerTitle: {
     flex: 1,
@@ -36,6 +36,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
     fontSize: 14
+  },
+  iconView: {
+    backgroundColor: "#4E599E",
+    borderRadius: 8,
+    width: 50,
+    height: 30,
+    alignContent: "center",
+    justifyContent: "center",
+    marginRight: 10
   }
 });
 export default styles;

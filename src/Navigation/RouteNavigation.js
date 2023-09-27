@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../redux/reducres/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TaskListDetails from "../screens/TaskListDetails/TaskListDetails";
+import TaskDetailsScreen from "../screens/TaskDetails/TaskDetailsScreen";
 
 const Stack = createNativeStackNavigator();
 export default function RouteNavigation() {
@@ -52,6 +53,11 @@ export default function RouteNavigation() {
         <Stack.Screen
           name="tasklist-details-screen"
           component={TaskListDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="task-details-screen"
+          component={TaskDetailsScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

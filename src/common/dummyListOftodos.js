@@ -4,33 +4,38 @@ export const dummyListOfTodos = [
     name: "My Day",
     iconName: "wb-sunny",
     iconColor: "#9CA0A3",
-    backgroundColor: "",
+    backgroundColor: "#3C7B82",
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "Learn React Native",
-        todoDesc: "3 Hours Of Learning React Native"
+        todoDesc: "3 Hours Of Learning React Native",
+        isDone: false
       },
       {
-        id: 2,
+        todoId: 1,
         todoTitle: "Read some Books",
-        todoDesc: "1 Hour Of Reading"
+        todoDesc: "1 Hour Of Reading",
+        isDone: false
       },
       {
-        id: 3,
+        todoId: 2,
         todoTitle: "WorkOut",
-        todoDesc: "go to gym for 1 hour"
+        todoDesc: "go to gym for 1 hour",
+        isDone: false
       },
 
       {
-        id: 4,
+        todoId: 3,
         todoTitle: "Read qura'n",
-        todoDesc: "30 mins of reading qura'an"
+        todoDesc: "30 mins of reading qura'an",
+        isDone: false
       },
       {
-        id: 5,
+        todoId: 4,
         todoTitle: "Learn something new",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   },
@@ -39,11 +44,13 @@ export const dummyListOfTodos = [
     name: "Important",
     iconName: "star-border",
     iconColor: "#8A3655",
+    backgroundColor: "#FFE4E9",
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   },
@@ -52,11 +59,14 @@ export const dummyListOfTodos = [
     name: "Planned",
     iconName: "calendar-today",
     iconColor: "#2A655C",
+    backgroundColor: "#D6F0F1",
+
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   },
@@ -65,11 +75,13 @@ export const dummyListOfTodos = [
     name: "Assigned to me",
     iconName: "person",
     iconColor: "#235C47",
+    backgroundColor: "#D5F1E5",
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   },
@@ -78,11 +90,13 @@ export const dummyListOfTodos = [
     name: "Flagged emails",
     iconName: "outlined-flag",
     iconColor: "#235C47",
+    backgroundColor: "#5D70BD",
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   },
@@ -91,11 +105,13 @@ export const dummyListOfTodos = [
     name: "Tasks",
     iconName: "check-box",
     iconColor: "#5E6585",
+    backgroundColor: "#5D70BD",
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   }
@@ -106,31 +122,50 @@ export const addedLists = [
     name: "Getting started",
     iconName: "hand-wave-outline",
     iconColor: "#F3B708",
+    backgroundColor: "#5D70BD",
     todos: [
       {
-        id: 1,
-        todoTitle: "Learn React Native",
-        todoDesc: "3 Hours Of Learning React Native"
+        todoId: 0,
+        todoTitle: "Break this task into smaller steps",
+        todoDesc: "0 of 1",
+        isDone: true
       },
       {
-        id: 2,
-        todoTitle: "Read some Books",
-        todoDesc: "1 Hour Of Reading"
+        todoId: 1,
+        todoTitle: "Tap all the circles in this list to complete your tasks",
+        todoDesc: "",
+        isDone: true
       },
       {
-        id: 3,
-        todoTitle: "WorkOut",
-        todoDesc: "go to gym for 1 hour"
+        todoId: 2,
+        todoTitle:
+          "Check out our sample grocery list and customise it for yourself",
+        todoDesc: "",
+        isDone: true
       },
       {
-        id: 4,
-        todoTitle: "Read qura'n",
-        todoDesc: "30 mins of reading qura'an"
+        todoId: 3,
+        todoTitle: "Add #hastags to a task's title to categorise it",
+        todoDesc: "",
+        isDone: true
       },
       {
-        id: 5,
-        todoTitle: "Learn something new",
-        todoDesc: ""
+        todoId: 4,
+        todoTitle: "Open this task's detail view to add it to My Day",
+        todoDesc: "",
+        isDone: true
+      },
+      {
+        todoId: 5,
+        todoTitle: "👉 Select this task to add a reminder and due date",
+        todoDesc: "",
+        isDone: true
+      },
+      {
+        todoId: 6,
+        todoTitle: "Add your first task by clicking on ➕ Add a task",
+        todoDesc: "",
+        isDone: true
       }
     ]
   },
@@ -139,31 +174,37 @@ export const addedLists = [
     name: "Groceries",
     iconName: "cart-variant",
     iconColor: "#235C47",
+    backgroundColor: "#EB8060",
     todos: [
       {
-        id: 1,
+        todoId: 0,
         todoTitle: "Learn React Native",
-        todoDesc: "3 Hours Of Learning React Native"
+        todoDesc: "3 Hours Of Learning React Native",
+        isDone: false
       },
       {
-        id: 2,
+        todoId: 1,
         todoTitle: "Read some Books",
-        todoDesc: "1 Hour Of Reading"
+        todoDesc: "1 Hour Of Reading",
+        isDone: false
       },
       {
-        id: 3,
+        todoId: 2,
         todoTitle: "WorkOut",
-        todoDesc: "go to gym for 1 hour"
+        todoDesc: "go to gym for 1 hour",
+        isDone: false
       },
       {
-        id: 4,
+        todoId: 3,
         todoTitle: "Read qura'n",
-        todoDesc: "30 mins of reading qura'an"
+        todoDesc: "30 mins of reading qura'an",
+        isDone: false
       },
       {
-        id: 5,
+        todoId: 4,
         todoTitle: "Learn something new",
-        todoDesc: ""
+        todoDesc: "",
+        isDone: false
       }
     ]
   }

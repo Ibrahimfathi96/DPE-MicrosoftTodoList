@@ -2,6 +2,7 @@ import React from "react";
 import { Icon } from "react-native-elements";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../common/colors";
+import { useNavigation } from "@react-navigation/native";
 
 export default function TaskCard({
   taskId,
@@ -9,12 +10,23 @@ export default function TaskCard({
   listName,
   iconName,
   taskstatus,
-  pressHandler
+  checkPressHandler
 }) {
+  const navigation = useNavigation();
+
+  const openTaskDetails = () => {
+    navigation.navigate("task-details-screen", {
+      taskId,
+      taskTitle,
+      listName,
+      iconName,
+      taskstatus
+    });
+  };
   return (
-    <TouchableOpacity onPress={() => pressHandler(taskId)}>
+    <TouchableOpacity onPress={openTaskDetails}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => pressHandler(taskId)}>
+        <TouchableOpacity onPress={() => checkPressHandler(taskId)}>
           <View
             style={taskstatus ? styles.doneTaskcard : styles.notDoneTaskCard}
           >
