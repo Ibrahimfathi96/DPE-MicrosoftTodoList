@@ -7,6 +7,7 @@ const TaskListScheme = mongoose.Schema({
   },
   iconName: String,
   iconColor: String,
+  iconType: String,
   backgroundColor: String,
   todos: Array
 });

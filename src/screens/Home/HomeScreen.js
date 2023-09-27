@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,10 +9,23 @@ import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import { dummyListOfTodos } from "../../common/dummyListOftodos";
 import { addedLists } from "../../common/dummyListOftodos";
+import {
+  fetchStarterListAsync,
+  fetchSecondaryListAsync
+} from "../../redux/reducres/TodoReducer";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const starterListData = useSelector(state => state.api.starterListData);
+  const secondaryListData = useSelector(state => state.api.secondaryListData);
+
+  useEffect(
+    () => {
+      dispatch(fetchStarterListAsync());
+      dispatch(fetchSecondaryListAsync());
+    },
+    [dispatch]
+  );
   const personalData = useSelector(state => state.auth.personalData);
   const navigation = useNavigation();
   const handleLogout = async () => {
@@ -23,6 +36,55 @@ const HomeScreen = () => {
     }
     dispatch(logout());
     navigation.navigate("sign-in-screen");
+  };
+
+  const renderListItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          console.log("goToTasksDetailsScreen");
+          navigation.navigate("tasklist-details-screen", { item });
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: 10
+          }}
+        >
+          <Icon
+            name={item.iconName}
+            type={item.iconType}
+            size={26}
+            color={item.iconColor}
+          />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginLeft: 30
+            }}
+          >
+            <Text style={{ fontWeight: "500", fontSize: 18 }}>
+              {item.name}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "500",
+                fontSize: 16,
+                color: "grey"
+              }}
+            >
+              {item.todos.filter(todo => !todo.isDone).length}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -72,49 +134,9 @@ const HomeScreen = () => {
           }}
         >
           <FlatList
-            data={dummyListOfTodos}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) =>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log("goToTasksDetailsScreen");
-                  navigation.navigate("tasklist-details-screen", { item });
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginVertical: 10
-                  }}
-                >
-                  <Icon
-                    name={item.iconName}
-                    type="material"
-                    size={26}
-                    color={item.iconColor}
-                  />
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginLeft: 30
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{ fontWeight: "500", fontSize: 16, color: "grey" }}
-                    >
-                      {item.todos.notDone ? item.todos.notDone.length : ""}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>}
+            data={starterListData}
+            keyExtractor={item => item._id}
+            renderItem={renderListItem}
           />
         </View>
         <View
@@ -124,49 +146,9 @@ const HomeScreen = () => {
           }}
         >
           <FlatList
-            data={addedLists}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) =>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log("goToTasksDetailsScreen");
-                  navigation.navigate("tasklist-details-screen", { item });
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginVertical: 10
-                  }}
-                >
-                  <Icon
-                    name={item.iconName}
-                    type="material-community"
-                    size={26}
-                    color={item.iconColor}
-                  />
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginLeft: 30
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{ fontWeight: "500", fontSize: 16, color: "grey" }}
-                    >
-                      {item.todos.notDone ? item.todos.notDone.length : ""}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>}
+            data={secondaryListData}
+            keyExtractor={item => item._id}
+            renderItem={renderListItem}
           />
         </View>
       </View>

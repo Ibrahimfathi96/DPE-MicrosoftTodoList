@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  markTaskAsCompleted,
-  uncompleteTask,
-  addIncompleteTask
-} from "../../redux/reducres/tasksDetailsSlice";
 import TaskCard from "../../components/TaskCard";
 import styles from "./TaskListDetails.styles";
 import { Icon } from "react-native-elements";
@@ -14,26 +8,44 @@ const TaskListDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
-  const dispatch = useDispatch();
-
-  const incompleteTasks = useSelector(state => item.todos);
-  const completedTasks = useSelector(state => state.tasks.completedTasks);
+  console.log("ITEM-IN-DETAILS", item);
+  const [incompleteTasks, setIncompleteTasks] = useState(
+    item.todos.filter(task => !task.isDone)
+  );
+  const [completedTasks, setCompletedTasks] = useState(
+    item.todos.filter(task => task.isDone)
+  );
 
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
   const toggleCompletedTasks = () => {
     setShowCompletedTasks(!showCompletedTasks);
   };
+  const checkPressHandler = (taskId, isCompleted) => {
+    const taskIndex = isCompleted
+      ? completedTasks.findIndex(task => task.todoId === taskId)
+      : incompleteTasks.findIndex(task => task.todoId === taskId);
 
-  const markTaskAsCompletedRedux = taskId => {
-    dispatch(markTaskAsCompleted(taskId));
+    if (taskIndex !== -1) {
+      const taskToMove = isCompleted
+        ? completedTasks[taskIndex]
+        : incompleteTasks[taskIndex];
+      const updatedTask = { ...taskToMove, isDone: !isCompleted };
+
+      if (isCompleted) {
+        const newCompletedTasks = [...completedTasks];
+        newCompletedTasks.splice(taskIndex, 1);
+        setCompletedTasks(newCompletedTasks);
+        setIncompleteTasks([...incompleteTasks, updatedTask]);
+      } else {
+        const newIncompleteTasks = [...incompleteTasks];
+        newIncompleteTasks.splice(taskIndex, 1);
+        setIncompleteTasks(newIncompleteTasks);
+        setCompletedTasks([...completedTasks, updatedTask]);
+      }
+    }
   };
 
-  const uncompleteTaskRedux = taskId => {
-    dispatch(uncompleteTask(taskId));
-  };
-
-  console.log("ITEM:====================>", item);
   return (
     <View style={styles.container}>
       {/* Screen Header */}
@@ -81,8 +93,8 @@ const TaskListDetails = () => {
               taskTitle={todo.todoTitle}
               listName={item.name}
               iconName={item.iconName}
-              pressHandler={() => markTaskAsCompletedRedux(todo.todoId)}
               taskstatus={false}
+              checkPressHandler={taskId => checkPressHandler(taskId, false)}
             />}
         />
         {/* Seperator between two FlatLists */}
@@ -118,8 +130,8 @@ const TaskListDetails = () => {
                 taskTitle={todo.todoTitle}
                 listName={item.name}
                 iconName={item.iconName}
-                pressHandler={() => uncompleteTaskRedux(todo.todoId)}
                 taskstatus={true}
+                checkPressHandler={taskId => checkPressHandler(taskId, true)}
               />}
           />}
       </View>
