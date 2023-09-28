@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, FlatList, Modal } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Icon, Avatar } from "react-native-elements";
@@ -7,17 +7,17 @@ import { useNavigation } from "@react-navigation/native";
 import { logout } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
-import { dummyListOfTodos } from "../../common/dummyListOftodos";
-import { addedLists } from "../../common/dummyListOftodos";
 import {
   fetchStarterListAsync,
   fetchSecondaryListAsync
 } from "../../redux/reducres/TodoReducer";
+import { color } from "react-native-elements/dist/helpers";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const starterListData = useSelector(state => state.api.starterListData);
   const secondaryListData = useSelector(state => state.api.secondaryListData);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(
     () => {
@@ -46,39 +46,18 @@ const HomeScreen = () => {
           navigation.navigate("tasklist-details-screen", { item });
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            marginVertical: 10
-          }}
-        >
+        <View style={styles.flatlistItemRow}>
           <Icon
             name={item.iconName}
             type={item.iconType}
             size={26}
             color={item.iconColor}
           />
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginLeft: 30
-            }}
-          >
-            <Text style={{ fontWeight: "500", fontSize: 18 }}>
+          <View style={styles.listNameAndLength}>
+            <Text style={styles.listName}>
               {item.name}
             </Text>
-            <Text
-              style={{
-                fontWeight: "500",
-                fontSize: 16,
-                color: "grey"
-              }}
-            >
+            <Text style={styles.listLength}>
               {item.todos.filter(todo => !todo.isDone).length}
             </Text>
           </View>
@@ -91,7 +70,12 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <View>
         {/* Header Of the screen */}
-        <TouchableOpacity onPress={console.log("OpenModalForProfile")}>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(true);
+            console.log("OpenModalForProfile");
+          }}
+        >
           <View style={{ flexDirection: "row" }}>
             <Avatar
               rounded
@@ -123,28 +107,18 @@ const HomeScreen = () => {
             />
           </View>
         </TouchableOpacity>
-        {/* Suggested List */}
-        <View
-          style={{
-            marginVertical: 20,
-            marginHorizontal: 10,
-            paddingBottom: 16,
-            borderBottomColor: "grey",
-            borderBottomWidth: 0.7
-          }}
-        >
+
+        {/* Starter List */}
+        <View style={styles.upperFlatListView}>
           <FlatList
             data={starterListData}
             keyExtractor={item => item._id}
             renderItem={renderListItem}
           />
         </View>
-        <View
-          style={{
-            marginHorizontal: 10,
-            paddingBottom: 16
-          }}
-        >
+
+        {/* Secondary List */}
+        <View style={styles.lowerFlatListView}>
           <FlatList
             data={secondaryListData}
             keyExtractor={item => item._id}
@@ -152,6 +126,7 @@ const HomeScreen = () => {
           />
         </View>
       </View>
+
       {/* Bottom Of the screen */}
       <View
         style={{
@@ -203,10 +178,69 @@ const HomeScreen = () => {
         />
       </View>
 
-      {/* For Testing */}
-      {/* <TouchableOpacity onPress={handleLogout}>
-        <Text>logout</Text>
-      </TouchableOpacity> */}
+      {/* Modal appears when press on Header Of the screen to logOut */}
+      <Modal animationType="fade" transparent={false} visible={modalVisible}>
+        <View style={styles.modalView}>
+          <View style={styles.modalHeader}>
+            <Avatar
+              rounded
+              size={70}
+              source={
+                personalData
+                  ? personalData.image
+                  : require("../../../assets/pp-placeholder.png")
+              }
+            />
+            <Icon
+              name="close"
+              color={Colors.blueColor2}
+              size={32}
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            />
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(false);
+            }}
+          >
+            <View style={styles.accountInfo}>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.userText}>
+                  {personalData ? personalData.name : "Guest"}
+                </Text>
+                <Icon name="keyboard-arrow-up" type="material" />
+              </View>
+              <Text style={styles.emailText}>
+                {personalData ? personalData.email : "Guest@example.com"}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.modalRowView}>
+            <Icon name="add" size={32} />
+            <Text style={styles.modalText}>Add Account</Text>
+          </View>
+
+          <View style={styles.modalRowView2}>
+            <Icon
+              name="account-edit-outline"
+              size={32}
+              type="material-community"
+            />
+            <Text style={styles.modalText}>Manage Accounts</Text>
+          </View>
+
+          <TouchableOpacity onPress={handleLogout}>
+            <View style={styles.modalRowView}>
+              <Icon name="logout" size={32} color="red" />
+              <Text style={[styles.modalText, { color: "red" }]}>LogOut</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
