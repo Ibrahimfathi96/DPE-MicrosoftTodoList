@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 // IMPORTS FROM OTHER FILES
 const basicListRouter = require("./routes/BasicListOfTasks");
+const authRouter = require("./routes/auth");
 
 // INIT
 const PORT = 8000;
@@ -14,6 +15,7 @@ const dbUrl =
 
 // MIDDLEWARE
 app.use(express.json());
+app.use(authRouter);
 app.use(basicListRouter);
 
 //Connections
