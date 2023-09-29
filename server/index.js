@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 // IMPORTS FROM OTHER FILES
 const basicListRouter = require("./routes/BasicListOfTasks");
 const authRouter = require("./routes/auth");
+const tasksRouter = require("./routes/Tasks");
 
 // INIT
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ const dbUrl = process.env.MONGO_URL;
 app.use(cors());
 app.use(express.json());
 app.use(authRouter);
+app.use(tasksRouter);
 app.use(basicListRouter);
 
 //Connections
