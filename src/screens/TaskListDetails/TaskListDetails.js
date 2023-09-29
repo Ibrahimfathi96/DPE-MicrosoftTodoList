@@ -7,11 +7,14 @@ import { Icon } from "react-native-elements";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
+
   const { item } = route.params;
   console.log("ITEM-IN-DETAILS", item);
+
   const [incompleteTasks, setIncompleteTasks] = useState(
     item.todos.filter(task => !task.isDone)
   );
+
   const [completedTasks, setCompletedTasks] = useState(
     item.todos.filter(task => task.isDone)
   );
@@ -21,6 +24,7 @@ const TaskListDetails = () => {
   const toggleCompletedTasks = () => {
     setShowCompletedTasks(!showCompletedTasks);
   };
+
   const checkPressHandler = (taskId, isCompleted) => {
     const taskIndex = isCompleted
       ? completedTasks.findIndex(task => task.todoId === taskId)
@@ -81,6 +85,7 @@ const TaskListDetails = () => {
           </View>
         </View>
       </View>
+
       {/* Two FlatList Of Incompleted/Completed Tasks */}
       <View style={{ width: "100%" }}>
         {/* Incompleted Tasks */}
@@ -97,6 +102,7 @@ const TaskListDetails = () => {
               checkPressHandler={taskId => checkPressHandler(taskId, false)}
             />}
         />
+
         {/* Seperator between two FlatLists */}
         <TouchableOpacity onPress={toggleCompletedTasks}>
           <View

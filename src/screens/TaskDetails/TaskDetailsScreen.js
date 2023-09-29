@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./TaskDetailsScreen.styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
@@ -30,6 +30,7 @@ const TaskDetailsScreen = () => {
           {listName}
         </Text>
       </View>
+
       <View style={styles.taskContainer}>
         <TouchableOpacity onPress={() => {}}>
           <View
@@ -38,6 +39,7 @@ const TaskDetailsScreen = () => {
             {taskstatus && <Icon name="check" size={20} color="white" />}
           </View>
         </TouchableOpacity>
+
         <View style={styles.titleTextView}>
           <Text
             style={

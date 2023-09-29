@@ -11,7 +11,6 @@ import {
   fetchStarterListAsync,
   fetchSecondaryListAsync
 } from "../../redux/reducres/TodoReducer";
-import { color } from "react-native-elements/dist/helpers";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
