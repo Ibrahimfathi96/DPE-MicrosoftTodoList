@@ -11,7 +11,7 @@ const todoSchema = new mongoose.Schema({
   todoDesc: String,
   isDone: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
 
