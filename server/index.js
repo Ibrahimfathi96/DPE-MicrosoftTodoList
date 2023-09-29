@@ -1,5 +1,8 @@
+require("dotenv").config();
+
 // IMPORTS FROM PACKAGES
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 
@@ -8,12 +11,12 @@ const basicListRouter = require("./routes/BasicListOfTasks");
 const authRouter = require("./routes/auth");
 
 // INIT
-const PORT = 8000;
+const PORT = process.env.PORT || 3000;
 
-const dbUrl =
-  "mongodb+srv://ibmf796:otJHEbFHXMaieLId@microsoft-to-do-db.44jk0fr.mongodb.net/MicrosoftToDo?retryWrites=true&w=majority";
+const dbUrl = process.env.MONGO_URL;
 
 // MIDDLEWARE
+app.use(cors());
 app.use(express.json());
 app.use(authRouter);
 app.use(basicListRouter);
