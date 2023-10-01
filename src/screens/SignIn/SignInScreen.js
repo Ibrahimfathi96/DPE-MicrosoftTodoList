@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   View,
   Text,
@@ -10,48 +10,39 @@ import {
 import styles from "./SignIn.Styles";
 import Checkbox from "expo-checkbox";
 import Colors from "../../common/colors";
-import personalData from "../../common/PersonalData";
-import {
-  login,
-  setError,
-  setPersonalData,
-  togglePasswordVisibility
-} from "../../redux/reducres/authSlice.js";
-import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { setUser } from "../../redux/reducres/authSlice.js";
+import { useNavigation } from "@react-navigation/native";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isShownPassword = useSelector(state => state.auth.isShownPassword);
-  const error = useSelector(state => state.auth.error);
+  const [isShownPassword, setIsShownPassword] = useState(false);
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const handlePasswordVisibilityToggle = () => {
-    dispatch(togglePasswordVisibility());
+    setIsShownPassword(!isShownPassword);
   };
 
   const handleSignIn = async () => {
     try {
-      if (!email || !password) {
-        dispatch(setError("Email and password are required!!"));
-      } else if (
-        email === personalData.email &&
-        password === personalData.password
-      ) {
-        await AsyncStorage.setItem("isLoggedIn", "true");
-        dispatch(login());
-        dispatch(setPersonalData(personalData));
-        dispatch(setError(null));
-        navigation.navigate("home-screen");
-      } else {
-        dispatch(setError("Invalid email or password!!"));
-      }
+      const response = await axios.post("http://192.168.1.11:8000/api/signIn", {
+        email,
+        password
+      });
+      dispatch(setUser(response.data));
+      await AsyncStorage.setItem("isAuthenticated", "true");
+      navigation.navigate("home-screen", { user: response.data });
     } catch (error) {
-      console.error("Error storing authentication state:", error);
+      setError("Login failed. Please check your credentials.");
+      console.error("Login error:", error);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.mainView}>

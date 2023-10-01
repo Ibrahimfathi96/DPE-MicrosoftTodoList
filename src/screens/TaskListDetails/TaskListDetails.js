@@ -91,7 +91,7 @@ const TaskListDetails = () => {
         {/* Incompleted Tasks */}
         <FlatList
           data={incompleteTasks}
-          keyExtractor={todo => todo.todoId.toString()}
+          keyExtractor={todo => todo.todoId}
           renderItem={({ item: todo }) =>
             <TaskCard
               taskId={todo.todoId}
@@ -129,7 +129,7 @@ const TaskListDetails = () => {
         {showCompletedTasks &&
           <FlatList
             data={completedTasks}
-            keyExtractor={todo => todo.todoId.toString()}
+            keyExtractor={todo => todo.todoId}
             renderItem={({ item: todo }) =>
               <TaskCard
                 taskId={todo.todoId}

@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, Modal } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  SafeAreaView
+} from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Icon, Avatar } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
-import { logout } from "../../redux/reducres/authSlice";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { clearUser } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import {
@@ -13,10 +21,15 @@ import {
 } from "../../redux/reducres/TodoReducer";
 
 const HomeScreen = () => {
+  const route = useRoute();
+  const personalData = route.params.user;
+  console.log("personalData", personalData);
   const dispatch = useDispatch();
   const starterListData = useSelector(state => state.api.starterListData);
   const secondaryListData = useSelector(state => state.api.secondaryListData);
   const [modalVisible, setModalVisible] = useState(false);
+  const [listOfTodos, setListOfTodos] = useState(personalData.listOfTodos);
+  console.log("ListOfTODOS:", listOfTodos);
 
   useEffect(
     () => {
@@ -25,15 +38,10 @@ const HomeScreen = () => {
     },
     [dispatch]
   );
-  const personalData = useSelector(state => state.auth.personalData);
   const navigation = useNavigation();
   const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem("isLoggedIn");
-    } catch (error) {
-      console.error("Error clearing authentication data:", error);
-    }
-    dispatch(logout());
+    dispatch(clearUser());
+    await AsyncStorage.removeItem("isAuthenticated");
     navigation.navigate("sign-in-screen");
   };
 
@@ -66,8 +74,8 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
         {/* Header Of the screen */}
         <TouchableOpacity
           onPress={() => {
@@ -80,8 +88,8 @@ const HomeScreen = () => {
               rounded
               size={50}
               source={
-                personalData
-                  ? personalData.image
+                personalData && personalData.image
+                  ? { uri: personalData.image }
                   : require("../../../assets/pp-placeholder.png")
               }
             />
@@ -107,74 +115,85 @@ const HomeScreen = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Starter List */}
-        <View style={styles.upperFlatListView}>
-          <FlatList
-            data={starterListData}
-            keyExtractor={item => item._id}
-            renderItem={renderListItem}
-          />
-        </View>
+        {/* Main Body Of the screen */}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* Starter List */}
+          <View style={styles.upperFlatListView}>
+            <FlatList
+              data={starterListData}
+              keyExtractor={item => item._id}
+              renderItem={renderListItem}
+            />
+          </View>
 
-        {/* Secondary List */}
-        <View style={styles.lowerFlatListView}>
-          <FlatList
-            data={secondaryListData}
-            keyExtractor={item => item._id}
-            renderItem={renderListItem}
-          />
-        </View>
-      </View>
+          {/* Secondary List */}
+          <View style={styles.lowerFlatListView}>
+            <FlatList
+              data={secondaryListData}
+              keyExtractor={item => item._id}
+              renderItem={renderListItem}
+            />
+          </View>
 
-      {/* Bottom Of the screen */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingHorizontal: 16,
-          paddingVertical: 10
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            console.log("ADD NEW LIST");
+          {/* List Of Added Todos */}
+          <View style={styles.lowerFlatListView}>
+            <FlatList
+              data={listOfTodos}
+              keyExtractor={item => item._id}
+              renderItem={renderListItem}
+            />
+          </View>
+        </ScrollView>
+        {/* Bottom Of the screen */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingHorizontal: 16,
+            paddingVertical: 10
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center"
+          <TouchableOpacity
+            onPress={() => {
+              console.log("ADD NEW LIST");
             }}
           >
-            <Icon
-              name="add"
-              type="material"
-              color={Colors.blueColor}
-              size={30}
-            />
-            <Text
+            <View
               style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                color: Colors.blueColor,
-                marginLeft: 16
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
-              New List
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <Icon
-          name="post-add"
-          type="material"
-          color={Colors.blueColor}
-          size={30}
-          onPress={() => {
-            console.log("ADD NEW GROUP");
-          }}
-        />
+              <Icon
+                name="add"
+                type="material"
+                color={Colors.blueColor}
+                size={30}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: Colors.blueColor,
+                  marginLeft: 16
+                }}
+              >
+                New List
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <Icon
+            name="post-add"
+            type="material"
+            color={Colors.blueColor}
+            size={30}
+            onPress={() => {
+              console.log("ADD NEW GROUP");
+            }}
+          />
+        </View>
       </View>
 
       {/* Modal appears when press on Header Of the screen to logOut */}
@@ -240,7 +259,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

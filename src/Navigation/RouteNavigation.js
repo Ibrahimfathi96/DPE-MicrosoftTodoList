@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import SignInScreen from "../screens/SignIn/SignInScreen";
 import HomeScreen from "../screens/Home/HomeScreen";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "../redux/reducres/authSlice";
+import { setUser, clearUser } from "../redux/reducres/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TaskListDetails from "../screens/TaskListDetails/TaskListDetails";
 import TaskDetailsScreen from "../screens/TaskDetails/TaskDetailsScreen";
@@ -13,11 +13,12 @@ const Stack = createNativeStackNavigator();
 export default function RouteNavigation() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
   useEffect(
     () => {
       const checkAuthentication = async () => {
         try {
-          const isAuthenticated = await AsyncStorage.getItem("isLoggedIn");
+          const isAuthenticated = await AsyncStorage.getItem("isAuthenticated");
           return isAuthenticated === "true";
         } catch (error) {
           console.error("Error checking authentication:", error);
@@ -27,9 +28,9 @@ export default function RouteNavigation() {
 
       checkAuthentication().then(authenticated => {
         if (authenticated) {
-          dispatch(login());
+          dispatch(setUser());
         } else {
-          dispatch(logout());
+          dispatch(clearUser());
         }
       });
     },
