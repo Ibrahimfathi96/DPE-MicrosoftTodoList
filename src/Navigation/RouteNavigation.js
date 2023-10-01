@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import SignInScreen from "../screens/SignIn/SignInScreen";
+import SignInScreen from "../screens/Auth/SignInScreen";
 import HomeScreen from "../screens/Home/HomeScreen";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearUser } from "../redux/reducres/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TaskListDetails from "../screens/TaskListDetails/TaskListDetails";
 import TaskDetailsScreen from "../screens/TaskDetails/TaskDetailsScreen";
+import RegisterScreen from "../screens/Auth/RegisterScreen";
 
 const Stack = createNativeStackNavigator();
 export default function RouteNavigation() {
@@ -49,6 +50,11 @@ export default function RouteNavigation() {
         <Stack.Screen
           name="sign-in-screen"
           component={SignInScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="register-screen"
+          component={RegisterScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

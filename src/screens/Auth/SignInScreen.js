@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Pressable
 } from "react-native";
-import styles from "./SignIn.Styles";
+import styles from "./Auth.Styles";
 import Checkbox from "expo-checkbox";
 import Colors from "../../common/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,7 +22,6 @@ const SignInScreen = () => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
 
   const handlePasswordVisibilityToggle = () => {
     setIsShownPassword(!isShownPassword);
@@ -38,7 +37,7 @@ const SignInScreen = () => {
       await AsyncStorage.setItem("isAuthenticated", "true");
       navigation.navigate("home-screen", { user: response.data });
     } catch (error) {
-      setError("Login failed. Please check your credentials.");
+      setError("Please check your credentials.");
       console.error("Login error:", error);
     }
   };
@@ -47,11 +46,14 @@ const SignInScreen = () => {
     <View style={styles.container}>
       <View style={styles.mainView}>
         <View style={styles.wrapper}>
-          <Text style={styles.signinText}>Login</Text>
+          <Text style={styles.signinText}>LOGIN</Text>
+          {/** Error Text */}
           {error &&
             <Text style={styles.errorText}>
               {error}
             </Text>}
+
+          {/**Email Text Fields*/}
           <View style={styles.textInputsMainView}>
             <Text style={styles.text}>Email :</Text>
             <TextInput
@@ -60,6 +62,8 @@ const SignInScreen = () => {
               onChangeText={text => setEmail(text)}
             />
           </View>
+
+          {/**Password Text Fields*/}
           <View style={styles.textInputsMainView}>
             <Text style={styles.text}>Password :</Text>
             <TextInput
@@ -69,6 +73,8 @@ const SignInScreen = () => {
               onChangeText={text => setPassword(text)}
             />
           </View>
+
+          {/**Show Password Checkbox */}
           <View style={styles.CheckBoxView}>
             <Checkbox
               value={isShownPassword}
@@ -80,9 +86,13 @@ const SignInScreen = () => {
               <Text style={{ marginLeft: 6 }}>Show Password</Text>
             </Pressable>
           </View>
+
+          {/**Sign In Button*/}
           <TouchableOpacity onPress={handleSignIn} style={styles.button}>
-            <Text style={[styles.signinText, { color: "white" }]}>SIGN IN</Text>
+            <Text style={[styles.signinText, { color: "white" }]}>SIGN-IN</Text>
           </TouchableOpacity>
+
+          {/**Forgot Password */}
           <TouchableOpacity
             onPress={() => {
               console.log("goToForgetPasswordPage!!");
@@ -90,10 +100,13 @@ const SignInScreen = () => {
           >
             <Text style={styles.text}>Forgot Username / Password ?</Text>
           </TouchableOpacity>
+
+          {/**Don't have an account ? */}
           <View style={{ flexDirection: "row", marginTop: 4 }}>
-            <Text style={styles.text}>Don't have an account ? </Text>
+            <Text style={styles.text}>Don't have an account? </Text>
             <TouchableOpacity
               onPress={() => {
+                navigation.navigate("register-screen");
                 console.log("goToSignUpPage!!");
               }}
             >

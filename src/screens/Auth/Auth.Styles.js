@@ -64,6 +64,11 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 14,
     fontWeight: "500"
+  },
+  passwordRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 

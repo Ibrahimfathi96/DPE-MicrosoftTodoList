@@ -202,10 +202,10 @@ const HomeScreen = () => {
           <View style={styles.modalHeader}>
             <Avatar
               rounded
-              size={70}
+              size={50}
               source={
-                personalData
-                  ? personalData.image
+                personalData && personalData.image
+                  ? { uri: personalData.image }
                   : require("../../../assets/pp-placeholder.png")
               }
             />
