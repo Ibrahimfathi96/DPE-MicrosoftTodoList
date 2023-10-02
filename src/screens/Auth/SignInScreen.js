@@ -13,7 +13,8 @@ import Colors from "../../common/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { setUser } from "../../redux/reducres/authSlice.js";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { API_URL } from "@env";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -29,18 +30,28 @@ const SignInScreen = () => {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://192.168.1.11:8000/api/signIn", {
+      const response = await axios.post(`${API_URL}/api/signIn`, {
         email,
         password
       });
+
       dispatch(setUser(response.data));
       await AsyncStorage.setItem("isAuthenticated", "true");
       navigation.navigate("home-screen", { user: response.data });
+      setError(null);
     } catch (error) {
       setError("Please check your credentials.");
       console.error("Login error:", error);
     }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setEmail("");
+      setPassword("");
+      setError(null);
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -59,7 +70,10 @@ const SignInScreen = () => {
             <TextInput
               placeholder="Enter E-mail"
               style={styles.textInput}
-              onChangeText={text => setEmail(text)}
+              onChangeText={text => {
+                setError(null);
+                setEmail(text);
+              }}
             />
           </View>
 
@@ -70,7 +84,10 @@ const SignInScreen = () => {
               placeholder="Enter Password"
               style={styles.textInput}
               secureTextEntry={!isShownPassword}
-              onChangeText={text => setPassword(text)}
+              onChangeText={text => {
+                setPassword(text);
+                setError(null);
+              }}
             />
           </View>
 

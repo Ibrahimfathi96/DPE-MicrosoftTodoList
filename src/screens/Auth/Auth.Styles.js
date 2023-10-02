@@ -10,10 +10,9 @@ const styles = StyleSheet.create({
     alignContent: "center"
   },
   mainView: {
-    flexDirection: "row",
     marginHorizontal: "auto",
     marginVertical: "auto",
-    height: height * 0.5,
+    height: height * 0.53,
     backgroundColor: "white",
     width: width * 0.8,
     borderRadius: 16,
@@ -62,6 +61,11 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
+    fontSize: 14,
+    fontWeight: "500"
+  },
+  successMessage: {
+    color: "green",
     fontSize: 14,
     fontWeight: "500"
   },

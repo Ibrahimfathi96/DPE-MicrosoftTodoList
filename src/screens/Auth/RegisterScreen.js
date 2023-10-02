@@ -1,15 +1,21 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styles from "./Auth.Styles";
 import Checkbox from "expo-checkbox";
 import Colors from "../../common/colors";
+import { setUser } from "../../redux/reducres/authSlice.js";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { API_URL } from "@env";
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [isShownPassword, setIsShownPassword] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const handlePasswordVisibilityToggle = () => {
     setIsShownPassword(!isShownPassword);
@@ -21,13 +27,26 @@ const RegisterScreen = () => {
         <View style={styles.wrapper}>
           <Text style={styles.signinText}>REGISTER</Text>
 
+          {registrationSuccess &&
+            <Text style={styles.successMessage}>
+              Registration successful! go sign in with same credentials.
+            </Text>}
+
+          {error &&
+            <Text style={styles.errorText}>
+              {error}
+            </Text>}
+
           {/**UserName Text Fields*/}
           <View style={styles.textInputsMainView}>
             <Text style={styles.text}>UserName :</Text>
             <TextInput
               placeholder="Enter Your UserName"
               style={styles.textInput}
-              onChangeText={text => setUserName(text)}
+              onChangeText={text => {
+                setName(text);
+                setError(null);
+              }}
             />
 
             {/**Email Text Fields*/}
@@ -36,7 +55,10 @@ const RegisterScreen = () => {
               <TextInput
                 placeholder="Enter E-mail"
                 style={styles.textInput}
-                onChangeText={text => setEmail(text)}
+                onChangeText={text => {
+                  setEmail(text);
+                  setError(null);
+                }}
               />
             </View>
 
@@ -48,7 +70,10 @@ const RegisterScreen = () => {
                   placeholder="Enter Password"
                   style={[styles.textInput, { flex: 1, marginRight: 10 }]}
                   secureTextEntry={!isShownPassword}
-                  onChangeText={text => setPassword(text)}
+                  onChangeText={text => {
+                    setPassword(text);
+                    setError(null);
+                  }}
                 />
                 <Checkbox
                   value={isShownPassword}
@@ -61,7 +86,7 @@ const RegisterScreen = () => {
             {/**Sign UP Button*/}
             <TouchableOpacity
               onPress={() => {
-                console.log("SignUp Successfully");
+                console.log("SignUp!");
               }}
               style={styles.button}
             >
