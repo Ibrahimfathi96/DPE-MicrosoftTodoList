@@ -2,13 +2,11 @@ import axios from "axios";
 import { API_URL } from "@env";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export const baseURL = `${API_URL}`;
 
 const api = axios.create({
   baseURL
 });
-
 export const fetchStarterList = async () => {
   try {
     const response = await api.get("/api/getStarterList");
@@ -40,6 +38,15 @@ export const signIn = async (email, password) => {
 export const signUp = async (name, email, password) => {
   try {
     const response = await api.post("/api/signUp", { name, email, password });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addGroup = async (userId, name) => {
+  try {
+    const response = await api.post("/api/addGroup", { userId, name });
     return response.data;
   } catch (error) {
     throw error;

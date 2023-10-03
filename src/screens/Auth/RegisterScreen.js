@@ -1,4 +1,10 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ToastAndroid
+} from "react-native";
 import React, { useState } from "react";
 import styles from "./Auth.Styles";
 import Checkbox from "expo-checkbox";
@@ -11,7 +17,6 @@ const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [isShownPassword, setIsShownPassword] = useState(false);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [error, setError] = useState(null);
 
   const handlePasswordVisibilityToggle = () => {
@@ -22,13 +27,24 @@ const RegisterScreen = () => {
     try {
       const user = await signUp(name, email, password);
       if (user) {
-        setRegistrationSuccess(true);
+        ToastAndroid.showWithGravity(
+          "Registration Success\nGo Sign-In with the same Credentials.",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         setError(null);
         setTimeout(() => {
           navigation.navigate("sign-in-screen");
         }, 2000);
       }
     } catch (error) {
+      ToastAndroid.showWithGravity(
+        "Registration Error\nRegistration failed. Please try again.",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       setError("Registration failed. Please try again.");
       console.error("Registration error:", error + "\n" + error.message);
     }
@@ -39,16 +55,6 @@ const RegisterScreen = () => {
       <View style={styles.mainView}>
         <View style={styles.wrapper}>
           <Text style={styles.signinText}>REGISTER</Text>
-
-          {registrationSuccess &&
-            <Text style={styles.successMessage}>
-              Registration successful! Go sign in with same credentials.
-            </Text>}
-
-          {error &&
-            <Text style={styles.errorText}>
-              {error}
-            </Text>}
 
           {/**UserName Text Fields*/}
           <View style={styles.textInputsMainView}>

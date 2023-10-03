@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable
+  Pressable,
+  ToastAndroid
 } from "react-native";
 import styles from "./Auth.Styles";
 import Checkbox from "expo-checkbox";
@@ -13,6 +14,7 @@ import Colors from "../../common/colors";
 import { signIn } from "../../redux/API/ApiServices";
 import { setUser } from "../../redux/reducres/authSlice.js";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -30,11 +32,24 @@ const SignInScreen = () => {
     try {
       const user = await signIn(email, password);
       if (user) {
+        setError(null);
+        await AsyncStorage.setItem("userData", JSON.stringify(user));
+        ToastAndroid.showWithGravity(
+          "Successfully logged-in. Welcome back!",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         dispatch(setUser(user));
         navigation.navigate("home-screen", { user });
-        setError(null);
       }
     } catch (error) {
+      ToastAndroid.showWithGravity(
+        "Login Failed\nPlease check your credentials and try again.",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       setError("Please check your credentials.");
       console.error("Login error:", error + "\n" + error.message);
     }
@@ -54,19 +69,13 @@ const SignInScreen = () => {
         <View style={styles.wrapper}>
           <Text style={styles.signinText}>LOGIN</Text>
 
-          {/** Error Text */}
-          {error &&
-            <Text style={styles.errorText}>
-              {error}
-            </Text>}
-
           {/**Email Text Fields*/}
           <View style={styles.textInputsMainView}>
             <Text style={styles.text}>Email :</Text>
             <TextInput
               placeholder="Enter E-mail"
               style={styles.textInput}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setError(null);
                 setEmail(text);
               }}
@@ -80,7 +89,7 @@ const SignInScreen = () => {
               placeholder="Enter Password"
               style={styles.textInput}
               secureTextEntry={!isShownPassword}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setPassword(text);
                 setError(null);
               }}
@@ -124,7 +133,8 @@ const SignInScreen = () => {
               }}
             >
               <Text style={[styles.text, { color: Colors.blueColor2 }]}>
-                {" "}Sign Up
+                {" "}
+                Sign Up
               </Text>
             </TouchableOpacity>
           </View>

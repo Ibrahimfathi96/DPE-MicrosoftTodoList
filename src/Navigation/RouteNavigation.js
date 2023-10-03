@@ -13,30 +13,27 @@ import RegisterScreen from "../screens/Auth/RegisterScreen";
 const Stack = createNativeStackNavigator();
 export default function RouteNavigation() {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  useEffect(
-    () => {
-      const checkAuthentication = async () => {
-        try {
-          const isAuthenticated = await AsyncStorage.getItem("isAuthenticated");
-          return isAuthenticated === "true";
-        } catch (error) {
-          console.error("Error checking authentication:", error);
-          return false;
-        }
-      };
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const isAuthenticated = await AsyncStorage.getItem("isAuthenticated");
+        return isAuthenticated === "true";
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        return false;
+      }
+    };
 
-      checkAuthentication().then(authenticated => {
-        if (authenticated) {
-          dispatch(setUser());
-        } else {
-          dispatch(clearUser());
-        }
-      });
-    },
-    [dispatch]
-  );
+    checkAuthentication().then((authenticated) => {
+      if (authenticated) {
+        dispatch(setUser());
+      } else {
+        dispatch(clearUser());
+      }
+    });
+  }, [dispatch]);
   return (
     <NavigationContainer>
       <Stack.Navigator

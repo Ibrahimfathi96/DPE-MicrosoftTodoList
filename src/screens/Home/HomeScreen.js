@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
-  SafeAreaView
+  SafeAreaView,
+  TextInput
 } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,23 +26,23 @@ const HomeScreen = () => {
   const personalData = route.params.user;
   console.log("personalData: \n", personalData);
   const dispatch = useDispatch();
-  const starterListData = useSelector(state => state.api.starterListData);
-  const secondaryListData = useSelector(state => state.api.secondaryListData);
+  const starterListData = useSelector((state) => state.api.starterListData);
+  const secondaryListData = useSelector((state) => state.api.secondaryListData);
   const [modalVisible, setModalVisible] = useState(false);
+  const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
+  const [groupName, setGroupName] = useState("");
   const [listOfTodos, setListOfTodos] = useState(personalData.listOfTodos);
   console.log("ListOfTODOS:", listOfTodos);
 
-  useEffect(
-    () => {
-      dispatch(fetchStarterListAsync());
-      dispatch(fetchSecondaryListAsync());
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    dispatch(fetchStarterListAsync());
+    dispatch(fetchSecondaryListAsync());
+  }, [dispatch]);
   const navigation = useNavigation();
   const handleLogout = async () => {
     dispatch(clearUser());
     await AsyncStorage.removeItem("isAuthenticated");
+    await AsyncStorage.removeItem("userData");
     navigation.navigate("sign-in-screen");
   };
 
@@ -61,11 +62,9 @@ const HomeScreen = () => {
             color={item.iconColor}
           />
           <View style={styles.listNameAndLength}>
-            <Text style={styles.listName}>
-              {item.name}
-            </Text>
+            <Text style={styles.listName}>{item.name}</Text>
             <Text style={styles.listLength}>
-              {item.todos.filter(todo => !todo.isDone).length}
+              {item.todos.filter((todo) => !todo.isDone).length}
             </Text>
           </View>
         </View>
@@ -121,7 +120,7 @@ const HomeScreen = () => {
           <View style={styles.upperFlatListView}>
             <FlatList
               data={starterListData}
-              keyExtractor={item => item._id}
+              keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />
           </View>
@@ -130,7 +129,7 @@ const HomeScreen = () => {
           <View style={styles.lowerFlatListView}>
             <FlatList
               data={secondaryListData}
-              keyExtractor={item => item._id}
+              keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />
           </View>
@@ -139,7 +138,7 @@ const HomeScreen = () => {
           <View style={styles.lowerFlatListView}>
             <FlatList
               data={listOfTodos}
-              keyExtractor={item => item._id}
+              keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />
           </View>
@@ -176,12 +175,46 @@ const HomeScreen = () => {
             type="material"
             color={Colors.blueColor}
             size={30}
-            onPress={() => {
-              console.log("ADD NEW GROUP");
-            }}
+            onPress={() => setCreateGroupModalVisible(true)}
           />
         </View>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={createGroupModalVisible}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Create a group</Text>
+            <TextInput
+              placeholder="Enter group name"
+              style={[
+                styles.groupNameInput,
+                { fontSize: 18, placeholderTextColor: "gray" }
+              ]}
+              onChangeText={(text) => setGroupName(text)}
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                onPress={() => setCreateGroupModalVisible(false)}
+              >
+                <Text style={styles.modalButton}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {}} disabled={!groupName}>
+                <Text
+                  style={[
+                    styles.modalButton,
+                    { color: groupName ? Colors.blueColor : "gray" }
+                  ]}
+                >
+                  CREATE GROUP
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Modal appears when press on Header Of the screen to logOut */}
       <Modal animationType="fade" transparent={false} visible={modalVisible}>
