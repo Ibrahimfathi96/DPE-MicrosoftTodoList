@@ -6,14 +6,13 @@ const tasksRouter = express.Router();
 //! ADD GROUP OF TASKLISTS
 tasksRouter.post("/api/addGroup", async (req, res) => {
   try {
-    const { userId, name, backgroundColor } = req.body;
+    const { userId, name } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });
     }
     const todoList = {
-      name,
-      backgroundColor
+      name
     };
     user.listOfTodos.push(todoList);
     await user.save();

@@ -83,6 +83,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 20
+  },
+  bottomView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 10
+  },
+  addListButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 export default styles;

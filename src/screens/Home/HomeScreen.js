@@ -23,7 +23,7 @@ import {
 const HomeScreen = () => {
   const route = useRoute();
   const personalData = route.params.user;
-  console.log("personalData", personalData);
+  console.log("personalData: \n", personalData);
   const dispatch = useDispatch();
   const starterListData = useSelector(state => state.api.starterListData);
   const secondaryListData = useSelector(state => state.api.secondaryListData);
@@ -144,28 +144,15 @@ const HomeScreen = () => {
             />
           </View>
         </ScrollView>
+
         {/* Bottom Of the screen */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingHorizontal: 16,
-            paddingVertical: 10
-          }}
-        >
+        <View style={styles.bottomView}>
           <TouchableOpacity
             onPress={() => {
               console.log("ADD NEW LIST");
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
+            <View style={styles.addListButton}>
               <Icon
                 name="add"
                 type="material"
