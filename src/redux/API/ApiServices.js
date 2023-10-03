@@ -36,3 +36,12 @@ export const signIn = async (email, password) => {
     throw error;
   }
 };
+
+export const signUp = async (name, email, password) => {
+  try {
+    const response = await api.post("/api/signUp", { name, email, password });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

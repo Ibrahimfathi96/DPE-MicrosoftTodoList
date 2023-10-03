@@ -1,13 +1,10 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import styles from "./Auth.Styles";
 import Checkbox from "expo-checkbox";
 import Colors from "../../common/colors";
-import { setUser } from "../../redux/reducres/authSlice.js";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
-import { API_URL } from "@env";
+import { signUp } from "../../redux/API/ApiServices";
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -21,6 +18,22 @@ const RegisterScreen = () => {
     setIsShownPassword(!isShownPassword);
   };
 
+  const handleSignUp = async () => {
+    try {
+      const user = await signUp(name, email, password);
+      if (user) {
+        setRegistrationSuccess(true);
+        setError(null);
+        setTimeout(() => {
+          navigation.navigate("sign-in-screen");
+        }, 2000);
+      }
+    } catch (error) {
+      setError("Registration failed. Please try again.");
+      console.error("Registration error:", error + "\n" + error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.mainView}>
@@ -29,7 +42,7 @@ const RegisterScreen = () => {
 
           {registrationSuccess &&
             <Text style={styles.successMessage}>
-              Registration successful! go sign in with same credentials.
+              Registration successful! Go sign in with same credentials.
             </Text>}
 
           {error &&
@@ -84,12 +97,7 @@ const RegisterScreen = () => {
             </View>
 
             {/**Sign UP Button*/}
-            <TouchableOpacity
-              onPress={() => {
-                console.log("SignUp!");
-              }}
-              style={styles.button}
-            >
+            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
               <Text style={[styles.signinText, { color: "white" }]}>
                 SIGN-UP
               </Text>
