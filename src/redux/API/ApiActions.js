@@ -1,7 +1,8 @@
 import {
   fetchStarterList as fetchStarterListAPI,
-  fetchSecondaryList as fetchSecondaryListAPI
+  fetchSecondaryList as fetchSecondaryListAPI,
 } from "./ApiServices";
+import { setUser } from "../reducres/authSlice";
 
 export const FETCH_STARTER_LIST_SUCCESS = "FETCH_STARTER_LIST_SUCCESS";
 export const FETCH_STARTER_LIST_ERROR = "FETCH_STARTER_LIST_ERROR";

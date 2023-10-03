@@ -10,11 +10,9 @@ import {
 import styles from "./Auth.Styles";
 import Checkbox from "expo-checkbox";
 import Colors from "../../common/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { signIn } from "../../redux/API/ApiServices";
 import { setUser } from "../../redux/reducres/authSlice.js";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { API_URL } from "@env";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -28,20 +26,17 @@ const SignInScreen = () => {
     setIsShownPassword(!isShownPassword);
   };
 
-  const handleSignIn = async () => {
+  const handleSignInPress = async () => {
     try {
-      const response = await axios.post(`${API_URL}/api/signIn`, {
-        email,
-        password
-      });
-
-      dispatch(setUser(response.data));
-      await AsyncStorage.setItem("isAuthenticated", "true");
-      navigation.navigate("home-screen", { user: response.data });
-      setError(null);
+      const user = await signIn(email, password);
+      if (user) {
+        dispatch(setUser(user));
+        navigation.navigate("home-screen", { user });
+        setError(null);
+      }
     } catch (error) {
       setError("Please check your credentials.");
-      console.error("Login error:", error);
+      console.error("Login error:", error + "\n" + error.message);
     }
   };
 
@@ -58,6 +53,7 @@ const SignInScreen = () => {
       <View style={styles.mainView}>
         <View style={styles.wrapper}>
           <Text style={styles.signinText}>LOGIN</Text>
+
           {/** Error Text */}
           {error &&
             <Text style={styles.errorText}>
@@ -105,7 +101,7 @@ const SignInScreen = () => {
           </View>
 
           {/**Sign In Button*/}
-          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+          <TouchableOpacity onPress={handleSignInPress} style={styles.button}>
             <Text style={[styles.signinText, { color: "white" }]}>SIGN-IN</Text>
           </TouchableOpacity>
 
