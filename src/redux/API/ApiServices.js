@@ -44,11 +44,16 @@ export const signUp = async (name, email, password) => {
   }
 };
 
-export const addGroup = async (userId, name) => {
+export const addGroupAPI = async (data) => {
   try {
-    const response = await api.post("/api/addGroup", { userId, name });
+    const response = await api.post("/api/addGroup", data);
     return response.data;
   } catch (error) {
     throw error;
   }
+};
+
+export const fetchListOfTodosAPI = async (userId) => {
+  const response = await api.get(`/api/getTasks/${userId}`);
+  return response.data;
 };

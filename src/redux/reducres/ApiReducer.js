@@ -28,9 +28,9 @@ const apiReducer = createSlice({
   name: "api",
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(fetchStarterListAsync.pending, state => {
+      .addCase(fetchStarterListAsync.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchStarterListAsync.fulfilled, (state, action) => {
@@ -41,7 +41,7 @@ const apiReducer = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      .addCase(fetchSecondaryListAsync.pending, state => {
+      .addCase(fetchSecondaryListAsync.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchSecondaryListAsync.fulfilled, (state, action) => {

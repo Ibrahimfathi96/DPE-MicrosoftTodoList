@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderColor: Colors.blueColor,
     padding: 10,
-    marginBottom: 20
+    marginBottom: 20,
+    fontSize: 18
   },
   modalButtons: {
     flexDirection: "row",

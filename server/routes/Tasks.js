@@ -16,7 +16,7 @@ tasksRouter.post("/api/addGroup", async (req, res) => {
     };
     user.listOfTodos.push(todoList);
     await user.save();
-    res.json(user.listOfTodos);
+    res.status(200).json(user.listOfTodos);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -32,7 +32,7 @@ tasksRouter.post("/api/addTask", async (req, res) => {
       return res.status(404).json({ msg: "User not found!" });
     }
     const todoList = await user.listOfTodos.find(
-      t => t._id.toString() === todoId
+      (t) => t._id.toString() === todoId
     );
     if (!todoList) {
       return res.status(404).json({ msg: "TodoList not found!" });
@@ -63,12 +63,12 @@ tasksRouter.put("/api/updateTask", async (req, res) => {
       return res.status(404).json({ msg: "User not found!" });
     }
     const todoList = await user.listOfTodos.find(
-      t => t._id.toString() === todoId
+      (t) => t._id.toString() === todoId
     );
     if (!todoList) {
       return res.status(404).json({ msg: "TodoList not found!" });
     }
-    const todo = todoList.todos.find(t => t._id.toString() === todoId);
+    const todo = todoList.todos.find((t) => t._id.toString() === todoId);
     if (!todo) {
       return res.status(404).json({ msg: "Todo not found!" });
     }
@@ -91,13 +91,13 @@ tasksRouter.delete("/api/deleteTask", async (req, res) => {
       return res.status(404).json({ msg: "User not found!" });
     }
     const todoList = await user.listOfTodos.find(
-      t => t._id.toString() === todoId
+      (t) => t._id.toString() === todoId
     );
     if (!todoList) {
       return res.status(404).json({ msg: "TodoList not found!" });
     }
     const todoIndex = todoList.todos.findIndex(
-      t => t._id.toString() === todoId
+      (t) => t._id.toString() === todoId
     );
     if (todoIndex === -1) {
       return res.status(404).json({ msg: "Todo not found!" });
@@ -112,9 +112,10 @@ tasksRouter.delete("/api/deleteTask", async (req, res) => {
 
 //! GET ALL TASKS
 // TODO: GET ALL TASKS NOT TESTED YET
-tasksRouter.get("/api/getTasks", async (req, res) => {
+tasksRouter.get("/api/getTasks/:userId", async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.params.userId;
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });

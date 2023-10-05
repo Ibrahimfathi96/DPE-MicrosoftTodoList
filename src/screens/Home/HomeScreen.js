@@ -19,26 +19,37 @@ import Colors from "../../common/colors";
 import {
   fetchStarterListAsync,
   fetchSecondaryListAsync
-} from "../../redux/reducres/TodoReducer";
+} from "../../redux/reducres/ApiReducer";
+import { setUserId } from "../../redux/reducres/authSlice";
+import { fetchListOfTodos } from "../../redux/reducres/TodoReducers";
 
 const HomeScreen = () => {
   const route = useRoute();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const personalData = route.params.user;
   console.log("personalData: \n", personalData);
-  const dispatch = useDispatch();
+  const userId = personalData._id;
+  console.log("userId:", userId);
+
   const starterListData = useSelector((state) => state.api.starterListData);
   const secondaryListData = useSelector((state) => state.api.secondaryListData);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
-  const [listOfTodos, setListOfTodos] = useState(personalData.listOfTodos);
+
+  const listOfTodos = useSelector((state) => state.todo.listOfTodos);
   console.log("ListOfTODOS:", listOfTodos);
 
   useEffect(() => {
     dispatch(fetchStarterListAsync());
     dispatch(fetchSecondaryListAsync());
-  }, [dispatch]);
-  const navigation = useNavigation();
+    dispatch(setUserId(userId));
+    dispatch(fetchListOfTodos());
+  }, [dispatch, userId]);
+
   const handleLogout = async () => {
     dispatch(clearUser());
     await AsyncStorage.removeItem("isAuthenticated");
@@ -46,7 +57,25 @@ const HomeScreen = () => {
     navigation.navigate("sign-in-screen");
   };
 
+  const handleCreateGroup = async () => {
+    try {
+      if (groupName) {
+        const newGroup = await dispatch(
+          addGroup({ userId: userId, name: groupName })
+        );
+        if (newGroup) {
+          setGroupName("");
+        }
+      }
+    } catch (error) {
+      console.error("Error creating group:", error);
+    }
+  };
+
   const renderListItem = ({ item }) => {
+    const todosCount = item.todos
+      ? item.todos.filter((todo) => !todo.isDone).length
+      : 0;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -63,9 +92,7 @@ const HomeScreen = () => {
           />
           <View style={styles.listNameAndLength}>
             <Text style={styles.listName}>{item.name}</Text>
-            <Text style={styles.listLength}>
-              {item.todos.filter((todo) => !todo.isDone).length}
-            </Text>
+            <Text style={styles.listLength}>{todosCount}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -179,6 +206,8 @@ const HomeScreen = () => {
           />
         </View>
       </View>
+
+      {/* Create Group Modal */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -189,11 +218,10 @@ const HomeScreen = () => {
             <Text style={styles.modalTitle}>Create a group</Text>
             <TextInput
               placeholder="Enter group name"
-              style={[
-                styles.groupNameInput,
-                { fontSize: 18, placeholderTextColor: "gray" }
-              ]}
+              placeholderTextColor="gray"
+              style={styles.groupNameInput}
               onChangeText={(text) => setGroupName(text)}
+              value={groupName}
             />
             <View style={styles.modalButtons}>
               <TouchableOpacity
@@ -201,7 +229,10 @@ const HomeScreen = () => {
               >
                 <Text style={styles.modalButton}>CANCEL</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {}} disabled={!groupName}>
+              <TouchableOpacity
+                onPress={handleCreateGroup}
+                disabled={!groupName}
+              >
                 <Text
                   style={[
                     styles.modalButton,
