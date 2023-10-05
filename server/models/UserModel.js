@@ -44,7 +44,22 @@ const userSchema = mongoose.Schema(
             default: "#5D70BD"
           },
           todos: {
-            type: Array,
+            type: [
+              {
+                todoTitle: {
+                  required: true,
+                  type: String
+                },
+                todoDesc: {
+                  type: String,
+                  default: ""
+                },
+                isDone: {
+                  type: Boolean,
+                  default: false
+                }
+              }
+            ],
             default: []
           }
         }

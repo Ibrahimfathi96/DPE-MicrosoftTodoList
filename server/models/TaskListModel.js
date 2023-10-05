@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Todo = require("./TodoModel");
 const TaskListScheme = mongoose.Schema({
   name: {
     type: String,

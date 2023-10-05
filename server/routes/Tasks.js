@@ -7,13 +7,17 @@ const tasksRouter = express.Router();
 tasksRouter.post("/api/addGroup/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    const { name } = req.body;
+    const { name, iconName, iconColor, iconType, backgroundColor } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });
     }
     const todoList = {
-      name
+      name,
+      iconName,
+      iconColor,
+      iconType,
+      backgroundColor
     };
     user.listOfTodos.push(todoList);
     await user.save();
@@ -24,31 +28,34 @@ tasksRouter.post("/api/addGroup/:userId", async (req, res) => {
 });
 
 //! ADD TASK
-tasksRouter.post("/api/addTask", async (req, res) => {
+tasksRouter.post("/api/addTask/:userId/:listId", async (req, res) => {
+  const userId = req.params.userId;
+  const listId = req.params.listId;
+  console.log("userId:", userId + "\nlistId:" + listId);
   try {
-    const { userId, todoId, todoTitle, todoDesc } = req.body;
     const user = await User.findById(userId);
-    console.log("user:", user);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });
     }
-    const todoList = await user.listOfTodos.find(
-      (t) => t._id.toString() === todoId
+
+    const todoList = user.listOfTodos.find(
+      (list) => list._id.toString() === listId
     );
     if (!todoList) {
-      return res.status(404).json({ msg: "TodoList not found!" });
+      return res.status(404).json({ msg: "List not found!" });
     }
-    console.log("todoOfUserListOfTodos", user.listOfTodos);
-    console.log("todoList:", todoList);
-    const todo = {
-      _id: new mongoose.Types.ObjectId(),
+
+    const { todoTitle, todoDesc } = req.body;
+    const newTodo = {
       todoTitle,
-      todoDesc,
-      isDone: false
+      todoDesc
     };
-    todoList.todos.push(todo);
+
+    todoList.todos.push(newTodo);
+
     await user.save();
-    res.json(todoList.todos);
+
+    res.status(200).json(todoList.todos);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
