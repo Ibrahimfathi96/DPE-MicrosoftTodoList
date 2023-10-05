@@ -173,38 +173,17 @@ const HomeScreen = () => {
 
         {/* Bottom Of the screen */}
         <View style={styles.bottomView}>
-          <TouchableOpacity
-            onPress={() => {
-              console.log("ADD NEW LIST");
-            }}
-          >
+          <TouchableOpacity onPress={() => setCreateGroupModalVisible(true)}>
             <View style={styles.addListButton}>
               <Icon
-                name="add"
+                name="post-add"
                 type="material"
                 color={Colors.blueColor}
                 size={30}
               />
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: Colors.blueColor,
-                  marginLeft: 16
-                }}
-              >
-                New List
-              </Text>
+              <Text style={styles.newListText}>New List</Text>
             </View>
           </TouchableOpacity>
-
-          <Icon
-            name="post-add"
-            type="material"
-            color={Colors.blueColor}
-            size={30}
-            onPress={() => setCreateGroupModalVisible(true)}
-          />
         </View>
       </View>
 

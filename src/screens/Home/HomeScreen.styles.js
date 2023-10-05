@@ -137,6 +137,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginHorizontal: 10,
     color: "black"
+  },
+  newListText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.blueColor,
+    marginLeft: 16
   }
 });
 export default styles;

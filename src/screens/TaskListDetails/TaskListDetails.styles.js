@@ -45,6 +45,18 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     marginRight: 10
+  },
+  floatingButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    backgroundColor: "white",
+    elevation: 10,
+    width: 60,
+    height: 60,
+    borderRadius: 40,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 export default styles;

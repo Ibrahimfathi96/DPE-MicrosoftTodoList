@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import TaskCard from "../../components/TaskCard";
 import styles from "./TaskListDetails.styles";
 import { Icon } from "react-native-elements";
+import Colors from "../../common/colors";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -12,11 +13,11 @@ const TaskListDetails = () => {
   console.log("ITEM-IN-DETAILS", item);
 
   const [incompleteTasks, setIncompleteTasks] = useState(
-    item.todos.filter(task => !task.isDone)
+    item.todos.filter((task) => !task.isDone)
   );
 
   const [completedTasks, setCompletedTasks] = useState(
-    item.todos.filter(task => task.isDone)
+    item.todos.filter((task) => task.isDone)
   );
 
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
@@ -27,8 +28,8 @@ const TaskListDetails = () => {
 
   const checkPressHandler = (taskId, isCompleted) => {
     const taskIndex = isCompleted
-      ? completedTasks.findIndex(task => task.todoId === taskId)
-      : incompleteTasks.findIndex(task => task.todoId === taskId);
+      ? completedTasks.findIndex((task) => task.todoId === taskId)
+      : incompleteTasks.findIndex((task) => task.todoId === taskId);
 
     if (taskIndex !== -1) {
       const taskToMove = isCompleted
@@ -62,9 +63,7 @@ const TaskListDetails = () => {
           }}
         />
         <View style={styles.centerTitle}>
-          <Text style={styles.headerText}>
-            {item.name}
-          </Text>
+          <Text style={styles.headerText}>{item.name}</Text>
           <View style={{ flexDirection: "row" }}>
             <View style={styles.iconView}>
               <Icon
@@ -91,16 +90,17 @@ const TaskListDetails = () => {
         {/* Incompleted Tasks */}
         <FlatList
           data={incompleteTasks}
-          keyExtractor={todo => todo.todoId}
-          renderItem={({ item: todo }) =>
+          keyExtractor={(todo) => todo.todoId}
+          renderItem={({ item: todo }) => (
             <TaskCard
               taskId={todo.todoId}
               taskTitle={todo.todoTitle}
               listName={item.name}
               iconName={item.iconName}
               taskstatus={false}
-              checkPressHandler={taskId => checkPressHandler(taskId, false)}
-            />}
+              checkPressHandler={(taskId) => checkPressHandler(taskId, false)}
+            />
+          )}
         />
 
         {/* Seperator between two FlatLists */}
@@ -119,27 +119,33 @@ const TaskListDetails = () => {
               onPress={toggleCompletedTasks}
             />
             <Text style={styles.separatorText}>Completed Tasks</Text>
-            <Text style={styles.separatorNum}>
-              {completedTasks.length}
-            </Text>
+            <Text style={styles.separatorNum}>{completedTasks.length}</Text>
           </View>
         </TouchableOpacity>
 
         {/* Completed Tasks */}
-        {showCompletedTasks &&
+        {showCompletedTasks && (
           <FlatList
             data={completedTasks}
-            keyExtractor={todo => todo.todoId}
-            renderItem={({ item: todo }) =>
+            keyExtractor={(todo) => todo.todoId}
+            renderItem={({ item: todo }) => (
               <TaskCard
                 taskId={todo.todoId}
                 taskTitle={todo.todoTitle}
                 listName={item.name}
                 iconName={item.iconName}
                 taskstatus={true}
-                checkPressHandler={taskId => checkPressHandler(taskId, true)}
-              />}
-          />}
+                checkPressHandler={(taskId) => checkPressHandler(taskId, true)}
+              />
+            )}
+          />
+        )}
+      </View>
+
+      <View style={styles.floatingButton}>
+        <TouchableOpacity onPress={() => {}}>
+          <Icon name="add" type="material" size={40} color={Colors.blueColor} />
+        </TouchableOpacity>
       </View>
     </View>
   );

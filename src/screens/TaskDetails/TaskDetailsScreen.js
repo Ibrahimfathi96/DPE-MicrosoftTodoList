@@ -26,9 +26,7 @@ const TaskDetailsScreen = () => {
             navigation.goBack();
           }}
         />
-        <Text style={styles.headerText}>
-          {listName}
-        </Text>
+        <Text style={styles.headerText}>{listName}</Text>
       </View>
 
       <View style={styles.taskContainer}>
@@ -50,13 +48,12 @@ const TaskDetailsScreen = () => {
           >
             {taskTitle}
           </Text>
-          {listName == "Tasks" &&
+          {listName == "Tasks" && (
             <View style={{ flexDirection: "row", marginHorizontal: 4 }}>
               <Icon name={iconName} size={18} />
-              <Text>
-                {listName}
-              </Text>
-            </View>}
+              <Text>{listName}</Text>
+            </View>
+          )}
         </View>
         <Icon name="star-outline" size={26} />
       </View>
