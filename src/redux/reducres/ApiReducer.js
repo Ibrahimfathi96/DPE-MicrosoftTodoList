@@ -1,21 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchStarterList, fetchSecondaryList } from "../API/ApiServices";
-
-export const fetchStarterListAsync = createAsyncThunk(
-  "api/fetchStarterList",
-  async () => {
-    const data = await fetchStarterList();
-    return data;
-  }
-);
-
-export const fetchSecondaryListAsync = createAsyncThunk(
-  "api/fetchSecondaryList",
-  async () => {
-    const data = await fetchSecondaryList();
-    return data;
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  fetchStarterListAsync,
+  fetchSecondaryListAsync
+} from "../API/ApiActions";
 
 const initialState = {
   starterListData: [],
