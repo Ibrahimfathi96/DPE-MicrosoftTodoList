@@ -18,10 +18,11 @@ import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import {
   fetchStarterListAsync,
-  fetchSecondaryListAsync
-} from "../../redux/reducres/ApiReducer";
+  fetchSecondaryListAsync,
+  fetchListOfTodos,
+  addGroup
+} from "../../redux/API/ApiActions";
 import { setUserId } from "../../redux/reducres/authSlice";
-import { fetchListOfTodos, addGroup } from "../../redux/reducres/TodoReducers";
 
 const HomeScreen = () => {
   const route = useRoute();
