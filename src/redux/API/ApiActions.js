@@ -3,7 +3,8 @@ import {
   fetchStarterList,
   fetchSecondaryList,
   addGroupAPI,
-  fetchListOfTodosAPI
+  fetchListOfTodosAPI,
+  fetchAllTodosAPI
 } from "./ApiServices";
 
 export const fetchStarterListAsync = createAsyncThunk(
@@ -24,7 +25,7 @@ export const fetchSecondaryListAsync = createAsyncThunk(
 
 export const addGroup = createAsyncThunk(
   "todos/addGroup",
-  async ({ name }, { getState }) => {
+  async ({ name }, { getState, dispatch }) => {
     try {
       const userId = getState().auth.userId;
       const groupName = { name };
@@ -44,6 +45,19 @@ export const fetchListOfTodos = createAsyncThunk(
     try {
       const userId = getState().auth.userId;
       const response = await fetchListOfTodosAPI(userId);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+export const fetchAllTodos = createAsyncThunk(
+  "todos/fetchTodos",
+  async (payload, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      const { listId } = payload; //dispatch(fetchAllTodos({ listId: yourListId }));
+      const response = await fetchAllTodosAPI(userId, listId);
       return response;
     } catch (error) {
       throw error;

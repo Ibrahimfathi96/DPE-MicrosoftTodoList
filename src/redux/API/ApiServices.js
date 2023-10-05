@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_URL } from "@env";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export const baseURL = `${API_URL}`;
+const baseURL = `${API_URL}`;
 
 const api = axios.create({
   baseURL
@@ -48,6 +48,11 @@ export const fetchListOfTodosAPI = async (userId) => {
   return response.data;
 };
 
+export const fetchAllTodosAPI = async (userId, listId) => {
+  const response = await api.get(`/api/getTasks/${userId}/${listId}`);
+  return response.data;
+};
+
 export const addGroupAPI = async (userId, name) => {
   try {
     const response = await api.post(`/api/addGroup/${userId}`, name);
@@ -58,7 +63,10 @@ export const addGroupAPI = async (userId, name) => {
 };
 export const addTaskAPI = async (userId, listId, taskTitle) => {
   try {
-    const response = await api.post(`/api/addTask/${userId}/${listId}`, taskTitle);
+    const response = await api.post(
+      `/api/addTask/${userId}/${listId}`,
+      taskTitle
+    );
     return response.data;
   } catch (error) {
     throw error;
