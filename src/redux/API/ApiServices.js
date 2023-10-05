@@ -56,3 +56,11 @@ export const addGroupAPI = async (userId, name) => {
     throw error;
   }
 };
+export const addTaskAPI = async (userId, listId, taskTitle) => {
+  try {
+    const response = await api.post(`/api/addTask/${userId}/${listId}`, taskTitle);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
