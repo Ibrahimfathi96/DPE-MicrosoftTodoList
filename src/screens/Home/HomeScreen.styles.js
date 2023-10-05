@@ -38,8 +38,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.7
   },
   lowerFlatListView: {
-    marginHorizontal: 10,
-    paddingBottom: 16
+    marginHorizontal: 10
   },
   modalView: {
     marginTop: 20,

@@ -43,17 +43,16 @@ export const signUp = async (name, email, password) => {
     throw error;
   }
 };
+export const fetchListOfTodosAPI = async (userId) => {
+  const response = await api.get(`/api/getTasks/${userId}`);
+  return response.data;
+};
 
-export const addGroupAPI = async (data) => {
+export const addGroupAPI = async (userId, name) => {
   try {
-    const response = await api.post("/api/addGroup", data);
+    const response = await api.post(`/api/addGroup/${userId}`, name);
     return response.data;
   } catch (error) {
     throw error;
   }
-};
-
-export const fetchListOfTodosAPI = async (userId) => {
-  const response = await api.get(`/api/getTasks/${userId}`);
-  return response.data;
 };

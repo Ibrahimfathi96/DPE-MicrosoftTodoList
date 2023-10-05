@@ -1,14 +1,21 @@
 import { addGroupAPI, fetchListOfTodosAPI } from "../API/ApiServices";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const addGroup = createAsyncThunk("todo/addGroup", async (data) => {
-  try {
-    const response = await addGroupAPI(data);
-    return response.data;
-  } catch (error) {
-    throw error;
+export const addGroup = createAsyncThunk(
+  "todos/addGroup",
+  async ({ name }, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      const groupName = { name };
+      await addGroupAPI(userId, groupName);
+      const updatedList = await fetchListOfTodosAPI(userId);
+      dispatch(fetchListOfTodos());
+      return updatedList;
+    } catch (error) {
+      throw error;
+    }
   }
-});
+);
 
 export const fetchListOfTodos = createAsyncThunk(
   "todos/fetchList",

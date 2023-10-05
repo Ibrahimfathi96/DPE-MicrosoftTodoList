@@ -4,9 +4,10 @@ const User = require("../models/UserModel");
 const tasksRouter = express.Router();
 
 //! ADD GROUP OF TASKLISTS
-tasksRouter.post("/api/addGroup", async (req, res) => {
+tasksRouter.post("/api/addGroup/:userId", async (req, res) => {
+  const userId = req.params.userId;
   try {
-    const { userId, name } = req.body;
+    const { name } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });

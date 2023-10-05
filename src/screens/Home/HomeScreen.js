@@ -21,7 +21,7 @@ import {
   fetchSecondaryListAsync
 } from "../../redux/reducres/ApiReducer";
 import { setUserId } from "../../redux/reducres/authSlice";
-import { fetchListOfTodos } from "../../redux/reducres/TodoReducers";
+import { fetchListOfTodos, addGroup } from "../../redux/reducres/TodoReducers";
 
 const HomeScreen = () => {
   const route = useRoute();
@@ -60,11 +60,11 @@ const HomeScreen = () => {
   const handleCreateGroup = async () => {
     try {
       if (groupName) {
-        const newGroup = await dispatch(
-          addGroup({ userId: userId, name: groupName })
-        );
+        const newGroup = await dispatch(addGroup({ name: groupName }));
         if (newGroup) {
+          setCreateGroupModalVisible(false);
           setGroupName("");
+          dispatch(fetchListOfTodos());
         }
       }
     } catch (error) {
