@@ -172,6 +172,7 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
       </View>
+
       {/* FloatingActionButton */}
       <View style={styles.floatingButton}>
         <TouchableOpacity onPress={() => setCreateGroupModalVisible(true)}>

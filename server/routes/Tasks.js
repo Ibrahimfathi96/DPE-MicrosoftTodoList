@@ -31,7 +31,6 @@ tasksRouter.post("/api/addGroup/:userId", async (req, res) => {
 tasksRouter.post("/api/addTask/:userId/:listId", async (req, res) => {
   const userId = req.params.userId;
   const listId = req.params.listId;
-  console.log("userId:", userId + "\nlistId:" + listId);
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -118,17 +117,36 @@ tasksRouter.delete("/api/deleteTask", async (req, res) => {
   }
 });
 
-//! GET ALL TASKS
-// TODO: GET ALL TASKS NOT TESTED YET
-tasksRouter.get("/api/getTasks/:userId", async (req, res) => {
+tasksRouter.get("/api/getTaskLists/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
-    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });
     }
     res.json(user.listOfTodos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+tasksRouter.get("/api/getTasks/:userId/:listId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const listId = req.params.listId;
+    console.log("userId:", userId + "\nlistId:" + listId);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found!" });
+    }
+
+    const todoList = user.listOfTodos.find(
+      (list) => list._id.toString() === listId
+    );
+    if (!todoList) {
+      return res.status(404).json({ msg: "List not found!" });
+    }
+    res.status(200).json(todoList.todos);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

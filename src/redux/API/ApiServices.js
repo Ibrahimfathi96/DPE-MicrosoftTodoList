@@ -44,7 +44,7 @@ export const signUp = async (name, email, password) => {
   }
 };
 export const fetchListOfTodosAPI = async (userId) => {
-  const response = await api.get(`/api/getTasks/${userId}`);
+  const response = await api.get(`/api/getTaskLists/${userId}`);
   return response.data;
 };
 
