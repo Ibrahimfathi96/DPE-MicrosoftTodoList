@@ -73,7 +73,7 @@ const HomeScreen = () => {
   };
 
   const renderListItem = ({ item }) => {
-    const todosCount = item.todos
+    const doneTasksCount = item.todos
       ? item.todos.filter((todo) => !todo.isDone).length
       : 0;
     return (
@@ -92,7 +92,7 @@ const HomeScreen = () => {
           />
           <View style={styles.listNameAndLength}>
             <Text style={styles.listName}>{item.name}</Text>
-            <Text style={styles.listLength}>{todosCount}</Text>
+            <Text style={styles.listLength}>{doneTasksCount}</Text>
           </View>
         </View>
       </TouchableOpacity>

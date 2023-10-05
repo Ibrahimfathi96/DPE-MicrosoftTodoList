@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -15,14 +15,23 @@ import { signIn } from "../../redux/API/ApiServices";
 import { setUser } from "../../redux/reducres/authSlice.js";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isShownPassword, setIsShownPassword] = useState(false);
+  const user = useSelector((state) => state.auth.user);
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (!user) {
+      setEmail("");
+      setPassword("");
+    }
+  }, [user]);
 
   const handlePasswordVisibilityToggle = () => {
     setIsShownPassword(!isShownPassword);
@@ -41,6 +50,8 @@ const SignInScreen = () => {
         );
         dispatch(setUser(user));
         navigation.navigate("home-screen", { user });
+        setEmail("");
+        setPassword("");
       }
     } catch (error) {
       ToastAndroid.showWithGravity(
@@ -75,6 +86,7 @@ const SignInScreen = () => {
             <TextInput
               placeholder="Enter E-mail"
               style={styles.textInput}
+              value={email}
               onChangeText={(text) => {
                 setError(null);
                 setEmail(text);
@@ -89,6 +101,7 @@ const SignInScreen = () => {
               placeholder="Enter Password"
               style={styles.textInput}
               secureTextEntry={!isShownPassword}
+              value={password}
               onChangeText={(text) => {
                 setPassword(text);
                 setError(null);
