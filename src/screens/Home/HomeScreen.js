@@ -197,6 +197,7 @@ const HomeScreen = () => {
               </Text>
             </View>
           </TouchableOpacity>
+
           <Icon
             name="post-add"
             type="material"
@@ -217,7 +218,7 @@ const HomeScreen = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Create a group</Text>
             <TextInput
-              placeholder="Enter group name"
+              placeholder="Name this group"
               placeholderTextColor="gray"
               style={styles.groupNameInput}
               onChangeText={(text) => setGroupName(text)}
@@ -236,7 +237,7 @@ const HomeScreen = () => {
                 <Text
                   style={[
                     styles.modalButton,
-                    { color: groupName ? Colors.blueColor : "gray" }
+                    { color: groupName ? Colors.blueColor : "#DBDBDB" }
                   ]}
                 >
                   CREATE GROUP

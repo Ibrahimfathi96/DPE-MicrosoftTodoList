@@ -109,21 +109,23 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   modalContent: {
-    width: 300,
+    width: "90%",
     backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10
+    paddingHorizontal: 18,
+    paddingVertical: 30,
+    borderRadius: 2
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 16
   },
   groupNameInput: {
     borderBottomWidth: 3,
     borderColor: Colors.blueColor,
-    padding: 10,
-    marginBottom: 20,
+    paddingVertical: 4,
+    marginHorizontal: 12,
+    marginBottom: 30,
     fontSize: 18
   },
   modalButtons: {
@@ -131,10 +133,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end"
   },
   modalButton: {
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "500",
     marginHorizontal: 10,
-    color: "red"
+    color: "black"
   }
 });
 export default styles;
