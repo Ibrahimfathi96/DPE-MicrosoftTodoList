@@ -33,6 +33,9 @@ const RegisterScreen = () => {
           ToastAndroid.CENTER
         );
         setError(null);
+        setEmail("");
+        setName("");
+        setPassword("");
         setTimeout(() => {
           navigation.navigate("sign-in-screen");
         }, 2000);
@@ -62,7 +65,8 @@ const RegisterScreen = () => {
             <TextInput
               placeholder="Enter Your UserName"
               style={styles.textInput}
-              onChangeText={text => {
+              value={name}
+              onChangeText={(text) => {
                 setName(text);
                 setError(null);
               }}
@@ -74,7 +78,8 @@ const RegisterScreen = () => {
               <TextInput
                 placeholder="Enter E-mail"
                 style={styles.textInput}
-                onChangeText={text => {
+                value={email}
+                onChangeText={(text) => {
                   setEmail(text);
                   setError(null);
                 }}
@@ -87,9 +92,10 @@ const RegisterScreen = () => {
               <View style={styles.passwordRow}>
                 <TextInput
                   placeholder="Enter Password"
+                  value={password}
                   style={[styles.textInput, { flex: 1, marginRight: 10 }]}
                   secureTextEntry={!isShownPassword}
-                  onChangeText={text => {
+                  onChangeText={(text) => {
                     setPassword(text);
                     setError(null);
                   }}
@@ -124,7 +130,8 @@ const RegisterScreen = () => {
                 }}
               >
                 <Text style={[styles.text, { color: Colors.blueColor2 }]}>
-                  {" "}Sign-In
+                  {" "}
+                  Sign-In
                 </Text>
               </TouchableOpacity>
             </View>
