@@ -30,9 +30,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
 
   const personalData = route.params.user;
-  console.log("personalData: \n", personalData);
   const userId = personalData._id;
-  console.log("userId:", userId);
 
   const starterListData = useSelector((state) => state.api.starterListData);
   const secondaryListData = useSelector((state) => state.api.secondaryListData);
@@ -42,7 +40,6 @@ const HomeScreen = () => {
   const [groupName, setGroupName] = useState("");
 
   const listOfTodos = useSelector((state) => state.todo.listOfTodos);
-  console.log("ListOfTODOS:", listOfTodos);
 
   useEffect(() => {
     dispatch(fetchStarterListAsync());

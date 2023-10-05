@@ -3,6 +3,7 @@ import { fetchListOfTodos, fetchAllTodos } from "../API/ApiActions";
 
 const initialState = {
   listOfTodos: [],
+  listId: null,
   todos: [],
   loading: "idle",
   error: null
@@ -11,7 +12,11 @@ const initialState = {
 const todoSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {},
+  reducers: {
+    setListId: (state, action) => {
+      state.listId = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchListOfTodos.pending, (state) => {
@@ -38,5 +43,5 @@ const todoSlice = createSlice({
       });
   }
 });
-
+export const { setListId } = todoSlice.actions;
 export default todoSlice.reducer;

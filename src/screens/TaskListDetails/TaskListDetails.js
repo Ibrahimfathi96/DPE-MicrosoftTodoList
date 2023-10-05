@@ -1,16 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "../../components/TaskCard";
 import styles from "./TaskListDetails.styles";
 import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
+import { setListId } from "../../redux/reducres/TodoReducers";
+import { fetchAllTodos, addTask } from "../../redux/API/ApiActions";
+import { Modal } from "react-native";
+import { TextInput } from "react-native";
 const TaskListDetails = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const route = useRoute();
 
   const { item } = route.params;
-  console.log("ITEM-IN-DETAILS", item);
+  const listId = item._id;
+
+  useEffect(() => {
+    dispatch(setListId(listId));
+  }, [dispatch, listId]);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
+  const [taskTitle, setTaskTitle] = useState("");
+
+  const Todos = useSelector((state) => state.todo.todos);
+  console.log("Todos:", Todos);
+
+  const handleCreateTask = async () => {
+    try {
+      if (taskTitle) {
+        const newTask = await dispatch(addTask({ title: taskTitle }));
+        if (newTask) {
+          setCreateTaskModalVisible(false);
+          setTaskTitle("");
+          dispatch(fetchAllTodos());
+        }
+      }
+    } catch (error) {
+      console.error("Error creating Task:", error);
+    }
+  };
 
   const [incompleteTasks, setIncompleteTasks] = useState(
     item.todos.filter((task) => !task.isDone)
@@ -143,10 +175,49 @@ const TaskListDetails = () => {
       </View>
 
       <View style={styles.floatingButton}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => setCreateTaskModalVisible(true)}>
           <Icon name="add" type="material" size={40} color={Colors.blueColor} />
         </TouchableOpacity>
       </View>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={createTaskModalVisible}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Create a task</Text>
+            <TextInput
+              placeholder="Name this Task"
+              placeholderTextColor="gray"
+              style={styles.taskNameInput}
+              onChangeText={(text) => setTaskTitle(text)}
+              value={taskTitle}
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                onPress={() => setCreateTaskModalVisible(false)}
+              >
+                <Text style={styles.modalButton}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleCreateTask}
+                disabled={!taskTitle}
+              >
+                <Text
+                  style={[
+                    styles.modalButton,
+                    { color: taskTitle ? Colors.blueColor : "#DBDBDB" }
+                  ]}
+                >
+                  CREATE TASK
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
