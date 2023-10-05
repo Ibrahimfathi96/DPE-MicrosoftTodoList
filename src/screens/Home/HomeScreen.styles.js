@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
   addListButton: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    color: "white"
   },
   textInput: {
     borderWidth: 0.7,
@@ -141,8 +142,20 @@ const styles = StyleSheet.create({
   newListText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: Colors.blueColor,
-    marginLeft: 16
+    color: "white",
+    marginLeft: 6
+  },
+  floatingButton: {
+    position: "absolute",
+    bottom: 12,
+    right: 30,
+    backgroundColor: Colors.blueColor,
+    elevation: 10,
+    width: 120,
+    height: 60,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 export default styles;

@@ -171,21 +171,15 @@ const HomeScreen = () => {
             />
           </View>
         </ScrollView>
-
-        {/* Bottom Of the screen */}
-        <View style={styles.bottomView}>
-          <TouchableOpacity onPress={() => setCreateGroupModalVisible(true)}>
-            <View style={styles.addListButton}>
-              <Icon
-                name="post-add"
-                type="material"
-                color={Colors.blueColor}
-                size={30}
-              />
-              <Text style={styles.newListText}>New List</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+      </View>
+      {/* FloatingActionButton */}
+      <View style={styles.floatingButton}>
+        <TouchableOpacity onPress={() => setCreateGroupModalVisible(true)}>
+          <View style={styles.addListButton}>
+            <Icon name="post-add" type="material" color="white" size={26} />
+            <Text style={styles.newListText}>New List</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
       {/* Create Group Modal */}
