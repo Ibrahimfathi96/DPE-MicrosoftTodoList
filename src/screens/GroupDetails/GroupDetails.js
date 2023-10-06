@@ -10,14 +10,14 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "../../components/TaskCard";
-import styles from "./TaskListDetails.styles";
+import styles from "./GroupDetails.styles";
 import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
 import {
   setListId,
   setIncompleteTasks,
   setCompletedTasks
-} from "../../redux/reducres/TodoReducers";
+} from "../../redux/reducres/TodoSlice";
 import { fetchAllTodos, addTask, updateTask } from "../../redux/API/ApiActions";
 const TaskListDetails = () => {
   const navigation = useNavigation();

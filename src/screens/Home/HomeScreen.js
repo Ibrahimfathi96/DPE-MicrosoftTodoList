@@ -13,14 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Icon, Avatar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { clearUser } from "../../redux/reducres/authSlice";
+import { clearUser,setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import {
   fetchListOfTodos,
   addGroup
 } from "../../redux/API/ApiActions";
-import { setUserId } from "../../redux/reducres/authSlice";
 
 const HomeScreen = () => {
   const route = useRoute();

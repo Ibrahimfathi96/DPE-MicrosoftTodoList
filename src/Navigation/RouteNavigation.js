@@ -6,7 +6,7 @@ import HomeScreen from "../screens/Home/HomeScreen";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearUser } from "../redux/reducres/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import TaskListDetails from "../screens/TaskListDetails/TaskListDetails";
+import TaskListDetails from "../screens/GroupDetails/GroupDetails";
 import TaskDetailsScreen from "../screens/TaskDetails/TaskDetailsScreen";
 import RegisterScreen from "../screens/Auth/RegisterScreen";
 
