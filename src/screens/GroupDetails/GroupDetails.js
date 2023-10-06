@@ -83,32 +83,34 @@ const TaskListDetails = () => {
     <View style={styles.container}>
       {/* Screen Header */}
       <View style={styles.header}>
-        <Icon
-          name="arrow-back-ios"
-          color="white"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <View style={styles.centerTitle}>
+        <View style={styles.titleAndBackIcon}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Icon name="arrow-back-ios" color="white" />
+          </TouchableOpacity>
+
           <Text style={styles.headerText}>{item.name}</Text>
-          <View style={{ flexDirection: "row" }}>
-            <View style={styles.iconView}>
-              <Icon
-                name="person-add-alt-1"
-                color="white"
-                size={22}
-                onPress={() => {}}
-              />
-            </View>
-            <View style={styles.iconView}>
-              <Icon
-                name="more-horiz"
-                color="white"
-                size={30}
-                onPress={() => {}}
-              />
-            </View>
+        </View>
+
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.iconView}>
+            <Icon
+              name="person-add-alt-1"
+              color="white"
+              size={22}
+              onPress={() => {}}
+            />
+          </View>
+          <View style={styles.iconView}>
+            <Icon
+              name="more-horiz"
+              color="white"
+              size={30}
+              onPress={() => {}}
+            />
           </View>
         </View>
       </View>
@@ -132,24 +134,28 @@ const TaskListDetails = () => {
         />
 
         {/* Seperator between two FlatLists */}
-        <TouchableOpacity onPress={toggleCompletedTasks}>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingHorizontal: 20,
-              marginVertical: 20,
-              alignItems: "center"
-            }}
-          >
-            <Icon
-              name={showCompletedTasks ? "expand-more" : "keyboard-arrow-right"}
-              color="white"
-              onPress={toggleCompletedTasks}
-            />
-            <Text style={styles.separatorText}>Completed Tasks</Text>
-            <Text style={styles.separatorNum}>{completedTasks.length}</Text>
-          </View>
-        </TouchableOpacity>
+        {incompleteTasks.length > 0 && (
+          <TouchableOpacity onPress={toggleCompletedTasks}>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 20,
+                marginVertical: 20,
+                alignItems: "center"
+              }}
+            >
+              <Icon
+                name={
+                  showCompletedTasks ? "expand-more" : "keyboard-arrow-right"
+                }
+                color="white"
+                onPress={toggleCompletedTasks}
+              />
+              <Text style={styles.separatorText}>Completed Tasks</Text>
+              <Text style={styles.separatorNum}>{completedTasks.length}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
 
         {/* Completed Tasks */}
         {showCompletedTasks && (

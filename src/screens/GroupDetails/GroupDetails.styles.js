@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 10
   },
-  centerTitle: {
-    flex: 1,
+  titleAndBackIcon: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: 30
+    alignItems: "center",
+    flex: 1
   },
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "white"
+    color: "white",
+    marginLeft: 16
   },
   separatorText: {
     color: "white",
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     height: 30,
     alignContent: "center",
     justifyContent: "center",
-    marginRight: 10
+    marginLeft: 10
   },
   floatingButton: {
     position: "absolute",
