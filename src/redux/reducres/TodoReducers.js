@@ -35,7 +35,7 @@ const todoSlice = createSlice({
       })
       .addCase(fetchAllTodos.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.todosForList = action.payload;
+        state.todos = action.payload;
       })
       .addCase(fetchAllTodos.rejected, (state, action) => {
         state.loading = "rejected";

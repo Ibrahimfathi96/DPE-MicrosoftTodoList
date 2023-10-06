@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Modal
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "../../components/TaskCard";
@@ -8,8 +15,6 @@ import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
 import { setListId } from "../../redux/reducres/TodoReducers";
 import { fetchAllTodos, addTask } from "../../redux/API/ApiActions";
-import { Modal } from "react-native";
-import { TextInput } from "react-native";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -18,13 +23,9 @@ const TaskListDetails = () => {
   const { item } = route.params;
   const listId = item._id;
 
-  useEffect(() => {
-    dispatch(setListId(listId));
-  }, [dispatch, listId]);
-
-  const [modalVisible, setModalVisible] = useState(false);
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
+  const [showCompletedTasks, setShowCompletedTasks] = useState(false);
 
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
@@ -32,7 +33,7 @@ const TaskListDetails = () => {
   const handleCreateTask = async () => {
     try {
       if (taskTitle) {
-        const newTask = await dispatch(addTask({ title: taskTitle }));
+        const newTask = await dispatch(addTask({ todoTitle: taskTitle }));
         if (newTask) {
           setCreateTaskModalVisible(false);
           setTaskTitle("");
@@ -44,44 +45,33 @@ const TaskListDetails = () => {
     }
   };
 
-  const [incompleteTasks, setIncompleteTasks] = useState(
-    item.todos.filter((task) => !task.isDone)
-  );
-
-  const [completedTasks, setCompletedTasks] = useState(
-    item.todos.filter((task) => task.isDone)
-  );
-
-  const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+  const incompleteTasks = Todos.filter((todo) => !todo.isDone);
+  const completedTasks = Todos.filter((todo) => todo.isDone);
 
   const toggleCompletedTasks = () => {
     setShowCompletedTasks(!showCompletedTasks);
   };
 
-  const checkPressHandler = (taskId, isCompleted) => {
-    const taskIndex = isCompleted
-      ? completedTasks.findIndex((task) => task.todoId === taskId)
-      : incompleteTasks.findIndex((task) => task.todoId === taskId);
+  const checkPressHandler = async (taskId, isCompleted) => {
+    try {
+      const updatedTodos = Todos.map((todo) => {
+        if (todo._id === taskId) {
+          return { ...todo, isDone: !isCompleted };
+        }
+        return todo;
+      });
 
-    if (taskIndex !== -1) {
-      const taskToMove = isCompleted
-        ? completedTasks[taskIndex]
-        : incompleteTasks[taskIndex];
-      const updatedTask = { ...taskToMove, isDone: !isCompleted };
-
-      if (isCompleted) {
-        const newCompletedTasks = [...completedTasks];
-        newCompletedTasks.splice(taskIndex, 1);
-        setCompletedTasks(newCompletedTasks);
-        setIncompleteTasks([...incompleteTasks, updatedTask]);
-      } else {
-        const newIncompleteTasks = [...incompleteTasks];
-        newIncompleteTasks.splice(taskIndex, 1);
-        setIncompleteTasks(newIncompleteTasks);
-        setCompletedTasks([...completedTasks, updatedTask]);
-      }
+      await dispatch(updateTaskStatus(taskId, !isCompleted));
+      dispatch(fetchAllTodos());
+    } catch (error) {
+      console.error("Error updating task:", error);
     }
   };
+
+  useEffect(() => {
+    dispatch(setListId(listId));
+    dispatch(fetchAllTodos());
+  }, [dispatch, listId]);
 
   return (
     <View style={styles.container}>
@@ -120,20 +110,22 @@ const TaskListDetails = () => {
       {/* Two FlatList Of Incompleted/Completed Tasks */}
       <View style={{ width: "100%" }}>
         {/* Incompleted Tasks */}
-        <FlatList
-          data={incompleteTasks}
-          keyExtractor={(todo) => todo.todoId}
-          renderItem={({ item: todo }) => (
-            <TaskCard
-              taskId={todo.todoId}
-              taskTitle={todo.todoTitle}
-              listName={item.name}
-              iconName={item.iconName}
-              taskstatus={false}
-              checkPressHandler={(taskId) => checkPressHandler(taskId, false)}
-            />
-          )}
-        />
+        {!showCompletedTasks && (
+          <FlatList
+            data={incompleteTasks}
+            keyExtractor={(todo) => todo._id}
+            renderItem={({ item: todo }) => (
+              <TaskCard
+                taskId={todo._id}
+                taskTitle={todo.todoTitle}
+                listName={item.name}
+                iconName={item.iconName}
+                taskstatus={false}
+                checkPressHandler={(taskId) => checkPressHandler(taskId, false)}
+              />
+            )}
+          />
+        )}
 
         {/* Seperator between two FlatLists */}
         <TouchableOpacity onPress={toggleCompletedTasks}>
@@ -159,10 +151,10 @@ const TaskListDetails = () => {
         {showCompletedTasks && (
           <FlatList
             data={completedTasks}
-            keyExtractor={(todo) => todo.todoId}
+            keyExtractor={(todo) => todo._id}
             renderItem={({ item: todo }) => (
               <TaskCard
-                taskId={todo.todoId}
+                taskId={todo._id}
                 taskTitle={todo.todoTitle}
                 listName={item.name}
                 iconName={item.iconName}

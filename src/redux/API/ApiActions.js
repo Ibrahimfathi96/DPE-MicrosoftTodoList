@@ -41,12 +41,12 @@ export const addGroup = createAsyncThunk(
 );
 export const addTask = createAsyncThunk(
   "todos/addTask",
-  async ({ title }, { getState, dispatch }) => {
+  async ({ todoTitle }, { getState, dispatch }) => {
     try {
       const userId = getState().auth.userId;
       const listId = getState().todo.listId;
-      const taskTitle = { title };
-      await addTaskAPI(userId, listId, taskTitle);
+      const title = { todoTitle };
+      await addTaskAPI(userId, listId, title);
       const fetchTodos = await fetchAllTodosAPI(userId, listId);
       dispatch(fetchAllTodos());
       return fetchTodos;

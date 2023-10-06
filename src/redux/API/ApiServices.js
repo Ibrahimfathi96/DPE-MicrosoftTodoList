@@ -61,12 +61,13 @@ export const addGroupAPI = async (userId, name) => {
     throw error;
   }
 };
-export const addTaskAPI = async (userId, listId, taskTitle) => {
+export const addTaskAPI = async (userId, listId, todoTitle) => {
   try {
     const response = await api.post(
       `/api/addTask/${userId}/${listId}`,
-      taskTitle
+      todoTitle
     );
+    console.log("FetchTodosFromServices:", response.data);
     return response.data;
   } catch (error) {
     throw error;
