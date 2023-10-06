@@ -178,7 +178,10 @@ const TaskListDetails = () => {
 
       <View style={styles.floatingButton}>
         <TouchableOpacity onPress={() => setCreateTaskModalVisible(true)}>
-          <Icon name="add" type="material" size={40} color={Colors.blueColor} />
+          <View style={styles.addTaskButton}>
+            <Icon name="add-task" type="material" color="white" size={26} />
+            <Text style={styles.newTaskText}>New Task</Text>
+          </View>
         </TouchableOpacity>
       </View>
 

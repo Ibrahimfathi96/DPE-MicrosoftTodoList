@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   iconView: {
-    backgroundColor: "#4E599E",
+    backgroundColor: "#3E4883",
     borderRadius: 8,
     width: 50,
     height: 30,
@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: "absolute",
-    bottom: 20,
-    right: 20,
-    backgroundColor: "white",
+    bottom: 16,
+    right: 16,
+    backgroundColor: "#3E4883",
     elevation: 10,
-    width: 60,
+    width: 140,
     height: 60,
-    borderRadius: 40,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -93,6 +93,18 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginHorizontal: 10,
     color: "black"
+  },
+  addTaskButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white"
+  },
+  newTaskText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "white",
+    marginLeft: 6
   }
 });
 export default styles;
