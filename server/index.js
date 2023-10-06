@@ -7,7 +7,6 @@ const app = express();
 const mongoose = require("mongoose");
 
 // IMPORTS FROM OTHER FILES
-const basicListRouter = require("./routes/BasicListOfTasks");
 const authRouter = require("./routes/auth");
 const tasksRouter = require("./routes/Tasks");
 
@@ -21,7 +20,6 @@ app.use(cors());
 app.use(express.json());
 app.use(authRouter);
 app.use(tasksRouter);
-app.use(basicListRouter);
 
 //Connections
 mongoose.connect(dbUrl).then(() => {
