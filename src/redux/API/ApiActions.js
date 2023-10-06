@@ -1,28 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  fetchStarterList,
-  fetchSecondaryList,
   addGroupAPI,
   addTaskAPI,
   fetchListOfTodosAPI,
-  fetchAllTodosAPI
+  fetchAllTodosAPI,
+  updateTaskAPI
 } from "./ApiServices";
 
-export const fetchStarterListAsync = createAsyncThunk(
-  "api/fetchStarterList",
-  async () => {
-    const data = await fetchStarterList();
-    return data;
-  }
-);
-
-export const fetchSecondaryListAsync = createAsyncThunk(
-  "api/fetchSecondaryList",
-  async () => {
-    const data = await fetchSecondaryList();
-    return data;
-  }
-);
 
 export const addGroup = createAsyncThunk(
   "todos/addGroup",
@@ -76,6 +60,24 @@ export const fetchAllTodos = createAsyncThunk(
       const listId = getState().todo.listId;
       const response = await fetchAllTodosAPI(userId, listId);
       return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const updateTask = createAsyncThunk(
+  "todos/updateTask",
+  async ({ taskId, todoTitle, todoDesc, isDone }, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      const listId = getState().todo.listId;
+      await updateTaskAPI(userId, listId, taskId, {
+        todoTitle,
+        todoDesc,
+        isDone
+      });
+      return { taskId, todoTitle, todoDesc, isDone };
     } catch (error) {
       throw error;
     }

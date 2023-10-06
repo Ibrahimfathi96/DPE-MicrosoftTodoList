@@ -13,8 +13,12 @@ import TaskCard from "../../components/TaskCard";
 import styles from "./TaskListDetails.styles";
 import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
-import { setListId } from "../../redux/reducres/TodoReducers";
-import { fetchAllTodos, addTask } from "../../redux/API/ApiActions";
+import {
+  setListId,
+  setIncompleteTasks,
+  setCompletedTasks
+} from "../../redux/reducres/TodoReducers";
+import { fetchAllTodos, addTask, updateTask } from "../../redux/API/ApiActions";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -25,7 +29,7 @@ const TaskListDetails = () => {
 
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
-  const [showCompletedTasks, setShowCompletedTasks] = useState(false);
+  const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
@@ -54,14 +58,16 @@ const TaskListDetails = () => {
 
   const checkPressHandler = async (taskId, isCompleted) => {
     try {
+      await dispatch(updateTask({ taskId, isDone: !isCompleted }));
+
       const updatedTodos = Todos.map((todo) => {
         if (todo._id === taskId) {
           return { ...todo, isDone: !isCompleted };
         }
         return todo;
       });
-
-      await dispatch(updateTaskStatus(taskId, !isCompleted));
+      dispatch(setIncompleteTasks(incompleteTasks));
+      dispatch(setCompletedTasks(completedTasks));
       dispatch(fetchAllTodos());
     } catch (error) {
       console.error("Error updating task:", error);
@@ -110,22 +116,20 @@ const TaskListDetails = () => {
       {/* Two FlatList Of Incompleted/Completed Tasks */}
       <View style={{ width: "100%" }}>
         {/* Incompleted Tasks */}
-        {!showCompletedTasks && (
-          <FlatList
-            data={incompleteTasks}
-            keyExtractor={(todo) => todo._id}
-            renderItem={({ item: todo }) => (
-              <TaskCard
-                taskId={todo._id}
-                taskTitle={todo.todoTitle}
-                listName={item.name}
-                iconName={item.iconName}
-                taskstatus={false}
-                checkPressHandler={(taskId) => checkPressHandler(taskId, false)}
-              />
-            )}
-          />
-        )}
+        <FlatList
+          data={incompleteTasks}
+          keyExtractor={(todo) => todo._id}
+          renderItem={({ item: todo }) => (
+            <TaskCard
+              taskId={todo._id}
+              taskTitle={todo.todoTitle}
+              listName={item.name}
+              iconName={item.iconName}
+              taskstatus={false}
+              checkPressHandler={(taskId) => checkPressHandler(taskId, false)}
+            />
+          )}
+        />
 
         {/* Seperator between two FlatLists */}
         <TouchableOpacity onPress={toggleCompletedTasks}>

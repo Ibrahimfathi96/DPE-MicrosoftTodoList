@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require("../models/UserModel");
 const tasksRouter = express.Router();
 
@@ -62,27 +61,44 @@ tasksRouter.post("/api/addTask/:userId/:listId", async (req, res) => {
 
 //! UPDATE TASK
 // TODO: UPDATE TASK NOT TESTED YET
-tasksRouter.put("/api/updateTask", async (req, res) => {
+tasksRouter.put("/api/updateTask/:userId/:listId/:taskId", async (req, res) => {
+  const userId = req.params.userId;
+  const listId = req.params.listId;
+  const taskId = req.params.taskId;
   try {
-    const { userId, todoId, todoTitle, todoDesc } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });
     }
-    const todoList = await user.listOfTodos.find(
-      (t) => t._id.toString() === todoId
+
+    const todoList = user.listOfTodos.find(
+      (list) => list._id.toString() === listId
     );
     if (!todoList) {
-      return res.status(404).json({ msg: "TodoList not found!" });
+      return res.status(404).json({ msg: "List not found!" });
     }
-    const todo = todoList.todos.find((t) => t._id.toString() === todoId);
-    if (!todo) {
-      return res.status(404).json({ msg: "Todo not found!" });
+
+    const taskToUpdate = todoList.todos.find(
+      (task) => task._id.toString() === taskId
+    );
+    if (!taskToUpdate) {
+      return res.status(404).json({ msg: "Task not found!" });
     }
-    todo.todoTitle = todoTitle;
-    todo.todoDesc = todoDesc;
+
+    if (req.body.todoTitle) {
+      taskToUpdate.todoTitle = req.body.todoTitle;
+    }
+
+    if (req.body.todoDesc) {
+      taskToUpdate.todoDesc = req.body.todoDesc;
+    }
+
+    if (req.body.isDone !== undefined) {
+      taskToUpdate.isDone = req.body.isDone;
+    }
+
     await user.save();
-    res.json(todoList.todos);
+    res.status(200).json(taskToUpdate);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

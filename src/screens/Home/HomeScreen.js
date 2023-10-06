@@ -17,8 +17,6 @@ import { clearUser } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import {
-  fetchStarterListAsync,
-  fetchSecondaryListAsync,
   fetchListOfTodos,
   addGroup
 } from "../../redux/API/ApiActions";
@@ -32,18 +30,14 @@ const HomeScreen = () => {
   const personalData = route.params.user;
   const userId = personalData._id;
 
-  const starterListData = useSelector((state) => state.api.starterListData);
-  const secondaryListData = useSelector((state) => state.api.secondaryListData);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
 
   const listOfTodos = useSelector((state) => state.todo.listOfTodos);
+  console.log("HomeListOfTodos:\n", listOfTodos);
 
   useEffect(() => {
-    dispatch(fetchStarterListAsync());
-    dispatch(fetchSecondaryListAsync());
     dispatch(setUserId(userId));
     dispatch(fetchListOfTodos());
   }, [dispatch, userId]);
@@ -144,7 +138,7 @@ const HomeScreen = () => {
           {/* Starter List */}
           <View style={styles.upperFlatListView}>
             <FlatList
-              data={starterListData}
+              data={listOfTodos.slice(0, 6)}
               keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />
@@ -153,16 +147,7 @@ const HomeScreen = () => {
           {/* Secondary List */}
           <View style={styles.lowerFlatListView}>
             <FlatList
-              data={secondaryListData}
-              keyExtractor={(item) => item._id}
-              renderItem={renderListItem}
-            />
-          </View>
-
-          {/* List Of Added Todos */}
-          <View style={styles.lowerFlatListView}>
-            <FlatList
-              data={listOfTodos}
+              data={listOfTodos.slice(6)}
               keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />

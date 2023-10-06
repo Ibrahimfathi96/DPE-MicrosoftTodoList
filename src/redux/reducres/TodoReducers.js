@@ -5,6 +5,8 @@ const initialState = {
   listOfTodos: [],
   listId: null,
   todos: [],
+  incompleteTasks: [],
+  completedTasks: [],
   loading: "idle",
   error: null
 };
@@ -15,6 +17,13 @@ const todoSlice = createSlice({
   reducers: {
     setListId: (state, action) => {
       state.listId = action.payload;
+    },
+    setIncompleteTasks: (state, action) => {
+      state.incompleteTasks = action.payload;
+    },
+
+    setCompletedTasks: (state, action) => {
+      state.completedTasks = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -43,5 +52,6 @@ const todoSlice = createSlice({
       });
   }
 });
-export const { setListId } = todoSlice.actions;
+export const { setListId, setIncompleteTasks, setCompletedTasks } =
+  todoSlice.actions;
 export default todoSlice.reducer;

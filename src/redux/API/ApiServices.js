@@ -7,23 +7,6 @@ const baseURL = `${API_URL}`;
 const api = axios.create({
   baseURL
 });
-export const fetchStarterList = async () => {
-  try {
-    const response = await api.get("/api/getStarterList");
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const fetchSecondaryList = async () => {
-  try {
-    const response = await api.get("/api/getSecondaryList");
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
 
 export const signIn = async (email, password) => {
   try {
@@ -68,6 +51,18 @@ export const addTaskAPI = async (userId, listId, todoTitle) => {
       todoTitle
     );
     console.log("FetchTodosFromServices:", response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateTaskAPI = async (userId, listId, taskId, taskData) => {
+  try {
+    const response = await api.put(
+      `/api/updateTask/${userId}/${listId}/${taskId}`,
+      taskData
+    );
     return response.data;
   } catch (error) {
     throw error;
