@@ -13,13 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Icon, Avatar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { clearUser,setUserId } from "../../redux/reducres/authSlice";
+import { clearUser, setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
-import {
-  fetchGroups,
-  addGroup
-} from "../../redux/API/ApiActions";
+import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
 
 const HomeScreen = () => {
   const route = useRoute();
@@ -159,7 +156,7 @@ const HomeScreen = () => {
         <TouchableOpacity onPress={() => setCreateGroupModalVisible(true)}>
           <View style={styles.addListButton}>
             <Icon name="post-add" type="material" color="white" size={26} />
-            <Text style={styles.newListText}>New List</Text>
+            <Text style={styles.newListText}>New Group</Text>
           </View>
         </TouchableOpacity>
       </View>

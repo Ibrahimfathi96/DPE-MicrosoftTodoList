@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     right: 30,
     backgroundColor: Colors.blueColor,
     elevation: 10,
-    width: 120,
+    width: 140,
     height: 60,
     borderRadius: 16,
     alignItems: "center",
