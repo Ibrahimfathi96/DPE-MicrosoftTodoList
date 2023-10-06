@@ -17,7 +17,7 @@ import { clearUser,setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import {
-  fetchListOfTodos,
+  fetchGroups,
   addGroup
 } from "../../redux/API/ApiActions";
 
@@ -33,12 +33,12 @@ const HomeScreen = () => {
   const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
 
-  const listOfTodos = useSelector((state) => state.todo.listOfTodos);
-  console.log("HomeListOfTodos:\n", listOfTodos);
+  const groups = useSelector((state) => state.todo.groups);
+  console.log("HomeListOfTodos:\n", groups);
 
   useEffect(() => {
     dispatch(setUserId(userId));
-    dispatch(fetchListOfTodos());
+    dispatch(fetchGroups());
   }, [dispatch, userId]);
 
   const handleLogout = async () => {
@@ -55,7 +55,7 @@ const HomeScreen = () => {
         if (newGroup) {
           setCreateGroupModalVisible(false);
           setGroupName("");
-          dispatch(fetchListOfTodos());
+          dispatch(fetchGroups());
         }
       }
     } catch (error) {
@@ -137,7 +137,7 @@ const HomeScreen = () => {
           {/* Starter List */}
           <View style={styles.upperFlatListView}>
             <FlatList
-              data={listOfTodos.slice(0, 6)}
+              data={groups.slice(0, 6)}
               keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />
@@ -146,7 +146,7 @@ const HomeScreen = () => {
           {/* Secondary List */}
           <View style={styles.lowerFlatListView}>
             <FlatList
-              data={listOfTodos.slice(6)}
+              data={groups.slice(6)}
               keyExtractor={(item) => item._id}
               renderItem={renderListItem}
             />

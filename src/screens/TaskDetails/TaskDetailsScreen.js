@@ -19,13 +19,13 @@ const TaskDetailsScreen = () => {
     <View style={styles.container}>
       {/* Screen Header */}
       <View style={styles.header}>
-        <Icon
-          name="arrow-back-ios"
-          color="black"
+        <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}
-        />
+        >
+          <Icon name="arrow-back-ios" color="black" />
+        </TouchableOpacity>
         <Text style={styles.headerText}>{listName}</Text>
       </View>
 

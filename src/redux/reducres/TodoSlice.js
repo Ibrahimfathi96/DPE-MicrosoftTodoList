@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchListOfTodos, fetchAllTodos } from "../API/ApiActions";
+import { fetchGroups, fetchAllTodos } from "../API/ApiActions";
 
 const initialState = {
-  listOfTodos: [],
+  groups: [],
   listId: null,
   todos: [],
   incompleteTasks: [],
@@ -28,14 +28,14 @@ const todoSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchListOfTodos.pending, (state) => {
+      .addCase(fetchGroups.pending, (state) => {
         state.loading = "pending";
       })
-      .addCase(fetchListOfTodos.fulfilled, (state, action) => {
+      .addCase(fetchGroups.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.listOfTodos = action.payload;
+        state.groups = action.payload;
       })
-      .addCase(fetchListOfTodos.rejected, (state, action) => {
+      .addCase(fetchGroups.rejected, (state, action) => {
         state.loading = "rejected";
         state.error = action.error.message;
       })

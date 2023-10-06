@@ -26,6 +26,20 @@ tasksRouter.post("/api/addGroup/:userId", async (req, res) => {
   }
 });
 
+//! GET GROUPS
+tasksRouter.get("/api/getGroups/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found!" });
+    }
+    res.json(user.listOfTodos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 //! ADD TASK
 tasksRouter.post("/api/addTask/:userId/:listId", async (req, res) => {
   const userId = req.params.userId;
@@ -133,19 +147,7 @@ tasksRouter.delete("/api/deleteTask", async (req, res) => {
   }
 });
 
-tasksRouter.get("/api/getTaskLists/:userId", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found!" });
-    }
-    res.json(user.listOfTodos);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
+//! GET ALL TASKS
 tasksRouter.get("/api/getTasks/:userId/:listId", async (req, res) => {
   try {
     const userId = req.params.userId;

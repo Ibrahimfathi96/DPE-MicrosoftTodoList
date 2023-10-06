@@ -26,8 +26,8 @@ export const signUp = async (name, email, password) => {
     throw error;
   }
 };
-export const fetchListOfTodosAPI = async (userId) => {
-  const response = await api.get(`/api/getTaskLists/${userId}`);
+export const fetchGroupsAPI = async (userId) => {
+  const response = await api.get(`/api/getGroups/${userId}`);
   return response.data;
 };
 
@@ -50,7 +50,6 @@ export const addTaskAPI = async (userId, listId, todoTitle) => {
       `/api/addTask/${userId}/${listId}`,
       todoTitle
     );
-    console.log("FetchTodosFromServices:", response.data);
     return response.data;
   } catch (error) {
     throw error;

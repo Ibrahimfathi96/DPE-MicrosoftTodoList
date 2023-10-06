@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addGroupAPI,
   addTaskAPI,
-  fetchListOfTodosAPI,
+  fetchGroupsAPI,
   fetchAllTodosAPI,
   updateTaskAPI
 } from "./ApiServices";
@@ -16,7 +16,7 @@ export const addGroup = createAsyncThunk(
       const groupName = { name };
       await addGroupAPI(userId, groupName);
       const updatedList = await fetchListOfTodosAPI(userId);
-      dispatch(fetchListOfTodos());
+      dispatch(fetchGroups());
       return updatedList;
     } catch (error) {
       throw error;
@@ -40,12 +40,12 @@ export const addTask = createAsyncThunk(
   }
 );
 
-export const fetchListOfTodos = createAsyncThunk(
-  "todos/fetchList",
+export const fetchGroups = createAsyncThunk(
+  "todos/fetchGroups",
   async (_, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await fetchListOfTodosAPI(userId);
+      const response = await fetchGroupsAPI(userId);
       return response;
     } catch (error) {
       throw error;
