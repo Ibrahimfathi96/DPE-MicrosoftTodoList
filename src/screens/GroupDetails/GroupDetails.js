@@ -18,7 +18,13 @@ import {
   setIncompleteTasks,
   setCompletedTasks
 } from "../../redux/reducres/TodoSlice";
-import { fetchAllTodos, addTask, updateTask } from "../../redux/API/ApiActions";
+import {
+  fetchAllTodos,
+  addTask,
+  fetchGroups,
+  updateTask,
+  updateGroup
+} from "../../redux/API/ApiActions";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -36,6 +42,13 @@ const TaskListDetails = () => {
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
 
+  const incompleteTasks = Todos.filter((todo) => !todo.isDone);
+  const completedTasks = Todos.filter((todo) => todo.isDone);
+
+  const toggleCompletedTasks = () => {
+    setShowCompletedTasks(!showCompletedTasks);
+  };
+
   const handleCreateTask = async () => {
     try {
       if (taskTitle) {
@@ -49,13 +62,6 @@ const TaskListDetails = () => {
     } catch (error) {
       console.error("Error creating Task:", error);
     }
-  };
-
-  const incompleteTasks = Todos.filter((todo) => !todo.isDone);
-  const completedTasks = Todos.filter((todo) => todo.isDone);
-
-  const toggleCompletedTasks = () => {
-    setShowCompletedTasks(!showCompletedTasks);
   };
 
   const checkPressHandler = async (taskId, isCompleted) => {
@@ -83,8 +89,23 @@ const TaskListDetails = () => {
     setText(newText);
   };
 
-  const handleTextBlur = () => {
-    setIsEditing(false);
+  const handleGroupNameSave = async () => {
+    try {
+      await dispatch(
+        updateGroup({
+          name: text,
+          iconName: item.iconName,
+          iconColor: item.iconColor,
+          iconType: item.iconType,
+          backgroundColor: item.backgroundColor
+        })
+      );
+      setText(text);
+      setIsEditing(false);
+      dispatch(fetchGroups());
+    } catch (error) {
+      console.error("Error updating group name:", error);
+    }
   };
 
   useEffect(() => {
@@ -99,6 +120,7 @@ const TaskListDetails = () => {
         <View style={styles.titleAndBackIcon}>
           <TouchableOpacity
             onPress={() => {
+              dispatch(fetchGroups());
               navigation.goBack();
             }}
           >
@@ -110,7 +132,8 @@ const TaskListDetails = () => {
               value={text}
               style={[styles.headerText, { backgroundColor: "#3E4883" }]}
               onChangeText={handleTextChange}
-              onBlur={handleTextBlur}
+              onBlur={handleGroupNameSave}
+              underlineColorAndroid="transparent"
             />
           ) : (
             <Text style={styles.headerText} onPress={handleTextPress}>

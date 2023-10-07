@@ -4,9 +4,9 @@ import {
   addTaskAPI,
   fetchGroupsAPI,
   fetchAllTodosAPI,
-  updateTaskAPI
+  updateTaskAPI,
+  updateGroupAPI
 } from "./ApiServices";
-
 
 export const addGroup = createAsyncThunk(
   "todos/addGroup",
@@ -78,6 +78,28 @@ export const updateTask = createAsyncThunk(
         isDone
       });
       return { taskId, todoTitle, todoDesc, isDone };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+export const updateGroup = createAsyncThunk(
+  "todos/updateGroup",
+  async (
+    { name, iconName, iconColor, iconType, backgroundColor },
+    { getState }
+  ) => {
+    try {
+      const userId = getState().auth.userId;
+      const listId = getState().todo.listId;
+      await updateGroupAPI(userId, listId, {
+        name,
+        iconName,
+        iconColor,
+        iconType,
+        backgroundColor
+      });
+      return { name, iconName, iconColor, iconType, backgroundColor };
     } catch (error) {
       throw error;
     }

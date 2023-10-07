@@ -147,6 +147,7 @@ tasksRouter.put("/api/updateTask/:userId/:listId/:taskId", async (req, res) => {
   const userId = req.params.userId;
   const listId = req.params.listId;
   const taskId = req.params.taskId;
+  const { todoTitle, todoDesc, isDone } = req.body;
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -167,16 +168,16 @@ tasksRouter.put("/api/updateTask/:userId/:listId/:taskId", async (req, res) => {
       return res.status(404).json({ msg: "Task not found!" });
     }
 
-    if (req.body.todoTitle) {
-      taskToUpdate.todoTitle = req.body.todoTitle;
+    if (todoTitle) {
+      taskToUpdate.todoTitle = todoTitle;
     }
 
-    if (req.body.todoDesc) {
-      taskToUpdate.todoDesc = req.body.todoDesc;
+    if (todoDesc) {
+      taskToUpdate.todoDesc = todoDesc;
     }
 
-    if (req.body.isDone !== undefined) {
-      taskToUpdate.isDone = req.body.isDone;
+    if (isDone !== undefined) {
+      taskToUpdate.isDone = isDone;
     }
 
     await user.save();

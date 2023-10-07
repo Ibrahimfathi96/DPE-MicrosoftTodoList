@@ -67,3 +67,18 @@ export const updateTaskAPI = async (userId, listId, taskId, taskData) => {
     throw error;
   }
 };
+export const updateGroupAPI = async (
+  userId,
+  listId,
+  groupdata
+) => {
+  try {
+    const response = await api.put(
+      `/api/updateGroup/${userId}/${listId}`,
+      groupdata
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
