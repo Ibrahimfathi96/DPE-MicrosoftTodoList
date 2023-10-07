@@ -1,8 +1,7 @@
 import axios from "axios";
-import { API_URL } from "@env";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const baseURL = `${API_URL}`;
+const baseURL = "https://microsofttodolist.onrender.com";
 
 const api = axios.create({
   baseURL
@@ -67,11 +66,7 @@ export const updateTaskAPI = async (userId, listId, taskId, taskData) => {
     throw error;
   }
 };
-export const updateGroupAPI = async (
-  userId,
-  listId,
-  groupdata
-) => {
+export const updateGroupAPI = async (userId, listId, groupdata) => {
   try {
     const response = await api.put(
       `/api/updateGroup/${userId}/${listId}`,
