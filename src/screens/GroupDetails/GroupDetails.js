@@ -30,6 +30,8 @@ const TaskListDetails = () => {
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+  const [text, setText] = useState(item.name);
+  const [isEditing, setIsEditing] = useState(false);
 
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
@@ -73,6 +75,17 @@ const TaskListDetails = () => {
       console.error("Error updating task:", error);
     }
   };
+  const handleTextPress = () => {
+    setIsEditing(true);
+  };
+
+  const handleTextChange = (newText) => {
+    setText(newText);
+  };
+
+  const handleTextBlur = () => {
+    setIsEditing(false);
+  };
 
   useEffect(() => {
     dispatch(setListId(listId));
@@ -92,7 +105,18 @@ const TaskListDetails = () => {
             <Icon name="arrow-back-ios" color="white" />
           </TouchableOpacity>
 
-          <Text style={styles.headerText}>{item.name}</Text>
+          {isEditing ? (
+            <TextInput
+              value={text}
+              style={[styles.headerText, { backgroundColor: "#3E4883" }]}
+              onChangeText={handleTextChange}
+              onBlur={handleTextBlur}
+            />
+          ) : (
+            <Text style={styles.headerText} onPress={handleTextPress}>
+              {text}
+            </Text>
+          )}
         </View>
 
         <View style={{ flexDirection: "row" }}>

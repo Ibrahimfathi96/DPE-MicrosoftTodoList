@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
-    marginLeft: 16
+    marginLeft: 4
   },
   separatorText: {
     color: "white",
