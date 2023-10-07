@@ -52,6 +52,7 @@ tasksRouter.put("/api/updateGroup/:userId/:listId", async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found!" });
     }
+
     const todoList = user.listOfTodos.find(
       (list) => list._id.toString() === listId
     );
@@ -59,11 +60,21 @@ tasksRouter.put("/api/updateGroup/:userId/:listId", async (req, res) => {
       return res.status(404).json({ msg: "List not found!" });
     }
 
-    todoList.name = name;
-    todoList.iconName = iconName;
-    todoList.iconColor = iconColor;
-    todoList.iconType = iconType;
-    todoList.backgroundColor = backgroundColor;
+    if (name) {
+      todoList.name = name;
+    }
+    if (iconName) {
+      todoList.iconName = iconName;
+    }
+    if (iconColor) {
+      todoList.iconColor = iconColor;
+    }
+    if (iconType) {
+      todoList.iconType = iconType;
+    }
+    if (backgroundColor) {
+      todoList.backgroundColor = backgroundColor;
+    }
 
     await user.save();
     res.status(200).json(user.listOfTodos);

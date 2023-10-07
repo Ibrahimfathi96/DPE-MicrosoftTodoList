@@ -6,7 +6,8 @@ import {
   FlatList,
   Modal,
   SafeAreaView,
-  TextInput
+  TextInput,
+  RefreshControl
 } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +30,7 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const groups = useSelector((state) => state.todo.groups);
   console.log("HomeListOfTodos:\n", groups);
@@ -57,6 +59,17 @@ const HomeScreen = () => {
       }
     } catch (error) {
       console.error("Error creating group:", error);
+    }
+  };
+
+  const handleRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      await dispatch(fetchGroups());
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -130,7 +143,16 @@ const HomeScreen = () => {
         </TouchableOpacity>
 
         {/* Main Body Of the screen */}
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              tintColor={Colors.blueColor}
+            />
+          }
+        >
           {/* Starter List */}
           <View style={styles.upperFlatListView}>
             <FlatList
