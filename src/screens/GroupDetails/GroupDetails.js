@@ -272,6 +272,7 @@ const TaskListDetails = () => {
         </View>
       </Modal>
 
+      {/* Options Modal */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -300,6 +301,22 @@ const TaskListDetails = () => {
                 />
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
                   Sort List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/**Change Theme*/}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon
+                  name="palette-outline"
+                  type="material-community"
+                  size={26}
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                  Change Theme
                 </Text>
               </View>
             </TouchableOpacity>
