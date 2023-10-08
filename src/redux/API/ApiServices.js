@@ -32,11 +32,6 @@ export const fetchGroupsAPI = async (userId) => {
   return response.data;
 };
 
-export const fetchAllTodosAPI = async (userId, listId) => {
-  const response = await api.get(`/api/getTasks/${userId}/${listId}`);
-  return response.data;
-};
-
 export const addGroupAPI = async (userId, name) => {
   try {
     const response = await api.post(`/api/addGroup/${userId}`, name);
@@ -45,6 +40,33 @@ export const addGroupAPI = async (userId, name) => {
     throw error;
   }
 };
+
+export const updateGroupAPI = async (userId, listId, groupdata) => {
+  try {
+    const response = await api.put(
+      `/api/updateGroup/${userId}/${listId}`,
+      groupdata
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteGroupAPI = async (userId, listId) => {
+  try {
+    const response = await api.delete(`/api/deleteGroup/${userId}/${listId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchAllTodosAPI = async (userId, listId) => {
+  const response = await api.get(`/api/getTasks/${userId}/${listId}`);
+  return response.data;
+};
+
 export const addTaskAPI = async (userId, listId, todoTitle) => {
   try {
     const response = await api.post(
@@ -62,17 +84,6 @@ export const updateTaskAPI = async (userId, listId, taskId, taskData) => {
     const response = await api.put(
       `/api/updateTask/${userId}/${listId}/${taskId}`,
       taskData
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-export const updateGroupAPI = async (userId, listId, groupdata) => {
-  try {
-    const response = await api.put(
-      `/api/updateGroup/${userId}/${listId}`,
-      groupdata
     );
     return response.data;
   } catch (error) {
