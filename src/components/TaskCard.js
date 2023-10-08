@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "react-native-elements";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../common/colors";
@@ -23,6 +23,9 @@ export default function TaskCard({
       taskstatus
     });
   };
+
+  const [important, setImportant] = useState(false);
+  starPressHandler = () => setImportant(!important);
   return (
     <TouchableOpacity onPress={openTaskDetails}>
       <View style={styles.container}>
@@ -43,15 +46,19 @@ export default function TaskCard({
           >
             {taskTitle}
           </Text>
-          {listName == "Tasks" &&
+          {listName == "Tasks" && (
             <View style={{ flexDirection: "row", marginHorizontal: 4 }}>
               <Icon name={iconName} size={18} />
-              <Text>
-                {listName}
-              </Text>
-            </View>}
+              <Text>{listName}</Text>
+            </View>
+          )}
         </View>
-        <Icon name="star-outline" size={26} />
+        <Icon
+          name={important ? "star-outline" : "star"}
+          size={30}
+          color={important ? "black" : Colors.blueColor2}
+          onPress={starPressHandler}
+        />
       </View>
     </TouchableOpacity>
   );

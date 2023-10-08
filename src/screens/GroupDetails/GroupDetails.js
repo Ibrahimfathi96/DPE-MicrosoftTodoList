@@ -292,7 +292,9 @@ const TaskListDetails = () => {
         <View style={styles.optionsContainer}>
           {/**Rename List */}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setGroupOptionsModalVisible(false)}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="edit" size={26} style={{ marginRight: 10 }} />
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
@@ -301,9 +303,12 @@ const TaskListDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+
           {/**Sort List */}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setGroupOptionsModalVisible(false)}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon
                   name="sort-by-alpha"
@@ -316,9 +321,12 @@ const TaskListDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+
           {/**Change Theme*/}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setGroupOptionsModalVisible(false)}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon
                   name="palette-outline"
@@ -332,9 +340,12 @@ const TaskListDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+
           {/**Send a copy */}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setGroupOptionsModalVisible(false)}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="share" size={26} style={{ marginRight: 10 }} />
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
@@ -343,9 +354,12 @@ const TaskListDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+
           {/**Duplicate List*/}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setGroupOptionsModalVisible(false)}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon
                   name="content-copy"
@@ -358,9 +372,12 @@ const TaskListDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+
           {/**Print List*/}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setGroupOptionsModalVisible(false)}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="print" size={26} style={{ marginRight: 10 }} />
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
@@ -369,6 +386,7 @@ const TaskListDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+
           {/**Delete List */}
           <View style={styles.optionsContent}>
             <TouchableOpacity onPress={() => handleDeleteGroup()}>
