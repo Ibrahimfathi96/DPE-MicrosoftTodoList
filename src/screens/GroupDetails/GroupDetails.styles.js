@@ -105,6 +105,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     marginLeft: 6
+  },
+  optionsContainer: {
+    flex: 1,
+    alignItems: "flex-end",
+    right: 10,
+    top: 50,
+    backgroundColor: "rgba(0, 0, 0, 0.1)"
+  },
+  optionsContent: {
+    width: "60%",
+    backgroundColor: "white",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 2
   }
 });
 export default styles;

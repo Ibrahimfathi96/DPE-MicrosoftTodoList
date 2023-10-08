@@ -34,6 +34,8 @@ const TaskListDetails = () => {
   const listId = item._id;
 
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
+  const [groupOptionsModalVisible, setGroupOptionsModalVisible] =
+    useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
   const [text, setText] = useState(item.name);
@@ -151,14 +153,11 @@ const TaskListDetails = () => {
               onPress={() => {}}
             />
           </View>
-          <View style={styles.iconView}>
-            <Icon
-              name="more-horiz"
-              color="white"
-              size={30}
-              onPress={() => {}}
-            />
-          </View>
+          <TouchableOpacity onPress={() => setGroupOptionsModalVisible(true)}>
+            <View style={styles.iconView}>
+              <Icon name="more-horiz" color="white" size={30} />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -223,6 +222,7 @@ const TaskListDetails = () => {
         )}
       </View>
 
+      {/* Floating Action Button */}
       <View style={styles.floatingButton}>
         <TouchableOpacity onPress={() => setCreateTaskModalVisible(true)}>
           <View style={styles.addTaskButton}>
@@ -232,6 +232,7 @@ const TaskListDetails = () => {
         </TouchableOpacity>
       </View>
 
+      {/* Create Task Modal */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -267,6 +268,94 @@ const TaskListDetails = () => {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={groupOptionsModalVisible}
+      >
+        <View style={styles.optionsContainer}>
+          {/**Rename List */}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon name="edit" size={26} style={{ marginRight: 10 }} />
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                  Rename List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/**Sort List */}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon
+                  name="sort-by-alpha"
+                  size={26}
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                  Sort List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/**Send a copy */}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon name="share" size={26} style={{ marginRight: 10 }} />
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                  Send a Copy
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/**Duplicate List*/}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon
+                  name="content-copy"
+                  size={26}
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                  Duplicate List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/**Print List*/}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon name="print" size={26} style={{ marginRight: 10 }} />
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                  Print List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/**Delete List */}
+          <View style={styles.optionsContent}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Icon
+                  name="delete"
+                  size={26}
+                  color="red"
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={{ fontWeight: "500", fontSize: 18, color: "red" }}>
+                  Delete List
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

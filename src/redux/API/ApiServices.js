@@ -1,7 +1,9 @@
 import axios from "axios";
-
+import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const baseURL = "https://microsofttodolist.onrender.com";
+// const baseURL = `${API_URL}`;
 
 const api = axios.create({
   baseURL
