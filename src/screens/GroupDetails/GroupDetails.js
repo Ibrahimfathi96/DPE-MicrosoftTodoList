@@ -23,7 +23,8 @@ import {
   addTask,
   fetchGroups,
   updateTask,
-  updateGroup
+  updateGroup,
+  deleteGroup
 } from "../../redux/API/ApiActions";
 const TaskListDetails = () => {
   const navigation = useNavigation();
@@ -107,6 +108,16 @@ const TaskListDetails = () => {
       dispatch(fetchGroups());
     } catch (error) {
       console.error("Error updating group name:", error);
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    try {
+      await dispatch(deleteGroup(item._id));
+      dispatch(fetchGroups());
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error deleting group:", error);
     }
   };
 
@@ -360,7 +371,7 @@ const TaskListDetails = () => {
           </View>
           {/**Delete List */}
           <View style={styles.optionsContent}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDeleteGroup()}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon
                   name="delete"
