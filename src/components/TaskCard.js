@@ -10,6 +10,7 @@ export default function TaskCard({
   listName,
   iconName,
   taskstatus,
+  taskDesc,
   checkPressHandler
 }) {
   const navigation = useNavigation();
@@ -20,7 +21,8 @@ export default function TaskCard({
       taskTitle,
       listName,
       iconName,
-      taskstatus
+      taskstatus,
+      taskDesc
     });
   };
 

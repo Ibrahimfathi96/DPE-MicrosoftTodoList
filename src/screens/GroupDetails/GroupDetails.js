@@ -182,6 +182,7 @@ const TaskListDetails = () => {
             <TaskCard
               taskId={todo._id}
               taskTitle={todo.todoTitle}
+              taskDesc={todo.todoDesc}
               listName={item.name}
               iconName={item.iconName}
               taskstatus={false}
@@ -223,6 +224,7 @@ const TaskListDetails = () => {
               <TaskCard
                 taskId={todo._id}
                 taskTitle={todo.todoTitle}
+                taskDesc={todo.todoDesc}
                 listName={item.name}
                 iconName={item.iconName}
                 taskstatus={true}
