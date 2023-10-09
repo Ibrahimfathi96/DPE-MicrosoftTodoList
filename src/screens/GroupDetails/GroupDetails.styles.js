@@ -26,6 +26,15 @@ const styles = StyleSheet.create({
     color: "white",
     marginLeft: 4
   },
+  inputText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+    marginLeft: 4,
+    borderWidth: 1,
+    padding: 4,
+    borderColor: "darkgrey"
+  },
   separatorText: {
     color: "white",
     fontWeight: "600",

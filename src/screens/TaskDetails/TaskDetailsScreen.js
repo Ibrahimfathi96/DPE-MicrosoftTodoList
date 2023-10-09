@@ -91,7 +91,7 @@ const TaskDetailsScreen = () => {
           <Text
             style={{ color: Colors.blueColor, fontWeight: "500", fontSize: 18 }}
           >
-            Add Description
+            Add / Edit Description
           </Text>
         </View>
       </TouchableOpacity>

@@ -86,9 +86,6 @@ const TaskListDetails = () => {
       console.error("Error updating task:", error);
     }
   };
-  const handleTextPress = () => {
-    setIsEditing(true);
-  };
 
   const handleTextChange = (newText) => {
     setGroupName(newText);
@@ -145,13 +142,16 @@ const TaskListDetails = () => {
           {isEditing ? (
             <TextInput
               value={groupName}
-              style={[styles.headerText, { backgroundColor: "#3E4883" }]}
+              style={styles.inputText}
               onChangeText={handleTextChange}
               onBlur={handleGroupNameSave}
               underlineColorAndroid="transparent"
             />
           ) : (
-            <Text style={styles.headerText} onPress={handleTextPress}>
+            <Text
+              style={styles.headerText}
+              onPress={() => setEditGroupModalVisible(true)}
+            >
               {groupName}
             </Text>
           )}
