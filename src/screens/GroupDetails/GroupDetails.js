@@ -5,7 +5,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  Modal
+  Modal,
+  TouchableWithoutFeedback
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,11 +36,12 @@ const TaskListDetails = () => {
   const listId = item._id;
 
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
+  const [editGroupModalVisible, setEditGroupModalVisible] = useState(false);
   const [groupOptionsModalVisible, setGroupOptionsModalVisible] =
     useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
-  const [text, setText] = useState(item.name);
+  const [groupName, setGroupName] = useState(item.name);
   const [isEditing, setIsEditing] = useState(false);
 
   const Todos = useSelector((state) => state.todo.todos);
@@ -89,21 +91,21 @@ const TaskListDetails = () => {
   };
 
   const handleTextChange = (newText) => {
-    setText(newText);
+    setGroupName(newText);
   };
 
   const handleGroupNameSave = async () => {
     try {
       await dispatch(
         updateGroup({
-          name: text,
+          name: groupName,
           iconName: item.iconName,
           iconColor: item.iconColor,
           iconType: item.iconType,
           backgroundColor: item.backgroundColor
         })
       );
-      setText(text);
+      setGroupName(groupName);
       setIsEditing(false);
       dispatch(fetchGroups());
     } catch (error) {
@@ -142,7 +144,7 @@ const TaskListDetails = () => {
 
           {isEditing ? (
             <TextInput
-              value={text}
+              value={groupName}
               style={[styles.headerText, { backgroundColor: "#3E4883" }]}
               onChangeText={handleTextChange}
               onBlur={handleGroupNameSave}
@@ -150,7 +152,7 @@ const TaskListDetails = () => {
             />
           ) : (
             <Text style={styles.headerText} onPress={handleTextPress}>
-              {text}
+              {groupName}
             </Text>
           )}
         </View>
@@ -285,127 +287,177 @@ const TaskListDetails = () => {
         </View>
       </Modal>
 
+      {/* Edit GroupName Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={editGroupModalVisible}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Edit Group Name</Text>
+            <TextInput
+              placeholder="enter the new name"
+              placeholderTextColor="gray"
+              style={styles.taskNameInput}
+              onChangeText={(text) => setGroupName(text)}
+              value={groupName}
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity onPress={() => setEditGroupModalVisible(false)}>
+                <Text style={styles.modalButton}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setEditGroupModalVisible(false);
+                  handleGroupNameSave();
+                }}
+                disabled={!groupName}
+              >
+                <Text
+                  style={[
+                    styles.modalButton,
+                    { color: groupName ? Colors.blueColor : "#DBDBDB" }
+                  ]}
+                >
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       {/* Options Modal */}
       <Modal
         animationType="fade"
         transparent={true}
         visible={groupOptionsModalVisible}
       >
-        <View style={styles.optionsContainer}>
-          {/**Rename List */}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity
-              onPress={() => setGroupOptionsModalVisible(false)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon name="edit" size={26} style={{ marginRight: 10 }} />
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                  Rename List
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+        <TouchableWithoutFeedback
+          onPress={() => setGroupOptionsModalVisible(false)}
+        >
+          <View style={styles.optionsContainer}>
+            {/**Rename List */}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity
+                onPress={() => {
+                  setGroupOptionsModalVisible(false);
+                  setEditGroupModalVisible(true);
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon name="edit" size={26} style={{ marginRight: 10 }} />
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                    Rename List
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          {/**Sort List */}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity
-              onPress={() => setGroupOptionsModalVisible(false)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon
-                  name="sort-by-alpha"
-                  size={26}
-                  style={{ marginRight: 10 }}
-                />
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                  Sort List
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            {/**Sort List */}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity
+                onPress={() => setGroupOptionsModalVisible(false)}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon
+                    name="sort-by-alpha"
+                    size={26}
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                    Sort List
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          {/**Change Theme*/}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity
-              onPress={() => setGroupOptionsModalVisible(false)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon
-                  name="palette-outline"
-                  type="material-community"
-                  size={26}
-                  style={{ marginRight: 10 }}
-                />
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                  Change Theme
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            {/**Change Theme*/}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity
+                onPress={() => setGroupOptionsModalVisible(false)}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon
+                    name="palette-outline"
+                    type="material-community"
+                    size={26}
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                    Change Theme
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          {/**Send a copy */}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity
-              onPress={() => setGroupOptionsModalVisible(false)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon name="share" size={26} style={{ marginRight: 10 }} />
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                  Send a Copy
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            {/**Send a copy */}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity
+                onPress={() => setGroupOptionsModalVisible(false)}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon name="share" size={26} style={{ marginRight: 10 }} />
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                    Send a Copy
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          {/**Duplicate List*/}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity
-              onPress={() => setGroupOptionsModalVisible(false)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon
-                  name="content-copy"
-                  size={26}
-                  style={{ marginRight: 10 }}
-                />
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                  Duplicate List
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            {/**Duplicate List*/}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity
+                onPress={() => setGroupOptionsModalVisible(false)}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon
+                    name="content-copy"
+                    size={26}
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                    Duplicate List
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          {/**Print List*/}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity
-              onPress={() => setGroupOptionsModalVisible(false)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon name="print" size={26} style={{ marginRight: 10 }} />
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                  Print List
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            {/**Print List*/}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity
+                onPress={() => setGroupOptionsModalVisible(false)}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon name="print" size={26} style={{ marginRight: 10 }} />
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                    Print List
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          {/**Delete List */}
-          <View style={styles.optionsContent}>
-            <TouchableOpacity onPress={() => handleDeleteGroup()}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon
-                  name="delete"
-                  size={26}
-                  color="red"
-                  style={{ marginRight: 10 }}
-                />
-                <Text style={{ fontWeight: "500", fontSize: 18, color: "red" }}>
-                  Delete List
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {/**Delete List */}
+            <View style={styles.optionsContent}>
+              <TouchableOpacity onPress={() => handleDeleteGroup()}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon
+                    name="delete"
+                    size={26}
+                    color="red"
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text
+                    style={{ fontWeight: "500", fontSize: 18, color: "red" }}
+                  >
+                    Delete List
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
