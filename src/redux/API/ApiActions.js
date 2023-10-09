@@ -6,7 +6,8 @@ import {
   deleteGroupAPI,
   fetchAllTodosAPI,
   addTaskAPI,
-  updateTaskAPI
+  updateTaskAPI,
+  deleteTaskAPI
 } from "./ApiServices";
 
 export const fetchGroups = createAsyncThunk(
@@ -116,7 +117,23 @@ export const updateTask = createAsyncThunk(
         todoDesc,
         isDone
       });
+      dispatch(fetchAllTodos());
       return { taskId, todoTitle, todoDesc, isDone };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const deleteTask = createAsyncThunk(
+  "todos/deleteTask",
+  async (taskId, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      console.log("userIdFromDeleteTask", userId);
+      const listId = getState().todo.listId;
+      console.log("listIdFromDeleteTask", listId);
+      await deleteTaskAPI(userId, listId, taskId);
     } catch (error) {
       throw error;
     }

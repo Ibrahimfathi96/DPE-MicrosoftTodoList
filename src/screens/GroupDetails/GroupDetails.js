@@ -116,6 +116,7 @@ const TaskListDetails = () => {
 
   useEffect(() => {
     dispatch(setListId(listId));
+    dispatch(fetchGroups());
     dispatch(fetchAllTodos());
   }, [dispatch, listId]);
 
@@ -172,6 +173,13 @@ const TaskListDetails = () => {
               listName={item.name}
               iconName={item.iconName}
               taskstatus={false}
+              handleNavigate={() => {
+                console.log("ITEM FOR NAVIGATION:", todo);
+                navigation.navigate("task-details-screen", {
+                  todo: todo,
+                  listName: item.name
+                });
+              }}
               checkPressHandler={(taskId) => checkPressHandler(taskId, false)}
             />
           )}
@@ -214,6 +222,13 @@ const TaskListDetails = () => {
                 listName={item.name}
                 iconName={item.iconName}
                 taskstatus={true}
+                handleNavigate={() => {
+                  console.log("ITEM FOR NAVIGATION:", todo);
+                  navigation.navigate("task-details-screen", {
+                    todo: todo,
+                    listName: item.name
+                  });
+                }}
                 checkPressHandler={(taskId) => checkPressHandler(taskId, true)}
               />
             )}

@@ -11,7 +11,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
 import { Modal } from "react-native";
-import { fetchAllTodos, updateTask } from "../../redux/API/ApiActions";
+import {
+  deleteTask,
+  fetchAllTodos,
+  updateTask
+} from "../../redux/API/ApiActions";
 import { useDispatch } from "react-redux";
 
 const TaskDetailsScreen = () => {
@@ -19,22 +23,14 @@ const TaskDetailsScreen = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const { taskId, taskTitle, listName, iconName, taskstatus, taskDesc } =
-    route.params;
-  console.log("ITEM FROM TASK SCREEN===>", {
-    taskId,
-    taskTitle,
-    listName,
-    iconName,
-    taskDesc,
-    taskstatus
-  });
+  const { todo, listName } = route.params;
+  console.log("TaskScreen", todo);
 
   const [important, setImportant] = useState(false);
   starPressHandler = () => setImportant(!important);
   const [modalVisible, setModalVisible] = useState(false);
-  const [title, setTitle] = useState(taskTitle);
-  const [description, setDescription] = useState(taskDesc);
+  const [title, setTitle] = useState(todo.todoTitle);
+  const [description, setDescription] = useState(todo.todoDesc);
 
   const Spacer = ({ size }) => {
     return <View style={{ flex: size || 1 }} />;
@@ -44,9 +40,10 @@ const TaskDetailsScreen = () => {
     try {
       await dispatch(
         updateTask({
-          taskId: taskId,
+          taskId: todo._id,
           todoTitle: title,
-          todoDesc: description
+          todoDesc: description,
+          isDone: todo.isDone
         })
       );
       setTitle(title);
@@ -57,12 +54,23 @@ const TaskDetailsScreen = () => {
     }
   };
 
+  const handleDeleteTask = async () => {
+    try {
+      await dispatch(deleteTask(todo._id));
+      dispatch(fetchAllTodos());
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error deleting Task:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Screen Header */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
+            dispatch(fetchAllTodos());
             navigation.goBack();
           }}
         >
@@ -79,23 +87,23 @@ const TaskDetailsScreen = () => {
       <View style={styles.taskContainer}>
         <TouchableOpacity onPress={() => {}}>
           <View
-            style={taskstatus ? styles.doneTaskcard : styles.notDoneTaskCard}
+            style={todo.isDone ? styles.doneTaskcard : styles.notDoneTaskCard}
           >
-            {taskstatus && <Icon name="check" size={20} color="white" />}
+            {todo.isDone && <Icon name="check" size={20} color="white" />}
           </View>
         </TouchableOpacity>
         <View style={styles.titleTextView}>
           <Text
             onPress={() => setModalVisible(true)}
             style={
-              taskstatus
+              todo.isDone
                 ? [styles.text, { textDecorationLine: "line-through" }]
                 : styles.text
             }
           >
             {title}
           </Text>
-          {taskDesc != "" && (
+          {todo.todoDesc != "" && (
             <View style={{ flexDirection: "row" }}>
               <Text style={{ fontSize: 16, fontWeight: "400" }}>
                 {description}
@@ -159,7 +167,10 @@ const TaskDetailsScreen = () => {
       <Spacer size={1} />
 
       {/**Delete Task Button */}
-      <TouchableOpacity style={styles.deleteButton} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => handleDeleteTask()}
+      >
         <View style={{ flexDirection: "row" }}>
           <Icon
             name="delete"

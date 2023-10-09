@@ -7,27 +7,15 @@ import { useNavigation } from "@react-navigation/native";
 export default function TaskCard({
   taskId,
   taskTitle,
-  listName,
   taskstatus,
   taskDesc,
+  handleNavigate,
   checkPressHandler
 }) {
-  const navigation = useNavigation();
-
-  const openTaskDetails = () => {
-    navigation.navigate("task-details-screen", {
-      taskId,
-      taskTitle,
-      listName,
-      taskstatus,
-      taskDesc
-    });
-  };
-
   const [important, setImportant] = useState(false);
   starPressHandler = () => setImportant(!important);
   return (
-    <TouchableOpacity onPress={openTaskDetails}>
+    <TouchableOpacity onPress={handleNavigate}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => checkPressHandler(taskId)}>
           <View

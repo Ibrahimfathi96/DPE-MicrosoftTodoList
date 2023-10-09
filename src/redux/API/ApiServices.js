@@ -91,3 +91,13 @@ export const updateTaskAPI = async (userId, listId, taskId, taskData) => {
   }
 };
 
+export const deleteTaskAPI = async (userId, listId, taskId) => {
+  try {
+    const response = await api.delete(
+      `/api/deleteTask/${userId}/${listId}/${taskId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
