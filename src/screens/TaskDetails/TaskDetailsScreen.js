@@ -23,31 +23,30 @@ const TaskDetailsScreen = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const { todo, listName } = route.params;
+  const [todo, setTodo] = useState(route.params.todo);
+  const { listName } = route.params;
   console.log("TaskScreen", todo);
 
   const [important, setImportant] = useState(false);
-  starPressHandler = () => setImportant(!important);
   const [modalVisible, setModalVisible] = useState(false);
   const [title, setTitle] = useState(todo.todoTitle);
   const [description, setDescription] = useState(todo.todoDesc);
 
+  starPressHandler = () => setImportant(!important);
   const Spacer = ({ size }) => {
     return <View style={{ flex: size || 1 }} />;
   };
 
   const handleTaskDataSave = async () => {
     try {
-      await dispatch(
-        updateTask({
-          taskId: todo._id,
-          todoTitle: title,
-          todoDesc: description,
-          isDone: todo.isDone
-        })
-      );
-      setTitle(title);
-      setDescription(description);
+      const updatedTodo = {
+        taskId: todo._id,
+        todoTitle: title,
+        todoDesc: description,
+        isDone: !todo.isDone
+      };
+      setTodo(updatedTodo);
+      await dispatch(updateTask(updatedTodo));
       dispatch(fetchAllTasks());
     } catch (error) {
       console.error("Error updating group name:", error);
@@ -85,7 +84,7 @@ const TaskDetailsScreen = () => {
 
       {/**Task Details */}
       <View style={styles.taskContainer}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={handleTaskDataSave}>
           <View
             style={todo.isDone ? styles.doneTaskcard : styles.notDoneTaskCard}
           >
