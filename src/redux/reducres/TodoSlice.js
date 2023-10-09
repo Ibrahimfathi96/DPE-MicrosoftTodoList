@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchGroups, fetchAllTodos } from "../API/ApiActions";
+import { fetchGroups, fetchAllTasks } from "../API/ApiActions";
 
 const initialState = {
   groups: [],
@@ -39,14 +39,14 @@ const todoSlice = createSlice({
         state.loading = "rejected";
         state.error = action.error.message;
       })
-      .addCase(fetchAllTodos.pending, (state) => {
+      .addCase(fetchAllTasks.pending, (state) => {
         state.loading = "pending";
       })
-      .addCase(fetchAllTodos.fulfilled, (state, action) => {
+      .addCase(fetchAllTasks.fulfilled, (state, action) => {
         state.loading = "fulfilled";
         state.todos = action.payload;
       })
-      .addCase(fetchAllTodos.rejected, (state, action) => {
+      .addCase(fetchAllTasks.rejected, (state, action) => {
         state.loading = "rejected";
         state.error = action.error.message;
       });

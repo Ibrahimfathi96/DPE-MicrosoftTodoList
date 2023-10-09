@@ -62,7 +62,7 @@ export const deleteGroupAPI = async (userId, listId) => {
   }
 };
 
-export const fetchAllTodosAPI = async (userId, listId) => {
+export const fetchAllTasksAPI = async (userId, listId) => {
   const response = await api.get(`/api/getTasks/${userId}/${listId}`);
   return response.data;
 };

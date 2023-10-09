@@ -13,7 +13,7 @@ import Colors from "../../common/colors";
 import { Modal } from "react-native";
 import {
   deleteTask,
-  fetchAllTodos,
+  fetchAllTasks,
   updateTask
 } from "../../redux/API/ApiActions";
 import { useDispatch } from "react-redux";
@@ -48,7 +48,7 @@ const TaskDetailsScreen = () => {
       );
       setTitle(title);
       setDescription(description);
-      dispatch(fetchAllTodos());
+      dispatch(fetchAllTasks());
     } catch (error) {
       console.error("Error updating group name:", error);
     }
@@ -57,7 +57,7 @@ const TaskDetailsScreen = () => {
   const handleDeleteTask = async () => {
     try {
       await dispatch(deleteTask(todo._id));
-      dispatch(fetchAllTodos());
+      dispatch(fetchAllTasks());
       navigation.goBack();
     } catch (error) {
       console.error("Error deleting Task:", error);
@@ -70,7 +70,7 @@ const TaskDetailsScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
-            dispatch(fetchAllTodos());
+            dispatch(fetchAllTasks());
             navigation.goBack();
           }}
         >

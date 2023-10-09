@@ -4,7 +4,7 @@ import {
   addGroupAPI,
   updateGroupAPI,
   deleteGroupAPI,
-  fetchAllTodosAPI,
+  fetchAllTasksAPI,
   addTaskAPI,
   updateTaskAPI,
   deleteTaskAPI
@@ -75,13 +75,13 @@ export const deleteGroup = createAsyncThunk(
   }
 );
 
-export const fetchAllTodos = createAsyncThunk(
+export const fetchAllTasks = createAsyncThunk(
   "todos/fetchTodos",
   async (_, { getState }) => {
     try {
       const userId = getState().auth.userId;
       const listId = getState().todo.listId;
-      const response = await fetchAllTodosAPI(userId, listId);
+      const response = await fetchAllTasksAPI(userId, listId);
       return response;
     } catch (error) {
       throw error;
@@ -97,8 +97,8 @@ export const addTask = createAsyncThunk(
       const listId = getState().todo.listId;
       const title = { todoTitle };
       await addTaskAPI(userId, listId, title);
-      const fetchTodos = await fetchAllTodosAPI(userId, listId);
-      dispatch(fetchAllTodos());
+      const fetchTodos = await fetchAllTasksAPI(userId, listId);
+      dispatch(fetchAllTasks());
       return fetchTodos;
     } catch (error) {
       throw error;
@@ -117,7 +117,7 @@ export const updateTask = createAsyncThunk(
         todoDesc,
         isDone
       });
-      dispatch(fetchAllTodos());
+      dispatch(fetchAllTasks());
       return { taskId, todoTitle, todoDesc, isDone };
     } catch (error) {
       throw error;

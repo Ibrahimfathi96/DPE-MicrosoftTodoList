@@ -20,7 +20,7 @@ import {
   setCompletedTasks
 } from "../../redux/reducres/TodoSlice";
 import {
-  fetchAllTodos,
+  fetchAllTasks,
   addTask,
   fetchGroups,
   updateTask,
@@ -60,7 +60,7 @@ const TaskListDetails = () => {
         if (newTask) {
           setCreateTaskModalVisible(false);
           setTaskTitle("");
-          dispatch(fetchAllTodos());
+          dispatch(fetchAllTasks());
         }
       }
     } catch (error) {
@@ -80,7 +80,7 @@ const TaskListDetails = () => {
       });
       dispatch(setIncompleteTasks(incompleteTasks));
       dispatch(setCompletedTasks(completedTasks));
-      dispatch(fetchAllTodos());
+      dispatch(fetchAllTasks());
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -117,7 +117,7 @@ const TaskListDetails = () => {
   useEffect(() => {
     dispatch(setListId(listId));
     dispatch(fetchGroups());
-    dispatch(fetchAllTodos());
+    dispatch(fetchAllTasks());
   }, [dispatch, listId]);
 
   return (

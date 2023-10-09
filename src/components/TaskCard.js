@@ -24,6 +24,7 @@ export default function TaskCard({
             {taskstatus && <Icon name="check" size={20} color="white" />}
           </View>
         </TouchableOpacity>
+
         <View style={styles.titleTextView}>
           <Text
             style={
@@ -42,6 +43,7 @@ export default function TaskCard({
             </View>
           )}
         </View>
+
         <Icon
           name={important ? "star" : "star-outline"}
           size={30}
