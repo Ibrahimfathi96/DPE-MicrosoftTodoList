@@ -8,7 +8,6 @@ export default function TaskCard({
   taskId,
   taskTitle,
   listName,
-  iconName,
   taskstatus,
   taskDesc,
   checkPressHandler
@@ -20,7 +19,6 @@ export default function TaskCard({
       taskId,
       taskTitle,
       listName,
-      iconName,
       taskstatus,
       taskDesc
     });
@@ -48,10 +46,11 @@ export default function TaskCard({
           >
             {taskTitle}
           </Text>
-          {listName == "Tasks" && (
-            <View style={{ flexDirection: "row", marginHorizontal: 4 }}>
-              <Icon name={iconName} size={18} />
-              <Text>{listName}</Text>
+          {taskDesc != "" && (
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontSize: 16, fontWeight: "400" }}>
+                {taskDesc}
+              </Text>
             </View>
           )}
         </View>

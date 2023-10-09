@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   taskContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
+    alignItems: "center",
     marginLeft: 10,
     paddingHorizontal: 16
   },
@@ -87,10 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   deleteButton: {
-    position: "absolute",
-    bottom: 0,
-    left: 40,
-    right: 40,
+    marginHorizontal: 40,
     justifyContent: "center",
     alignItems: "center",
     height: 40,

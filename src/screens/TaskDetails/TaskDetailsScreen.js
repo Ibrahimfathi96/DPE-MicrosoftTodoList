@@ -3,7 +3,6 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Button,
   Pressable
 } from "react-native";
 import React, { useState } from "react";
@@ -12,10 +11,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
 import { Modal } from "react-native";
+import { fetchAllTodos, updateTask } from "../../redux/API/ApiActions";
+import { useDispatch } from "react-redux";
 
 const TaskDetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const { taskId, taskTitle, listName, iconName, taskstatus, taskDesc } =
     route.params;
@@ -32,6 +34,28 @@ const TaskDetailsScreen = () => {
   starPressHandler = () => setImportant(!important);
   const [modalVisible, setModalVisible] = useState(false);
   const [title, setTitle] = useState(taskTitle);
+  const [description, setDescription] = useState(taskDesc);
+
+  const Spacer = ({ size }) => {
+    return <View style={{ flex: size || 1 }} />;
+  };
+
+  const handleTaskDataSave = async () => {
+    try {
+      await dispatch(
+        updateTask({
+          taskId: taskId,
+          todoTitle: title,
+          todoDesc: description
+        })
+      );
+      setTitle(title);
+      setDescription(description);
+      dispatch(fetchAllTodos());
+    } catch (error) {
+      console.error("Error updating group name:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -61,21 +85,20 @@ const TaskDetailsScreen = () => {
           </View>
         </TouchableOpacity>
         <View style={styles.titleTextView}>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text
-              style={
-                taskstatus
-                  ? [styles.text, { textDecorationLine: "line-through" }]
-                  : styles.text
-              }
-            >
-              {taskTitle}
-            </Text>
-          </TouchableOpacity>
+          <Text
+            onPress={() => setModalVisible(true)}
+            style={
+              taskstatus
+                ? [styles.text, { textDecorationLine: "line-through" }]
+                : styles.text
+            }
+          >
+            {title}
+          </Text>
           {taskDesc != "" && (
-            <View style={{ flexDirection: "row", marginHorizontal: 8 }}>
+            <View style={{ flexDirection: "row" }}>
               <Text style={{ fontSize: 16, fontWeight: "400" }}>
-                {taskDesc}
+                {description}
               </Text>
             </View>
           )}
@@ -98,7 +121,11 @@ const TaskDetailsScreen = () => {
             style={{ marginRight: 10 }}
           />
           <Text
-            style={{ color: Colors.blueColor, fontWeight: "500", fontSize: 18 }}
+            style={{
+              color: Colors.blueColor,
+              fontWeight: "500",
+              fontSize: 18
+            }}
           >
             Add / Edit Description
           </Text>
@@ -113,18 +140,23 @@ const TaskDetailsScreen = () => {
               placeholder="Write some description"
               multiline
               style={{ fontSize: 16 }}
+              onChangeText={(text) => setDescription(text)}
+              value={description}
             />
           </View>
           <Pressable
             style={styles.submitButton}
             onPress={() => {
               setVisible(false);
+              handleTaskDataSave();
             }}
           >
             <Text style={styles.submitText}>Submit</Text>
           </Pressable>
         </>
       )}
+
+      <Spacer size={1} />
 
       {/**Delete Task Button */}
       <TouchableOpacity style={styles.deleteButton} onPress={() => {}}>
@@ -139,17 +171,17 @@ const TaskDetailsScreen = () => {
         </View>
       </TouchableOpacity>
 
-      {/* Edit GroupName Modal */}
+      {/* Edit Task Modal */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Edit Tasl Title</Text>
+            <Text style={styles.modalTitle}>Edit Task Title</Text>
             <TextInput
               placeholder="enter the new title"
               placeholderTextColor="gray"
               style={styles.textInput}
               onChangeText={(text) => setTitle(text)}
-              value={taskTitle}
+              value={title}
             />
             <View style={styles.modalButtonsView}>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
@@ -158,6 +190,7 @@ const TaskDetailsScreen = () => {
               <TouchableOpacity
                 onPress={() => {
                   setModalVisible(false);
+                  handleTaskDataSave();
                 }}
                 disabled={!title}
               >

@@ -42,7 +42,6 @@ const TaskListDetails = () => {
   const [taskTitle, setTaskTitle] = useState("");
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
   const [groupName, setGroupName] = useState(item.name);
-  const [isEditing, setIsEditing] = useState(false);
 
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
@@ -87,10 +86,6 @@ const TaskListDetails = () => {
     }
   };
 
-  const handleTextChange = (newText) => {
-    setGroupName(newText);
-  };
-
   const handleGroupNameSave = async () => {
     try {
       await dispatch(
@@ -103,7 +98,6 @@ const TaskListDetails = () => {
         })
       );
       setGroupName(groupName);
-      setIsEditing(false);
       dispatch(fetchGroups());
     } catch (error) {
       console.error("Error updating group name:", error);
@@ -139,22 +133,12 @@ const TaskListDetails = () => {
             <Icon name="arrow-back-ios" color="white" />
           </TouchableOpacity>
 
-          {isEditing ? (
-            <TextInput
-              value={groupName}
-              style={styles.inputText}
-              onChangeText={handleTextChange}
-              onBlur={handleGroupNameSave}
-              underlineColorAndroid="transparent"
-            />
-          ) : (
-            <Text
-              style={styles.headerText}
-              onPress={() => setEditGroupModalVisible(true)}
-            >
-              {groupName}
-            </Text>
-          )}
+          <Text
+            style={styles.headerText}
+            onPress={() => setEditGroupModalVisible(true)}
+          >
+            {groupName}
+          </Text>
         </View>
 
         <View style={{ flexDirection: "row" }}>
