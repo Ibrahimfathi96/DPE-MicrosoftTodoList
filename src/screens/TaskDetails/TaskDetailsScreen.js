@@ -11,6 +11,7 @@ import styles from "./TaskDetailsScreen.styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import Colors from "../../common/colors";
+import { Modal } from "react-native";
 
 const TaskDetailsScreen = () => {
   const navigation = useNavigation();
@@ -29,6 +30,8 @@ const TaskDetailsScreen = () => {
 
   const [important, setImportant] = useState(false);
   starPressHandler = () => setImportant(!important);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [title, setTitle] = useState(taskTitle);
 
   return (
     <View style={styles.container}>
@@ -39,7 +42,11 @@ const TaskDetailsScreen = () => {
             navigation.goBack();
           }}
         >
-          <Icon name="arrow-back-ios" color="black" />
+          <Icon
+            name="arrow-back-ios"
+            color="black"
+            style={{ marginHorizontal: 10 }}
+          />
         </TouchableOpacity>
         <Text style={styles.headerText}>{listName}</Text>
       </View>
@@ -54,15 +61,17 @@ const TaskDetailsScreen = () => {
           </View>
         </TouchableOpacity>
         <View style={styles.titleTextView}>
-          <Text
-            style={
-              taskstatus
-                ? [styles.text, { textDecorationLine: "line-through" }]
-                : styles.text
-            }
-          >
-            {taskTitle}
-          </Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text
+              style={
+                taskstatus
+                  ? [styles.text, { textDecorationLine: "line-through" }]
+                  : styles.text
+              }
+            >
+              {taskTitle}
+            </Text>
+          </TouchableOpacity>
           {taskDesc != "" && (
             <View style={{ flexDirection: "row", marginHorizontal: 8 }}>
               <Text style={{ fontSize: 16, fontWeight: "400" }}>
@@ -116,6 +125,55 @@ const TaskDetailsScreen = () => {
           </Pressable>
         </>
       )}
+
+      {/**Delete Task Button */}
+      <TouchableOpacity style={styles.deleteButton} onPress={() => {}}>
+        <View style={{ flexDirection: "row" }}>
+          <Icon
+            name="delete"
+            size={26}
+            color="white"
+            style={{ marginRight: 10 }}
+          />
+          <Text style={styles.deleteText}>Delete Task</Text>
+        </View>
+      </TouchableOpacity>
+
+      {/* Edit GroupName Modal */}
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Edit Tasl Title</Text>
+            <TextInput
+              placeholder="enter the new title"
+              placeholderTextColor="gray"
+              style={styles.textInput}
+              onChangeText={(text) => setTitle(text)}
+              value={taskTitle}
+            />
+            <View style={styles.modalButtonsView}>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text style={styles.modalButton}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+                disabled={!title}
+              >
+                <Text
+                  style={[
+                    styles.modalButton,
+                    { color: title ? Colors.blueColor : "#DBDBDB" }
+                  ]}
+                >
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

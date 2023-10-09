@@ -14,16 +14,18 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 70,
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 16,
     paddingLeft: 10,
-    marginHorizontal: 16
+    borderBottomWidth: 3,
+    borderBottomColor: "#D3D3D3"
   },
   headerText: {
     fontSize: 20,
     color: "black",
-    marginLeft: 30
+    marginLeft: 12
   },
   doneTaskcard: {
     width: 30,
@@ -34,8 +36,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blueColor
   },
   notDoneTaskCard: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: 30,
     borderWidth: 3,
     borderColor: "grey"
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     alignContent: "flex-start",
     justifyContent: "flex-start",
     marginVertical: 20,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     paddingBottom: 20,
     borderBottomWidth: 3,
     borderBottomColor: "#D3D3D3"
@@ -83,6 +85,58 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "500",
     fontSize: 18
+  },
+  deleteButton: {
+    position: "absolute",
+    bottom: 0,
+    left: 40,
+    right: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 40,
+    backgroundColor: "red",
+    borderRadius: 10
+  },
+  deleteText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
+  },
+  modalContent: {
+    width: "90%",
+    backgroundColor: "white",
+    paddingHorizontal: 18,
+    paddingVertical: 30,
+    borderRadius: 2
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 16
+  },
+  textInput: {
+    borderBottomWidth: 3,
+    borderColor: Colors.blueColor,
+    paddingVertical: 4,
+    marginHorizontal: 12,
+    marginBottom: 30,
+    fontSize: 18
+  },
+  modalButtonsView: {
+    flexDirection: "row",
+    justifyContent: "flex-end"
+  },
+  modalButton: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginHorizontal: 10,
+    color: "black"
   }
 });
 export default styles;
