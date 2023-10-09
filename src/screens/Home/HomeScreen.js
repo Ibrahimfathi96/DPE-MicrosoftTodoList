@@ -13,18 +13,16 @@ import { ScrollView } from "react-native-virtualized-view";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Icon, Avatar } from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { clearUser, setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
 
 const HomeScreen = () => {
-  const route = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const personalData = route.params.user;
+  const personalData = useSelector((state) => state.auth.user);
   const userId = personalData._id;
 
   const [modalVisible, setModalVisible] = useState(false);

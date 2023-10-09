@@ -49,7 +49,7 @@ const SignInScreen = () => {
           ToastAndroid.CENTER
         );
         dispatch(setUser(user));
-        navigation.navigate("home-screen", { user });
+        navigation.navigate("home-screen");
         setEmail("");
         setPassword("");
       }

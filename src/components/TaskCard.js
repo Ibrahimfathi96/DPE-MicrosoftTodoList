@@ -54,9 +54,9 @@ export default function TaskCard({
           )}
         </View>
         <Icon
-          name={important ? "star-outline" : "star"}
+          name={important ? "star" : "star-outline"}
           size={30}
-          color={important ? "black" : Colors.blueColor2}
+          color={important ? Colors.blueColor2 : "black"}
           onPress={starPressHandler}
         />
       </View>

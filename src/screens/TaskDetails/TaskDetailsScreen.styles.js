@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: "bold",
     color: "black",
     marginLeft: 30
   },
@@ -36,10 +35,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blueColor
   },
   notDoneTaskCard: {
-    width: 25,
-    height: 25,
-    borderRadius: 25,
-    borderWidth: 1,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    borderWidth: 3,
     borderColor: "grey"
   },
   titleTextView: {
@@ -48,8 +47,8 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   text: {
-    fontSize: 16,
-    fontWeight: "500"
+    fontSize: 18,
+    fontWeight: "bold"
   }
 });
 export default styles;

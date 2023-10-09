@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./TaskDetailsScreen.styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
+import Colors from "../../common/colors";
 
 const TaskDetailsScreen = () => {
   const navigation = useNavigation();
@@ -55,7 +56,11 @@ const TaskDetailsScreen = () => {
             </View>
           )}
         </View>
-        <Icon name="star-outline" size={26} />
+        <Icon name="star-outline" size={30} />
+      </View>
+
+      <View style={{ alignItems: "flex-start" }}>
+        <Icon name="add" color={Colors.blueColor} size={36} />
       </View>
     </View>
   );

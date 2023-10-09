@@ -18,37 +18,38 @@ export default function RouteNavigation() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const isAuthenticated = await AsyncStorage.getItem("isAuthenticated");
-        return isAuthenticated === "true";
+        const userData = await AsyncStorage.getItem("userData");
+        if (userData) {
+          const user = JSON.parse(userData);
+          dispatch(setUser(user));
+        } else {
+          dispatch(clearUser());
+        }
       } catch (error) {
         console.error("Error checking authentication:", error);
-        return false;
+        dispatch(clearUser());
       }
     };
 
-    checkAuthentication().then((authenticated) => {
-      if (authenticated) {
-        dispatch(setUser());
-      } else {
-        dispatch(clearUser());
-      }
-    });
+    checkAuthentication();
   }, [dispatch]);
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={isLoggedIn ? "home-screen" : "sign-in-screen"}
-      >
-        <Stack.Screen
-          name="home-screen"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="sign-in-screen"
-          component={SignInScreen}
-          options={{ headerShown: false }}
-        />
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <Stack.Screen
+            name="home-screen"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <Stack.Screen
+            name="sign-in-screen"
+            component={SignInScreen}
+            options={{ headerShown: false }}
+          />
+        )}
+
         <Stack.Screen
           name="register-screen"
           component={RegisterScreen}
