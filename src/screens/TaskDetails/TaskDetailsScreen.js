@@ -103,6 +103,7 @@ const TaskDetailsScreen = () => {
           >
             {title}
           </Text>
+
           {todo.todoDesc != "" && (
             <View style={{ flexDirection: "row" }}>
               <Text style={{ fontSize: 16, fontWeight: "400" }}>
