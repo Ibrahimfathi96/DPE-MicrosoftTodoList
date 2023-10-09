@@ -70,16 +70,19 @@ const TaskListDetails = () => {
 
   const checkPressHandler = async (taskId, isCompleted) => {
     try {
-      await dispatch(updateTask({ taskId, isDone: !isCompleted }));
-
       const updatedTodos = Todos.map((todo) => {
         if (todo._id === taskId) {
-          return { ...todo, isDone: !isCompleted };
+          const updatedTodo = { ...todo, isDone: !isCompleted };
+          return updatedTodo;
         }
         return todo;
       });
-      dispatch(setIncompleteTasks(incompleteTasks));
-      dispatch(setCompletedTasks(completedTasks));
+
+      dispatch(setIncompleteTasks(updatedTodos.filter((todo) => !todo.isDone)));
+      dispatch(setCompletedTasks(updatedTodos.filter((todo) => todo.isDone)));
+
+      await dispatch(updateTask({ taskId, isDone: !isCompleted }));
+
       dispatch(fetchAllTasks());
     } catch (error) {
       console.error("Error updating task:", error);
