@@ -56,11 +56,11 @@ const TaskListDetails = () => {
   const handleCreateTask = async () => {
     try {
       if (taskTitle) {
-        const newTask = await dispatch(addTask({ todoTitle: taskTitle }));
+        const localTaskData = { todoTitle: taskTitle, isDone: false };
+        const newTask = dispatch(addTask(localTaskData));
         if (newTask) {
           setCreateTaskModalVisible(false);
           setTaskTitle("");
-          dispatch(fetchAllTasks());
         }
       }
     } catch (error) {
@@ -91,15 +91,11 @@ const TaskListDetails = () => {
 
   const handleGroupNameSave = async () => {
     try {
-      await dispatch(
-        updateGroup({
-          name: groupName,
-          iconName: item.iconName,
-          iconColor: item.iconColor,
-          iconType: item.iconType,
-          backgroundColor: item.backgroundColor
-        })
-      );
+      const updatedGroup = {
+        ...item,
+        name: groupName
+      };
+      dispatch(updateGroup(updatedGroup));
       setGroupName(groupName);
       dispatch(fetchGroups());
     } catch (error) {
@@ -121,7 +117,7 @@ const TaskListDetails = () => {
     dispatch(setListId(listId));
     dispatch(fetchGroups());
     dispatch(fetchAllTasks());
-  }, [dispatch, listId]);
+  }, []);
 
   return (
     <View style={styles.container}>
