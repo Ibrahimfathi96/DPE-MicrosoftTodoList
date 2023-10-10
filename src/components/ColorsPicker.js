@@ -27,7 +27,7 @@ const ColorList = ({ onColorSelect }) => {
       >
         {isColorSelected && (
           <View style={styles.iconContainer}>
-            <Icon name="done" type="material" color="white" size={30} />
+            <View style={styles.dot}></View>
           </View>
         )}
       </View>
@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center"
+  },
+  dot: {
+    backgroundColor: "white",
+    width: 12,
+    height: 12,
+    borderRadius: 12
   },
   iconText: {
     color: "black",

@@ -302,6 +302,7 @@ const TaskListDetails = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Edit Group Name</Text>
+
             <TextInput
               placeholder="enter the new name"
               placeholderTextColor="gray"
@@ -309,14 +310,22 @@ const TaskListDetails = () => {
               onChangeText={(text) => setGroupName(text)}
               value={groupName}
             />
+
+            <ColorList
+              onColorSelect={(color) => {
+                setSelectedColor(color);
+              }}
+            />
+
             <View style={styles.modalButtons}>
               <TouchableOpacity onPress={() => setEditGroupModalVisible(false)}>
                 <Text style={styles.modalButton}>CANCEL</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 onPress={() => {
-                  setEditGroupModalVisible(false);
                   handleGroupNameSave();
+                  setEditGroupModalVisible(false);
                 }}
                 disabled={!groupName}
               >
@@ -361,27 +370,9 @@ const TaskListDetails = () => {
               </TouchableOpacity>
             </View>
 
-            {/**Sort List */}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity
-                onPress={() => setGroupOptionsModalVisible(false)}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name="sort-by-alpha"
-                    size={26}
-                    style={{ marginRight: 10 }}
-                  />
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                    Sort List
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
             {/**Change Theme*/}
             <View style={styles.optionsContent}>
-              <TouchableOpacity onPress={() => setColorModalVisible(true)}>
+              <TouchableOpacity onPress={() => setEditGroupModalVisible(true)}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Icon
                     name="palette-outline"
@@ -391,52 +382,6 @@ const TaskListDetails = () => {
                   />
                   <Text style={{ fontWeight: "500", fontSize: 18 }}>
                     Change Theme
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/**Send a copy */}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity
-                onPress={() => setGroupOptionsModalVisible(false)}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon name="share" size={26} style={{ marginRight: 10 }} />
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                    Send a Copy
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/**Duplicate List*/}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity
-                onPress={() => setGroupOptionsModalVisible(false)}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name="content-copy"
-                    size={26}
-                    style={{ marginRight: 10 }}
-                  />
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                    Duplicate List
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/**Print List*/}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity
-                onPress={() => setGroupOptionsModalVisible(false)}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon name="print" size={26} style={{ marginRight: 10 }} />
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                    Print List
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -462,33 +407,6 @@ const TaskListDetails = () => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </Modal>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={colorModalVisible}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Change Theme</Text>
-            <ColorList
-              onColorSelect={(color) => {
-                setSelectedColor(color);
-              }}
-            />
-            <Pressable
-              style={styles.submitButton}
-              onPress={() => {
-                handleGroupNameSave();
-                setColorModalVisible(false);
-                setGroupOptionsModalVisible(false);
-              }}
-            >
-              <Text style={styles.submitText}>Submit</Text>
-            </Pressable>
-          </View>
-        </View>
       </Modal>
     </View>
   );

@@ -91,12 +91,13 @@ const styles = StyleSheet.create({
     borderColor: Colors.blueColor,
     paddingVertical: 4,
     marginHorizontal: 12,
-    marginBottom: 30,
+    marginBottom: 10,
     fontSize: 18
   },
   modalButtons: {
     flexDirection: "row",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    marginTop: 10
   },
   modalButton: {
     fontSize: 16,
@@ -127,8 +128,7 @@ const styles = StyleSheet.create({
     width: "60%",
     backgroundColor: "white",
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderRadius: 2
+    paddingVertical: 16
   },
   submitButton: {
     flexDirection: "row",
