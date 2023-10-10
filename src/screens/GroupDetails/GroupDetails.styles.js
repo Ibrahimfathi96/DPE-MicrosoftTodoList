@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     height: 30,
     alignContent: "center",
     justifyContent: "center",
-    marginLeft: 10
+    marginLeft: 10,
+    elevation: 10
   },
   floatingButton: {
     position: "absolute",
@@ -77,8 +78,8 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "white",
     paddingHorizontal: 18,
-    paddingVertical: 30,
-    borderRadius: 2
+    paddingVertical: 20,
+    borderRadius: 6
   },
   modalTitle: {
     fontSize: 20,
@@ -128,6 +129,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderRadius: 2
+  },
+  submitButton: {
+    flexDirection: "row",
+    marginLeft: "70%",
+    marginTop: 10,
+    marginRight: 10,
+    height: 40,
+    borderRadius: 6,
+    backgroundColor: "#3e4883",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  submitText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 18
   }
 });
 export default styles;

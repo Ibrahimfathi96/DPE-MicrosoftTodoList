@@ -32,9 +32,10 @@ export const fetchGroupsAPI = async (userId) => {
   return response.data;
 };
 
-export const addGroupAPI = async (userId, name) => {
+export const addGroupAPI = async (userId, groupData) => {
   try {
-    const response = await api.post(`/api/addGroup/${userId}`, name);
+    const response = await api.post(`/api/addGroup/${userId}`, groupData);
+    console.log("ResponseDataAPI", response.data);
     return response.data;
   } catch (error) {
     throw error;

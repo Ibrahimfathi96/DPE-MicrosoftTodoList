@@ -18,6 +18,7 @@ import { clearUser, setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
+import ColorList from "../../components/ColorsPicker";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -29,6 +30,7 @@ const HomeScreen = () => {
   const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("");
 
   const groups = useSelector((state) => state.todo.groups);
   console.log("HomeListOfTodos:\n", groups);
@@ -47,16 +49,23 @@ const HomeScreen = () => {
 
   const handleCreateGroup = async () => {
     try {
-      if (groupName) {
-        const newGroup = await dispatch(addGroup({ name: groupName }));
+      if (groupName && selectedColor) {
+        const newGroup = await dispatch(
+          addGroup({ name: groupName, backgroundColor: selectedColor })
+        );
+        console.log("newGroup", newGroup);
         if (newGroup) {
           setCreateGroupModalVisible(false);
           setGroupName("");
+          setSelectedColor("");
           dispatch(fetchGroups());
         }
       }
     } catch (error) {
-      console.error("Error creating group:", error);
+      console.error(
+        "Error creating group:",
+        error + "\n" + "errorMsg:" + error.message
+      );
     }
   };
 
@@ -197,6 +206,7 @@ const HomeScreen = () => {
               onChangeText={(text) => setGroupName(text)}
               value={groupName}
             />
+            <ColorList onColorSelect={setSelectedColor} />
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 onPress={() => setCreateGroupModalVisible(false)}

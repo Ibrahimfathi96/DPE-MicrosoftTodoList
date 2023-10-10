@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import Colors from "../common/colors";
 import { Icon } from "react-native-elements";
-const ColorList = () => {
-  const [selectedColor, setSelectedColor] = useState(null);
+
+const ColorList = ({ onColorSelect }) => {
+  const [selectedColor, setSelectedColor] = useState(Colors.DEFAULT);
   const colorArray = Object.values(Colors);
+
+  const handleColorSelect = (color) => {
+    console.log("color", color);
+    setSelectedColor(color);
+    onColorSelect(color);
+  };
 
   const renderItem = ({ item }) => {
     const isColorSelected = selectedColor === item;
-    const iconColor = isColorSelected && item === "#fff" ? "black" : "white";
+
     return (
       <View
         style={[
@@ -16,11 +23,11 @@ const ColorList = () => {
           { backgroundColor: item },
           isColorSelected && styles.selectedColorCircle
         ]}
-        onTouchStart={() => setSelectedColor(item)}
+        onTouchStart={() => handleColorSelect(item)}
       >
         {isColorSelected && (
           <View style={styles.iconContainer}>
-            <Icon name="done" type="material" color={iconColor} size={30} />
+            <Icon name="done" type="material" color="white" size={30} />
           </View>
         )}
       </View>
@@ -31,6 +38,7 @@ const ColorList = () => {
     <FlatList
       data={colorArray}
       horizontal
+      showsHorizontalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderItem}
     />
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   iconText: {
-    color: "white",
+    color: "black",
     fontSize: 20
   }
 });

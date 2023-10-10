@@ -126,12 +126,13 @@ const styles = StyleSheet.create({
     borderColor: Colors.blueColor,
     paddingVertical: 4,
     marginHorizontal: 12,
-    marginBottom: 30,
+    marginBottom: 10,
     fontSize: 18
   },
   modalButtons: {
     flexDirection: "row",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    marginTop: 10
   },
   modalButton: {
     fontSize: 16,

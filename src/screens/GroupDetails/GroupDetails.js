@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Button,
+  Pressable
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +29,7 @@ import {
   updateGroup,
   deleteGroup
 } from "../../redux/API/ApiActions";
+import ColorList from "../../components/ColorsPicker";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -45,6 +48,9 @@ const TaskListDetails = () => {
 
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
+
+  const [colorModalVisible, setColorModalVisible] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(item.backgroundColor);
 
   const incompleteTasks = Todos.filter((todo) => !todo.isDone);
   const completedTasks = Todos.filter((todo) => todo.isDone);
@@ -93,10 +99,12 @@ const TaskListDetails = () => {
     try {
       const updatedGroup = {
         ...item,
-        name: groupName
+        name: groupName,
+        backgroundColor: selectedColor
       };
-      dispatch(updateGroup(updatedGroup));
+      await dispatch(updateGroup(updatedGroup));
       setGroupName(groupName);
+      setSelectedColor(selectedColor);
       dispatch(fetchGroups());
     } catch (error) {
       console.error("Error updating group name:", error);
@@ -120,7 +128,7 @@ const TaskListDetails = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: selectedColor }]}>
       {/* Screen Header */}
       <View style={styles.header}>
         <View style={styles.titleAndBackIcon}>
@@ -373,9 +381,7 @@ const TaskListDetails = () => {
 
             {/**Change Theme*/}
             <View style={styles.optionsContent}>
-              <TouchableOpacity
-                onPress={() => setGroupOptionsModalVisible(false)}
-              >
+              <TouchableOpacity onPress={() => setColorModalVisible(true)}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Icon
                     name="palette-outline"
@@ -456,6 +462,33 @@ const TaskListDetails = () => {
             </View>
           </View>
         </TouchableWithoutFeedback>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={colorModalVisible}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Change Theme</Text>
+            <ColorList
+              onColorSelect={(color) => {
+                setSelectedColor(color);
+              }}
+            />
+            <Pressable
+              style={styles.submitButton}
+              onPress={() => {
+                handleGroupNameSave();
+                setColorModalVisible(false);
+                setGroupOptionsModalVisible(false);
+              }}
+            >
+              <Text style={styles.submitText}>Submit</Text>
+            </Pressable>
+          </View>
+        </View>
       </Modal>
     </View>
   );
