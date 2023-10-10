@@ -17,6 +17,7 @@ import {
   updateTask
 } from "../../redux/API/ApiActions";
 import { useDispatch } from "react-redux";
+import ColorList from "../../components/ColorsPicker";
 
 const TaskDetailsScreen = () => {
   const navigation = useNavigation();
