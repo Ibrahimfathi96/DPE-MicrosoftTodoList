@@ -4,7 +4,7 @@ import Colors from "../../common/colors";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#5D70BD",
+    backgroundColor: Colors.DEFAULT,
     alignItems: "center",
     paddingHorizontal: 10
   },
@@ -130,21 +130,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16
   },
-  submitButton: {
-    flexDirection: "row",
-    marginLeft: "70%",
-    marginTop: 10,
-    marginRight: 10,
-    height: 40,
-    borderRadius: 6,
-    backgroundColor: "#3e4883",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  submitText: {
-    color: "white",
-    fontWeight: "500",
-    fontSize: 18
-  }
 });
 export default styles;

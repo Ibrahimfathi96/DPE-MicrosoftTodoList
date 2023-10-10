@@ -19,6 +19,7 @@ import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
 import ColorList from "../../components/ColorsPicker";
+import IconsPicker from "../../components/IconsPicker";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -31,6 +32,8 @@ const HomeScreen = () => {
   const [groupName, setGroupName] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedIcon, setSelectedIcon] = useState(null);
+  const [iconPickerVisible, setIconPickerVisible] = useState(false);
 
   const groups = useSelector((state) => state.todo.groups);
   console.log("HomeListOfTodos:\n", groups);
@@ -67,6 +70,10 @@ const HomeScreen = () => {
         error + "\n" + "errorMsg:" + error.message
       );
     }
+  };
+
+  const handleIconSelection = (icon) => {
+    setSelectedIcon(icon);
   };
 
   const handleRefresh = async () => {
@@ -199,14 +206,35 @@ const HomeScreen = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Create a group</Text>
-            <TextInput
-              placeholder="Name this group"
-              placeholderTextColor="gray"
-              style={styles.groupNameInput}
-              onChangeText={(text) => setGroupName(text)}
-              value={groupName}
-            />
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center"
+              }}
+            >
+              <Icon
+                name="emoticon"
+                type="material-community"
+                size={30}
+                color={Colors.blueColor}
+                onPress={() => setIconPickerVisible(!iconPickerVisible)}
+              />
+              <TextInput
+                placeholder="Name this group"
+                placeholderTextColor="gray"
+                style={styles.groupNameInput}
+                onChangeText={(text) => setGroupName(text)}
+                value={groupName}
+              />
+            </View>
+
+            {iconPickerVisible && (
+              <IconsPicker onIconSelect={handleIconSelection} />
+            )}
             <ColorList onColorSelect={setSelectedColor} />
+
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 onPress={() => setCreateGroupModalVisible(false)}

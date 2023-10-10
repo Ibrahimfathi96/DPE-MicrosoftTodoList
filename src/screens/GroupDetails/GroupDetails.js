@@ -48,8 +48,6 @@ const TaskListDetails = () => {
 
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
-
-  const [colorModalVisible, setColorModalVisible] = useState(false);
   const [selectedColor, setSelectedColor] = useState(item.backgroundColor);
 
   const incompleteTasks = Todos.filter((todo) => !todo.isDone);

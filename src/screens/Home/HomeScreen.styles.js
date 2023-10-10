@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   groupNameInput: {
+    flex: 1,
     borderBottomWidth: 3,
     borderColor: Colors.blueColor,
     paddingVertical: 4,

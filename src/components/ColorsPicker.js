@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import Colors from "../common/colors";
-import { Icon } from "react-native-elements";
 
 const ColorList = ({ onColorSelect }) => {
   const [selectedColor, setSelectedColor] = useState(Colors.DEFAULT);
   const colorArray = Object.values(Colors);
 
   const handleColorSelect = (color) => {
-    console.log("color", color);
     setSelectedColor(color);
     onColorSelect(color);
   };
