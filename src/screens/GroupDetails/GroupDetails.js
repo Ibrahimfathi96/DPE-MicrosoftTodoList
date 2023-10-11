@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-  TouchableWithoutFeedback
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "../../components/TaskCard";
@@ -130,6 +123,20 @@ const TaskListDetails = () => {
   const handleIconSelection = (icon) => {
     setSelectedIcon(icon);
   };
+
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Are you sure?",
+      `"${groupName}" will be permanently deleted.`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Delete", onPress: () => handleDeleteGroup() }
+      ]
+    );
 
   useEffect(() => {
     dispatch(setListId(listId));
@@ -310,7 +317,7 @@ const TaskListDetails = () => {
           setEditGroupModalVisible(true);
         }}
         onChangeThemePress={() => setEditGroupModalVisible(true)}
-        onDeleteListPress={() => handleDeleteGroup()}
+        onDeleteListPress={() => createTwoButtonAlert()}
       />
     </View>
   );
