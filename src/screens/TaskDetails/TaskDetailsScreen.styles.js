@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     marginHorizontal: 40,
+    marginBottom: 16,
     justifyContent: "center",
     alignItems: "center",
     height: 40,

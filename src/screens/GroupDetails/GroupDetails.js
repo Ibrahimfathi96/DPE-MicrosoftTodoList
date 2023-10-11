@@ -4,18 +4,14 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  TextInput,
   Modal,
-  TouchableWithoutFeedback,
-  Button,
-  Pressable
+  TouchableWithoutFeedback
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "../../components/TaskCard";
 import styles from "./GroupDetails.styles";
 import { Icon } from "react-native-elements";
-import Colors from "../../common/colors";
 import {
   setListId,
   setIncompleteTasks,
@@ -31,6 +27,7 @@ import {
 } from "../../redux/API/ApiActions";
 import FloatingActionButton from "../../components/FloatingActionButton";
 import CreateModal from "../../components/CreateModal";
+import OptionsModal from "../../components/OptionsModal";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -303,120 +300,18 @@ const TaskListDetails = () => {
         setIconPickerVisible={setIconPickerVisible}
         handleIconSelection={handleIconSelection}
       />
-      {/* <Modal
-        animationType="fade"
-        transparent={true}
-        visible={editGroupModalVisible}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Edit Group Name</Text>
-
-            <TextInput
-              placeholder="enter the new name"
-              placeholderTextColor="gray"
-              style={styles.taskNameInput}
-              onChangeText={(text) => setGroupName(text)}
-              value={groupName}
-            />
-
-            <ColorList
-              onColorSelect={(color) => {
-                setSelectedColor(color);
-              }}
-            />
-
-            <View style={styles.modalButtons}>
-              <TouchableOpacity onPress={() => setEditGroupModalVisible(false)}>
-                <Text style={styles.modalButton}>CANCEL</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => {
-                  handleGroupNameSave();
-                  setEditGroupModalVisible(false);
-                }}
-                disabled={!groupName}
-              >
-                <Text
-                  style={[
-                    styles.modalButton,
-                    { color: groupName ? Colors.blueColor : "#DBDBDB" }
-                  ]}
-                >
-                  Edit
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
 
       {/* Options Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <OptionsModal
         visible={groupOptionsModalVisible}
-      >
-        <TouchableWithoutFeedback
-          onPress={() => setGroupOptionsModalVisible(false)}
-        >
-          <View style={styles.optionsContainer}>
-            {/**Rename List */}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity
-                onPress={() => {
-                  setGroupOptionsModalVisible(false);
-                  setEditGroupModalVisible(true);
-                }}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon name="edit" size={26} style={{ marginRight: 10 }} />
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                    Rename List
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/**Change Theme*/}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity onPress={() => setEditGroupModalVisible(true)}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name="palette-outline"
-                    type="material-community"
-                    size={26}
-                    style={{ marginRight: 10 }}
-                  />
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>
-                    Change Theme
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/**Delete List */}
-            <View style={styles.optionsContent}>
-              <TouchableOpacity onPress={() => handleDeleteGroup()}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name="delete"
-                    size={26}
-                    color="red"
-                    style={{ marginRight: 10 }}
-                  />
-                  <Text
-                    style={{ fontWeight: "500", fontSize: 18, color: "red" }}
-                  >
-                    Delete List
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+        onModalPressHandler={() => setGroupOptionsModalVisible(false)}
+        onRenameListPress={() => {
+          setGroupOptionsModalVisible(false);
+          setEditGroupModalVisible(true);
+        }}
+        onChangeThemePress={() => setEditGroupModalVisible(true)}
+        onDeleteListPress={() => handleDeleteGroup()}
+      />
     </View>
   );
 };
