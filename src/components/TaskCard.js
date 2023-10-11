@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Icon } from "react-native-elements";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../common/colors";
-import { useNavigation } from "@react-navigation/native";
+import deleteAlert from "./deleteAlert";
 
 export default function TaskCard({
   taskId,
@@ -10,12 +10,21 @@ export default function TaskCard({
   taskstatus,
   taskDesc,
   handleNavigate,
-  checkPressHandler
+  checkPressHandler,
+  handleDeleteTask
 }) {
   const [important, setImportant] = useState(false);
   starPressHandler = () => setImportant(!important);
+  const openDeleteAlert = () => {
+    deleteAlert({
+      name: taskTitle,
+      onPress: () => {
+        handleDeleteTask(taskId);
+      }
+    });
+  };
   return (
-    <TouchableOpacity onPress={handleNavigate}>
+    <TouchableOpacity onPress={handleNavigate} onLongPress={openDeleteAlert}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => checkPressHandler(taskId)}>
           <View

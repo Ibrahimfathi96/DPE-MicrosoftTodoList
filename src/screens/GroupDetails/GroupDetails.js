@@ -16,11 +16,13 @@ import {
   fetchGroups,
   updateTask,
   updateGroup,
-  deleteGroup
+  deleteGroup,
+  deleteTask
 } from "../../redux/API/ApiActions";
 import FloatingActionButton from "../../components/FloatingActionButton";
 import CreateModal from "../../components/CreateModal";
 import OptionsModal from "../../components/OptionsModal";
+import deleteAlert from "../../components/deleteAlert";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -120,23 +122,27 @@ const TaskListDetails = () => {
     }
   };
 
+  const updateTodos = async () => {
+    await dispatch(fetchAllTasks());
+    const updatedIncompleteTasks = Todos.filter((todo) => !todo.isDone);
+    const updatedCompletedTasks = Todos.filter((todo) => todo.isDone);
+    await dispatch(setIncompleteTasks(updatedIncompleteTasks));
+    await dispatch(setCompletedTasks(updatedCompletedTasks));
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await dispatch(deleteTask(taskId));
+      dispatch(fetchAllTasks());
+      updateTodos();
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
   const handleIconSelection = (icon) => {
     setSelectedIcon(icon);
   };
-
-  const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Are you sure?",
-      `"${groupName}" will be permanently deleted.`,
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Delete", onPress: () => handleDeleteGroup() }
-      ]
-    );
 
   useEffect(() => {
     dispatch(setListId(listId));
@@ -197,6 +203,7 @@ const TaskListDetails = () => {
               listName={item.name}
               iconName={item.iconName}
               taskstatus={false}
+              handleDeleteTask={() => handleDeleteTask(todo._id)}
               handleNavigate={() => {
                 console.log("ITEM FOR NAVIGATION:", todo);
                 navigation.navigate("task-details-screen", {
@@ -241,6 +248,7 @@ const TaskListDetails = () => {
                 listName={item.name}
                 iconName={item.iconName}
                 taskstatus={true}
+                handleDeleteTask={() => handleDeleteTask(todo._id)}
                 handleNavigate={() => {
                   console.log("ITEM FOR NAVIGATION:", todo);
                   navigation.navigate("task-details-screen", {
@@ -312,7 +320,12 @@ const TaskListDetails = () => {
           setEditGroupModalVisible(true);
         }}
         onChangeThemePress={() => setEditGroupModalVisible(true)}
-        onDeleteListPress={() => createTwoButtonAlert()}
+        onDeleteListPress={() => {
+          deleteAlert({
+            name: groupName,
+            onPress: () => handleDeleteGroup()
+          });
+        }}
       />
     </View>
   );
