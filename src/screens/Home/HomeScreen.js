@@ -145,6 +145,7 @@ const HomeScreen = () => {
           }}
         >
           <View style={{ flexDirection: "row" }}>
+            {/**User Avatar */}
             <Avatar
               rounded
               size={50}
@@ -154,6 +155,7 @@ const HomeScreen = () => {
                   : require("../../../assets/pp-placeholder.png")
               }
             />
+            {/**UserName & Email Address */}
             <View style={{ marginLeft: 16, flex: 1 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ fontWeight: "bold", fontSize: 18 }}>
@@ -165,6 +167,8 @@ const HomeScreen = () => {
                 {personalData ? personalData.email : "Guest@example.com"}
               </Text>
             </View>
+
+            {/**Search Icon */}
             <Icon
               name="search"
               size={35}
@@ -240,6 +244,7 @@ const HomeScreen = () => {
       <Modal animationType="fade" transparent={false} visible={modalVisible}>
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
+            {/**User Avatar */}
             <Avatar
               rounded
               size={50}
@@ -249,6 +254,8 @@ const HomeScreen = () => {
                   : require("../../../assets/pp-placeholder.png")
               }
             />
+
+            {/**Close Modal Icon */}
             <Icon
               name="close"
               color="#3E4883"
@@ -259,6 +266,7 @@ const HomeScreen = () => {
             />
           </View>
 
+          {/**UserName & Email Address */}
           <TouchableOpacity
             onPress={() => {
               setModalVisible(false);
@@ -271,17 +279,20 @@ const HomeScreen = () => {
                 </Text>
                 <Icon name="keyboard-arrow-up" type="material" />
               </View>
+
               <Text style={styles.emailText}>
                 {personalData ? personalData.email : "Guest@example.com"}
               </Text>
             </View>
           </TouchableOpacity>
 
+          {/**Add Accout */}
           <View style={styles.modalRowView}>
             <Icon name="add" size={32} />
             <Text style={styles.modalText}>Add Account</Text>
           </View>
 
+          {/**Manage Accounts */}
           <View style={styles.modalRowView2}>
             <Icon
               name="account-edit-outline"
@@ -291,6 +302,7 @@ const HomeScreen = () => {
             <Text style={styles.modalText}>Manage Accounts</Text>
           </View>
 
+          {/**Logout Icon */}
           <TouchableOpacity onPress={handleLogout}>
             <View style={styles.modalRowView}>
               <Icon name="logout" size={32} color="red" />
