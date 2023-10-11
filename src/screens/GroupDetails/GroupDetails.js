@@ -212,23 +212,18 @@ const TaskListDetails = () => {
         {/* Seperator between two FlatLists */}
         {incompleteTasks.length > 0 && (
           <TouchableOpacity onPress={toggleCompletedTasks}>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingHorizontal: 20,
-                marginVertical: 20,
-                alignItems: "center"
-              }}
-            >
-              <Icon
-                name={
-                  showCompletedTasks ? "expand-more" : "keyboard-arrow-right"
-                }
-                color="white"
-                onPress={toggleCompletedTasks}
-              />
-              <Text style={styles.separatorText}>Completed Tasks</Text>
-              <Text style={styles.separatorNum}>{completedTasks.length}</Text>
+            <View style={styles.separatorView}>
+              <View style={styles.insideView}>
+                <Icon
+                  name={
+                    showCompletedTasks ? "expand-more" : "keyboard-arrow-right"
+                  }
+                  color="white"
+                  onPress={toggleCompletedTasks}
+                />
+                <Text style={styles.separatorText}>Completed Tasks</Text>
+                <Text style={styles.separatorNum}>{completedTasks.length}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         )}

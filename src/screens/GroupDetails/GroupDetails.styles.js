@@ -26,6 +26,19 @@ const styles = StyleSheet.create({
     color: "white",
     marginLeft: 4
   },
+  separatorView: {
+    marginVertical: 20,
+    alignItems: "flex-start",
+    justifyContent: "center"
+  },
+  insideView: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 4,
+    backgroundColor: "rgba(0, 0, 0, 0.35)"
+  },
   separatorText: {
     color: "white",
     fontWeight: "600",
@@ -46,6 +59,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginLeft: 10,
     elevation: 10
-  },
+  }
 });
 export default styles;
