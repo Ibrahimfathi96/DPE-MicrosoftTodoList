@@ -6,7 +6,6 @@ import {
   FlatList,
   Modal,
   SafeAreaView,
-  TextInput,
   RefreshControl
 } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
@@ -18,8 +17,6 @@ import { clearUser, setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
-import ColorList from "../../components/ColorsPicker";
-import IconsPicker from "../../components/IconsPicker";
 import icons from "../../common/icons";
 import FloatingActionButton from "../../components/FloatingActionButton";
 import CreateModal from "../../components/CreateModal";
@@ -122,14 +119,12 @@ const HomeScreen = () => {
         }}
       >
         <View style={styles.flatlistItemRow}>
-          <TouchableOpacity onPress={() => {}}>
-            <Icon
-              name={item.iconName}
-              type={item.iconType}
-              size={26}
-              color={item.iconColor}
-            />
-          </TouchableOpacity>
+          <Icon
+            name={item.iconName}
+            type={item.iconType}
+            size={26}
+            color={item.iconColor}
+          />
           <View style={styles.listNameAndLength}>
             <Text style={styles.listName}>{item.name}</Text>
             <Text style={styles.listLength}>{doneTasksCount}</Text>
