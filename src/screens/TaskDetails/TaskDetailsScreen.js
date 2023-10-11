@@ -18,6 +18,7 @@ import {
 } from "../../redux/API/ApiActions";
 import { useDispatch } from "react-redux";
 import ColorList from "../../components/ColorsPicker";
+import deleteAlert from "../../components/deleteAlert";
 
 const TaskDetailsScreen = () => {
   const navigation = useNavigation();
@@ -183,7 +184,12 @@ const TaskDetailsScreen = () => {
       {/**Delete Task Button */}
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={() => handleDeleteTask()}
+        onPress={() => {
+          deleteAlert({
+            name: title,
+            onPress: () => handleDeleteTask()
+          });
+        }}
       >
         <View style={{ flexDirection: "row" }}>
           <Icon

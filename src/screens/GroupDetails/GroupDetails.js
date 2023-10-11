@@ -205,7 +205,6 @@ const TaskListDetails = () => {
               taskstatus={false}
               handleDeleteTask={() => handleDeleteTask(todo._id)}
               handleNavigate={() => {
-                console.log("ITEM FOR NAVIGATION:", todo);
                 navigation.navigate("task-details-screen", {
                   todo: todo,
                   listName: item.name
@@ -250,7 +249,6 @@ const TaskListDetails = () => {
                 taskstatus={true}
                 handleDeleteTask={() => handleDeleteTask(todo._id)}
                 handleNavigate={() => {
-                  console.log("ITEM FOR NAVIGATION:", todo);
                   navigation.navigate("task-details-screen", {
                     todo: todo,
                     listName: item.name
