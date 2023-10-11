@@ -33,7 +33,9 @@ const HomeScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedIcon, setSelectedIcon] = useState(null);
+  const [selectedView, setSelectedView] = useState("");
   const [iconPickerVisible, setIconPickerVisible] = useState(false);
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const groups = useSelector((state) => state.todo.groups);
 
@@ -68,6 +70,7 @@ const HomeScreen = () => {
           setSelectedColor("");
           setSelectedIcon(null);
           setIconPickerVisible(false);
+          setColorPickerVisible(false);
           dispatch(fetchGroups());
         } else {
           console.error("Please select a group name, color, and icon.");
@@ -107,12 +110,14 @@ const HomeScreen = () => {
         }}
       >
         <View style={styles.flatlistItemRow}>
-          <Icon
-            name={item.iconName}
-            type={item.iconType}
-            size={26}
-            color={item.iconColor}
-          />
+          <TouchableOpacity onPress={() => {}}>
+            <Icon
+              name={item.iconName}
+              type={item.iconType}
+              size={26}
+              color={item.iconColor}
+            />
+          </TouchableOpacity>
           <View style={styles.listNameAndLength}>
             <Text style={styles.listName}>{item.name}</Text>
             <Text style={styles.listLength}>{doneTasksCount}</Text>
@@ -215,38 +220,87 @@ const HomeScreen = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Create a group</Text>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center"
-              }}
-            >
-              <Icon
-                name="emoticon"
-                type="material-community"
-                size={30}
-                color={Colors.blueColor}
-                onPress={() => setIconPickerVisible(!iconPickerVisible)}
-              />
-              <TextInput
-                placeholder="Name this group"
-                placeholderTextColor="gray"
-                style={styles.groupNameInput}
-                onChangeText={(text) => setGroupName(text)}
-                value={groupName}
-              />
+            <TextInput
+              placeholder="Name this group"
+              placeholderTextColor="gray"
+              style={styles.groupNameInput}
+              onChangeText={(text) => setGroupName(text)}
+              value={groupName}
+            />
+
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setColorPickerVisible(!colorPickerVisible);
+                  setIconPickerVisible(false);
+                  setSelectedView("color");
+                }}
+              >
+                <View
+                  style={[
+                    styles.chooseIconOrColor,
+                    {
+                      backgroundColor:
+                        selectedView === "color"
+                          ? Colors.blueColor
+                          : "transparent"
+                    }
+                  ]}
+                >
+                  <Text
+                    style={{
+                      color: selectedView === "color" ? "white" : "black"
+                    }}
+                  >
+                    COLOR
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setIconPickerVisible(!iconPickerVisible);
+                  setColorPickerVisible(false);
+                  setSelectedView("icon");
+                }}
+              >
+                <View
+                  style={[
+                    styles.chooseIconOrColor,
+                    {
+                      backgroundColor:
+                        selectedView === "icon"
+                          ? Colors.blueColor
+                          : "transparent"
+                    }
+                  ]}
+                >
+                  <Text
+                    style={{
+                      color: selectedView === "icon" ? "white" : "black"
+                    }}
+                  >
+                    ICON
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
 
             {iconPickerVisible && (
               <IconsPicker onIconSelect={handleIconSelection} />
             )}
 
-            <ColorList onColorSelect={setSelectedColor} />
+            {colorPickerVisible && (
+              <ColorList onColorSelect={setSelectedColor} />
+            )}
 
             <View style={styles.modalButtons}>
               <TouchableOpacity
-                onPress={() => setCreateGroupModalVisible(false)}
+                onPress={() => {
+                  setCreateGroupModalVisible(false);
+                  setIconPickerVisible(false);
+                  setColorPickerVisible(false);
+                  setSelectedView("");
+                }}
               >
                 <Text style={styles.modalButton}>CANCEL</Text>
               </TouchableOpacity>

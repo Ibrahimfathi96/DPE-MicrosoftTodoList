@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   groupNameInput: {
-    flex: 1,
     borderBottomWidth: 3,
     borderColor: Colors.blueColor,
     paddingVertical: 4,
@@ -158,6 +157,15 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center"
+  },
+  chooseIconOrColor: {
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderWidth: 3,
+    borderColor: Colors.blueColor,
+    borderRadius: 16,
+    marginLeft: 10,
+    marginVertical: 4
   }
 });
 export default styles;
