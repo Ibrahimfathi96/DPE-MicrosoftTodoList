@@ -25,12 +25,17 @@ export const fetchGroups = createAsyncThunk(
 
 export const addGroup = createAsyncThunk(
   "todos/addGroup",
-  async ({ name, backgroundColor }, { getState, dispatch }) => {
+  async (
+    { name, backgroundColor, iconName, iconColor },
+    { getState, dispatch }
+  ) => {
     try {
       const userId = getState().auth.userId;
       console.log("groupNameActions", name);
       console.log("bgColorActions", backgroundColor);
-      await addGroupAPI(userId, { name, backgroundColor });
+      console.log("iconName", iconName);
+      console.log("iconColor", iconColor);
+      await addGroupAPI(userId, { name, backgroundColor, iconName, iconColor });
       const updatedList = await fetchGroupsAPI(userId);
       dispatch(fetchGroups());
       return updatedList;
@@ -42,16 +47,21 @@ export const addGroup = createAsyncThunk(
 
 export const updateGroup = createAsyncThunk(
   "todos/updateGroup",
-  async ({ name, backgroundColor }, { getState, dispatch }) => {
+  async (
+    { name, backgroundColor, iconName, iconColor },
+    { getState, dispatch }
+  ) => {
     try {
       const userId = getState().auth.userId;
       const listId = getState().todo.listId;
       await updateGroupAPI(userId, listId, {
         name,
-        backgroundColor
+        backgroundColor,
+        iconName,
+        iconColor
       });
       dispatch(fetchGroups());
-      return { name, backgroundColor };
+      return { name, backgroundColor, iconName, iconColor };
     } catch (error) {
       throw error;
     }

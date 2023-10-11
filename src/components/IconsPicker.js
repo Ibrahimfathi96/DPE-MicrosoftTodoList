@@ -5,16 +5,16 @@ import Icons from "../common/icons";
 import Colors from "../common/colors";
 
 const IconsPicker = ({ onIconSelect }) => {
-  const [selectedIcon, setSelectedIcon] = useState(Icons.TOC.iconName);
+  const [selectedIcon, setSelectedIcon] = useState(Icons.TOC);
   const IconArray = Object.values(Icons);
 
   const handleIconSelect = (icon) => {
-    setSelectedIcon(icon.iconName);
-    onIconSelect(icon.iconName);
+    setSelectedIcon(icon);
+    onIconSelect(icon);
   };
 
   const renderItem = ({ item }) => {
-    const isIconSelected = selectedIcon === item.iconName;
+    const isIconSelected = selectedIcon === item;
     return (
       <View
         style={[

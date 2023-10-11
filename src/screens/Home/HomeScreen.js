@@ -36,7 +36,6 @@ const HomeScreen = () => {
   const [iconPickerVisible, setIconPickerVisible] = useState(false);
 
   const groups = useSelector((state) => state.todo.groups);
-  console.log("HomeListOfTodos:\n", groups);
 
   useEffect(() => {
     dispatch(setUserId(userId));
@@ -52,16 +51,26 @@ const HomeScreen = () => {
 
   const handleCreateGroup = async () => {
     try {
-      if (groupName && selectedColor) {
+      if (groupName && selectedColor && selectedIcon) {
+        console.log("selectedIconFromCreate:", selectedIcon);
         const newGroup = await dispatch(
-          addGroup({ name: groupName, backgroundColor: selectedColor })
+          addGroup({
+            name: groupName,
+            backgroundColor: selectedColor,
+            iconName: selectedIcon.iconName,
+            iconColor: selectedIcon.iconColor
+          })
         );
         console.log("newGroup", newGroup);
         if (newGroup) {
           setCreateGroupModalVisible(false);
           setGroupName("");
           setSelectedColor("");
+          setSelectedIcon(null);
+          setIconPickerVisible(false);
           dispatch(fetchGroups());
+        } else {
+          console.error("Please select a group name, color, and icon.");
         }
       }
     } catch (error) {
@@ -94,7 +103,6 @@ const HomeScreen = () => {
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log("goToTasksDetailsScreen");
           navigation.navigate("tasklist-details-screen", { item });
         }}
       >
@@ -233,6 +241,7 @@ const HomeScreen = () => {
             {iconPickerVisible && (
               <IconsPicker onIconSelect={handleIconSelection} />
             )}
+
             <ColorList onColorSelect={setSelectedColor} />
 
             <View style={styles.modalButtons}>
