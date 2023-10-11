@@ -71,6 +71,7 @@ const HomeScreen = () => {
           setSelectedIcon(null);
           setIconPickerVisible(false);
           setColorPickerVisible(false);
+          setSelectedView("");
           dispatch(fetchGroups());
         } else {
           console.error("Please select a group name, color, and icon.");
