@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingBottom: 16,
     borderBottomColor: "grey",
-    borderBottomWidth: 0.7
+    borderBottomWidth: 2
   },
   lowerFlatListView: {
     marginHorizontal: 10
