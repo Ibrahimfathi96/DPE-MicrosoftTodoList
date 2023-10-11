@@ -23,17 +23,32 @@ const TaskDetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
+
   const [todo, setTodo] = useState(route.params.todo);
   const { listName } = route.params;
-  console.log("TaskScreen", todo);
 
+  const [visible, setVisible] = useState(false);
   const [important, setImportant] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [title, setTitle] = useState(todo.todoTitle);
   const [description, setDescription] = useState(todo.todoDesc);
+  const [isDone, setIsDone] = useState(todo.isDone);
 
-  starPressHandler = () => setImportant(!important);
+  const starPressHandler = () => {
+    setImportant(!important);
+  };
+
+  const checkPressHandler = async (isCompleted) => {
+    try {
+      const updatedIsDone = !isCompleted;
+      setIsDone(updatedIsDone);
+      const updatedTodo = { ...todo, isDone: updatedIsDone };
+      await dispatch(updateTask({ taskId: todo._id, isDone: updatedIsDone }));
+      dispatch(fetchAllTasks());
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
   const Spacer = ({ size }) => {
     return <View style={{ flex: size || 1 }} />;
   };
@@ -44,7 +59,7 @@ const TaskDetailsScreen = () => {
         taskId: todo._id,
         todoTitle: title,
         todoDesc: description,
-        isDone: !todo.isDone
+        isDone: isDone
       };
       setTodo(updatedTodo);
       await dispatch(updateTask(updatedTodo));
@@ -85,18 +100,16 @@ const TaskDetailsScreen = () => {
 
       {/**Task Details */}
       <View style={styles.taskContainer}>
-        <TouchableOpacity onPress={handleTaskDataSave}>
-          <View
-            style={todo.isDone ? styles.doneTaskcard : styles.notDoneTaskCard}
-          >
-            {todo.isDone && <Icon name="check" size={20} color="white" />}
+        <TouchableOpacity onPress={() => checkPressHandler(isDone)}>
+          <View style={isDone ? styles.doneTaskcard : styles.notDoneTaskCard}>
+            {isDone && <Icon name="check" size={20} color="white" />}
           </View>
         </TouchableOpacity>
         <View style={styles.titleTextView}>
           <Text
             onPress={() => setModalVisible(true)}
             style={
-              todo.isDone
+              isDone
                 ? [styles.text, { textDecorationLine: "line-through" }]
                 : styles.text
             }
@@ -104,7 +117,7 @@ const TaskDetailsScreen = () => {
             {title}
           </Text>
 
-          {todo.todoDesc != "" && (
+          {description != "" && (
             <View style={{ flexDirection: "row" }}>
               <Text style={{ fontSize: 16, fontWeight: "400" }}>
                 {description}
