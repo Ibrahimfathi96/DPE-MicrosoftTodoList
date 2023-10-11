@@ -29,13 +29,14 @@ import {
   updateGroup,
   deleteGroup
 } from "../../redux/API/ApiActions";
-import ColorList from "../../components/ColorsPicker";
+import FloatingActionButton from "../../components/FloatingActionButton";
+import CreateModal from "../../components/CreateModal";
 const TaskListDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const route = useRoute();
 
-  const { item } = route.params;
+  const { item, selectedIcon: groupIcon } = route.params;
   const listId = item._id;
 
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
@@ -49,6 +50,10 @@ const TaskListDetails = () => {
   const Todos = useSelector((state) => state.todo.todos);
   console.log("Todos:", Todos);
   const [selectedColor, setSelectedColor] = useState(item.backgroundColor);
+  const [selectedView, setSelectedView] = useState("");
+  const [iconPickerVisible, setIconPickerVisible] = useState(false);
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState(groupIcon);
 
   const incompleteTasks = Todos.filter((todo) => !todo.isDone);
   const completedTasks = Todos.filter((todo) => todo.isDone);
@@ -98,11 +103,17 @@ const TaskListDetails = () => {
       const updatedGroup = {
         ...item,
         name: groupName,
-        backgroundColor: selectedColor
+        backgroundColor: selectedColor,
+        iconName: selectedIcon.iconName,
+        iconColor: selectedIcon.iconColor
       };
       await dispatch(updateGroup(updatedGroup));
       setGroupName(groupName);
       setSelectedColor(selectedColor);
+      setSelectedIcon(selectedIcon);
+      setIconPickerVisible(false);
+      setColorPickerVisible(false);
+      setSelectedView("");
       dispatch(fetchGroups());
     } catch (error) {
       console.error("Error updating group name:", error);
@@ -117,6 +128,10 @@ const TaskListDetails = () => {
     } catch (error) {
       console.error("Error deleting group:", error);
     }
+  };
+
+  const handleIconSelection = (icon) => {
+    setSelectedIcon(icon);
   };
 
   useEffect(() => {
@@ -242,57 +257,53 @@ const TaskListDetails = () => {
       </View>
 
       {/* Floating Action Button */}
-      <View style={styles.floatingButton}>
-        <TouchableOpacity onPress={() => setCreateTaskModalVisible(true)}>
-          <View style={styles.addTaskButton}>
-            <Icon name="add-task" type="material" color="white" size={26} />
-            <Text style={styles.newTaskText}>New Task</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <FloatingActionButton
+        text={"New Task"}
+        iconName="add-task"
+        onPressHandler={() => setCreateTaskModalVisible(true)}
+      />
 
       {/* Create Task Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <CreateModal
         visible={createTaskModalVisible}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Create a task</Text>
-            <TextInput
-              placeholder="Name this Task"
-              placeholderTextColor="gray"
-              style={styles.taskNameInput}
-              onChangeText={(text) => setTaskTitle(text)}
-              value={taskTitle}
-            />
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                onPress={() => setCreateTaskModalVisible(false)}
-              >
-                <Text style={styles.modalButton}>CANCEL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCreateTask}
-                disabled={!taskTitle}
-              >
-                <Text
-                  style={[
-                    styles.modalButton,
-                    { color: taskTitle ? Colors.blueColor : "#DBDBDB" }
-                  ]}
-                >
-                  CREATE TASK
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+        modalTitle="Create a task"
+        placeholder="Name this Task"
+        value={taskTitle}
+        onChangeTextHandler={(text) => setTaskTitle(text)}
+        nagativeActionHandler={() => setCreateTaskModalVisible(false)}
+        positiveActionHandler={handleCreateTask}
+        positiveActionText="CREATE TASK"
+        disabled={!taskTitle}
+        isGroupModal={false}
+        iconPickerVisible={false}
+        colorPickerVisible={false}
+      />
 
       {/* Edit GroupName Modal */}
-      <Modal
+      <CreateModal
+        visible={editGroupModalVisible}
+        modalTitle="Edit Group Name"
+        placeholder="enter the new name"
+        value={groupName}
+        onChangeTextHandler={(text) => setGroupName(text)}
+        nagativeActionHandler={() => setEditGroupModalVisible(false)}
+        positiveActionHandler={() => {
+          handleGroupNameSave();
+          setEditGroupModalVisible(false);
+        }}
+        positiveActionText="Edit"
+        disabled={!groupName}
+        isGroupModal={true}
+        setSelectedColor={setSelectedColor}
+        selectedView={selectedView}
+        setSelectedView={setSelectedView}
+        colorPickerVisible={colorPickerVisible}
+        setColorPickerVisible={setColorPickerVisible}
+        iconPickerVisible={iconPickerVisible}
+        setIconPickerVisible={setIconPickerVisible}
+        handleIconSelection={handleIconSelection}
+      />
+      {/* <Modal
         animationType="fade"
         transparent={true}
         visible={editGroupModalVisible}
@@ -339,7 +350,7 @@ const TaskListDetails = () => {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
       {/* Options Modal */}
       <Modal

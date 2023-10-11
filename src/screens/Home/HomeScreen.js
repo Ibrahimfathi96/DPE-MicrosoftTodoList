@@ -21,6 +21,8 @@ import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
 import ColorList from "../../components/ColorsPicker";
 import IconsPicker from "../../components/IconsPicker";
 import icons from "../../common/icons";
+import FloatingActionButton from "../../components/FloatingActionButton";
+import CreateModal from "../../components/CreateModal";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -84,7 +86,6 @@ const HomeScreen = () => {
       );
     }
   };
-
   const handleIconSelection = (icon) => {
     setSelectedIcon(icon);
   };
@@ -100,6 +101,13 @@ const HomeScreen = () => {
     }
   };
 
+  const NegativeActionHandler = () => {
+    setCreateGroupModalVisible(false);
+    setIconPickerVisible(false);
+    setColorPickerVisible(false);
+    setSelectedView("");
+  };
+
   const renderListItem = ({ item }) => {
     const doneTasksCount = item.todos
       ? item.todos.filter((todo) => !todo.isDone).length
@@ -107,7 +115,10 @@ const HomeScreen = () => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("tasklist-details-screen", { item });
+          navigation.navigate("tasklist-details-screen", {
+            item,
+            selectedIcon
+          });
         }}
       >
         <View style={styles.flatlistItemRow}>
@@ -162,7 +173,7 @@ const HomeScreen = () => {
             <Icon
               name="search"
               size={35}
-              color={Colors.blueColor}
+              color="#3E4883"
               onPress={() => {
                 console.log("OpenSearchBar");
               }}
@@ -202,126 +213,33 @@ const HomeScreen = () => {
       </View>
 
       {/* FloatingActionButton */}
-      <View style={styles.floatingButton}>
-        <TouchableOpacity onPress={() => setCreateGroupModalVisible(true)}>
-          <View style={styles.addListButton}>
-            <Icon name="post-add" type="material" color="white" size={26} />
-            <Text style={styles.newListText}>New Group</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <FloatingActionButton
+        text={"New Group"}
+        iconName="post-add"
+        onPressHandler={() => setCreateGroupModalVisible(true)}
+      />
 
       {/* Create Group Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <CreateModal
         visible={createGroupModalVisible}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Create a group</Text>
-
-            <TextInput
-              placeholder="Name this group"
-              placeholderTextColor="gray"
-              style={styles.groupNameInput}
-              onChangeText={(text) => setGroupName(text)}
-              value={groupName}
-            />
-
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setColorPickerVisible(!colorPickerVisible);
-                  setIconPickerVisible(false);
-                  setSelectedView("color");
-                }}
-              >
-                <View
-                  style={[
-                    styles.chooseIconOrColor,
-                    {
-                      backgroundColor:
-                        selectedView === "color"
-                          ? Colors.blueColor
-                          : "transparent"
-                    }
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: selectedView === "color" ? "white" : "black"
-                    }}
-                  >
-                    COLOR
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setIconPickerVisible(!iconPickerVisible);
-                  setColorPickerVisible(false);
-                  setSelectedView("icon");
-                }}
-              >
-                <View
-                  style={[
-                    styles.chooseIconOrColor,
-                    {
-                      backgroundColor:
-                        selectedView === "icon"
-                          ? Colors.blueColor
-                          : "transparent"
-                    }
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: selectedView === "icon" ? "white" : "black"
-                    }}
-                  >
-                    ICON
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {iconPickerVisible && (
-              <IconsPicker onIconSelect={handleIconSelection} />
-            )}
-
-            {colorPickerVisible && (
-              <ColorList onColorSelect={setSelectedColor} />
-            )}
-
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                onPress={() => {
-                  setCreateGroupModalVisible(false);
-                  setIconPickerVisible(false);
-                  setColorPickerVisible(false);
-                  setSelectedView("");
-                }}
-              >
-                <Text style={styles.modalButton}>CANCEL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCreateGroup}
-                disabled={!groupName}
-              >
-                <Text
-                  style={[
-                    styles.modalButton,
-                    { color: groupName ? Colors.blueColor : "#DBDBDB" }
-                  ]}
-                >
-                  CREATE GROUP
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+        modalTitle="Create a group"
+        placeholder="Name this Group"
+        value={groupName}
+        onChangeTextHandler={(text) => setGroupName(text)}
+        nagativeActionHandler={NegativeActionHandler}
+        positiveActionHandler={handleCreateGroup}
+        positiveActionText="CREATE GROUP"
+        disabled={!groupName}
+        isGroupModal={true}
+        setSelectedColor={setSelectedColor}
+        selectedView={selectedView}
+        setSelectedView={setSelectedView}
+        colorPickerVisible={colorPickerVisible}
+        setColorPickerVisible={setColorPickerVisible}
+        iconPickerVisible={iconPickerVisible}
+        setIconPickerVisible={setIconPickerVisible}
+        handleIconSelection={handleIconSelection}
+      />
 
       {/* Modal appears when press on Header Of the screen to logOut */}
       <Modal animationType="fade" transparent={false} visible={modalVisible}>
@@ -338,7 +256,7 @@ const HomeScreen = () => {
             />
             <Icon
               name="close"
-              color={Colors.blueColor2}
+              color="#3E4883"
               size={32}
               onPress={() => {
                 setModalVisible(false);
