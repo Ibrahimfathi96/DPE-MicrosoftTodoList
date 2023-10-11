@@ -20,6 +20,7 @@ import Colors from "../../common/colors";
 import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
 import ColorList from "../../components/ColorsPicker";
 import IconsPicker from "../../components/IconsPicker";
+import icons from "../../common/icons";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -31,8 +32,8 @@ const HomeScreen = () => {
   const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedIcon, setSelectedIcon] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(Colors.DEFAULT);
+  const [selectedIcon, setSelectedIcon] = useState(icons.TOC);
   const [selectedView, setSelectedView] = useState("");
   const [iconPickerVisible, setIconPickerVisible] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
@@ -53,8 +54,7 @@ const HomeScreen = () => {
 
   const handleCreateGroup = async () => {
     try {
-      if (groupName && selectedColor && selectedIcon) {
-        console.log("selectedIconFromCreate:", selectedIcon);
+      if (groupName) {
         const newGroup = await dispatch(
           addGroup({
             name: groupName,
