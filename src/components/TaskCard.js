@@ -38,7 +38,10 @@ export default function TaskCard({
           <Text
             style={
               taskstatus
-                ? [styles.text, { textDecorationLine: "line-through" }]
+                ? [
+                    styles.text,
+                    { textDecorationLine: "line-through", color: "grey" }
+                  ]
                 : styles.text
             }
           >
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "500"
   }
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "../../components/TaskCard";
@@ -216,7 +216,7 @@ const TaskListDetails = () => {
         />
 
         {/* Seperator between two FlatLists */}
-        {incompleteTasks.length > 0 && (
+        {Todos.length > 0 && (
           <TouchableOpacity onPress={toggleCompletedTasks}>
             <View style={styles.separatorView}>
               <View style={styles.insideView}>

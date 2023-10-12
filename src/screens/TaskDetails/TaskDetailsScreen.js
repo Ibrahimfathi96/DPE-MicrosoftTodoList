@@ -111,7 +111,10 @@ const TaskDetailsScreen = () => {
             onPress={() => setModalVisible(true)}
             style={
               isDone
-                ? [styles.text, { textDecorationLine: "line-through" }]
+                ? [
+                    styles.text,
+                    { textDecorationLine: "line-through", color: "grey" }
+                  ]
                 : styles.text
             }
           >
