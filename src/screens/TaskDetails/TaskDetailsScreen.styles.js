@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   header: {
-    width: "100%",
     height: 60,
     flexDirection: "row",
     alignItems: "center",
@@ -24,9 +23,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D3D3D3"
   },
   headerText: {
+    width: "80%",
     fontSize: 20,
     color: "black",
-    marginLeft: 12
+    marginLeft: 4
   },
   doneTaskcard: {
     width: 30,

@@ -18,13 +18,15 @@ const styles = StyleSheet.create({
   titleAndBackIcon: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1
+    flex: 1,
+    marginRight: 10
   },
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
-    marginLeft: 4
+    marginLeft: 4,
+    paddingRight: 4
   },
   separatorView: {
     marginVertical: 20,
