@@ -172,7 +172,7 @@ const TaskListDetails = () => {
           </Text>
         </View>
 
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", marginLeft: 4 }}>
           <View style={styles.iconView}>
             <Icon
               name="person-add-alt-1"
@@ -181,6 +181,7 @@ const TaskListDetails = () => {
               onPress={() => {}}
             />
           </View>
+
           <TouchableOpacity onPress={() => setGroupOptionsModalVisible(true)}>
             <View style={styles.iconView}>
               <Icon name="more-horiz" color="white" size={30} />
