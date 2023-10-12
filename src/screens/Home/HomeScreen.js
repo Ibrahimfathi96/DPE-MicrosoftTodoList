@@ -17,9 +17,18 @@ import { clearUser, setUserId } from "../../redux/reducres/authSlice";
 import styles from "./HomeScreen.styles";
 import Colors from "../../common/colors";
 import { fetchGroups, addGroup } from "../../redux/API/ApiActions";
-import icons from "../../common/icons";
 import FloatingActionButton from "../../components/FloatingActionButton";
 import CreateModal from "../../components/CreateModal";
+import {
+  toggleModal,
+  toggleCreateGroupModal,
+  setGroupName,
+  setSelectedColor,
+  setSelectedIcon,
+  setSelectedView,
+  setIconPickerVisible,
+  setColorPickerVisible
+} from "../../redux/reducres/homeSlice";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -27,18 +36,19 @@ const HomeScreen = () => {
   const personalData = useSelector((state) => state.auth.user);
   const userId = personalData._id;
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [createGroupModalVisible, setCreateGroupModalVisible] = useState(false);
-  const [groupName, setGroupName] = useState("");
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(Colors.DEFAULT);
-  const [selectedIcon, setSelectedIcon] = useState(icons.TOC);
-  const [selectedView, setSelectedView] = useState("");
-  const [iconPickerVisible, setIconPickerVisible] = useState(false);
-  const [colorPickerVisible, setColorPickerVisible] = useState(false);
-
   const groups = useSelector((state) => state.todo.groups);
+  const {
+    modalVisible,
+    createGroupModalVisible,
+    groupName,
+    selectedColor,
+    selectedIcon,
+    selectedView,
+    iconPickerVisible,
+    colorPickerVisible
+  } = useSelector((state) => state.home);
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
   useEffect(() => {
     dispatch(setUserId(userId));
     dispatch(fetchGroups());
@@ -64,13 +74,13 @@ const HomeScreen = () => {
         );
         console.log("newGroup", newGroup);
         if (newGroup) {
-          setCreateGroupModalVisible(false);
-          setGroupName("");
-          setSelectedColor("");
-          setSelectedIcon(null);
-          setIconPickerVisible(false);
-          setColorPickerVisible(false);
-          setSelectedView("");
+          dispatch(toggleCreateGroupModal(false));
+          dispatch(setGroupName(""));
+          dispatch(setSelectedColor(""));
+          dispatch(setSelectedIcon(null));
+          dispatch(setIconPickerVisible(false));
+          dispatch(setColorPickerVisible(false));
+          dispatch(setSelectedView(""));
           dispatch(fetchGroups());
         } else {
           console.error("Please select a group name, color, and icon.");
@@ -84,7 +94,7 @@ const HomeScreen = () => {
     }
   };
   const handleIconSelection = (icon) => {
-    setSelectedIcon(icon);
+    dispatch(setSelectedIcon(icon));
   };
 
   const handleRefresh = async () => {
@@ -99,10 +109,10 @@ const HomeScreen = () => {
   };
 
   const NegativeActionHandler = () => {
-    setCreateGroupModalVisible(false);
-    setIconPickerVisible(false);
-    setColorPickerVisible(false);
-    setSelectedView("");
+    dispatch(toggleCreateGroupModal());
+    dispatch(setIconPickerVisible(false));
+    dispatch(setColorPickerVisible(false));
+    dispatch(setSelectedView(""));
   };
 
   const renderListItem = ({ item }) => {
@@ -140,7 +150,7 @@ const HomeScreen = () => {
         {/* Header Of the screen */}
         <TouchableOpacity
           onPress={() => {
-            setModalVisible(true);
+            dispatch(toggleModal(true));
             console.log("OpenModalForProfile");
           }}
         >
@@ -215,7 +225,7 @@ const HomeScreen = () => {
       <FloatingActionButton
         text={"New Group"}
         iconName="post-add"
-        onPressHandler={() => setCreateGroupModalVisible(true)}
+        onPressHandler={() => dispatch(toggleCreateGroupModal(true))}
       />
 
       {/* Create Group Modal */}
@@ -224,7 +234,7 @@ const HomeScreen = () => {
         modalTitle="Create a group"
         placeholder="Name this Group"
         value={groupName}
-        onChangeTextHandler={(text) => setGroupName(text)}
+        onChangeTextHandler={(text) => dispatch(setGroupName(text))}
         nagativeActionHandler={NegativeActionHandler}
         positiveActionHandler={handleCreateGroup}
         positiveActionText="CREATE GROUP"
@@ -261,7 +271,7 @@ const HomeScreen = () => {
               color="#3E4883"
               size={32}
               onPress={() => {
-                setModalVisible(false);
+                dispatch(toggleModal(false));
               }}
             />
           </View>
@@ -269,7 +279,7 @@ const HomeScreen = () => {
           {/**UserName & Email Address */}
           <TouchableOpacity
             onPress={() => {
-              setModalVisible(false);
+              dispatch(toggleModal(false));
             }}
           >
             <View style={styles.accountInfo}>
