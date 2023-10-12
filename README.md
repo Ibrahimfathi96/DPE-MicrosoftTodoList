@@ -22,6 +22,8 @@
 <div align="left" style="display: flex; flex-wrap: wrap; justify-content: center;">
   <div style="margin: 10px;">
     <img src="./Photos/1.jpg" alt="Image 1" width="200" height="300">
+    <img src="./Photos/2.jpg" alt="Image 2" width="200" height="300">
+    <img src="./Photos/3.jpg" alt="Image 3" width="200" height="300">
   </div>
   <div style="margin: 10px;">
     <img src="./Photos/2.jpg" alt="Image 2" width="200" height="300">
