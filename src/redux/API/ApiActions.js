@@ -133,13 +133,13 @@ export const updateTask = createAsyncThunk(
 
 export const deleteTask = createAsyncThunk(
   "todos/deleteTask",
-  async (taskId, { getState }) => {
+  async (taskId, { getState, dispatch }) => {
     try {
       const userId = getState().auth.userId;
-      console.log("userIdFromDeleteTask", userId);
       const listId = getState().todo.listId;
-      console.log("listIdFromDeleteTask", listId);
       await deleteTaskAPI(userId, listId, taskId);
+      await dispatch(fetchAllTasks());
+      console.log("DELETING MESSAGE", response.msg);
     } catch (error) {
       throw error;
     }

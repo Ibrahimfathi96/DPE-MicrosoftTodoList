@@ -25,6 +25,7 @@ const TaskDetailsScreen = () => {
   const dispatch = useDispatch();
 
   const [todo, setTodo] = useState(route.params.todo);
+  console.log("TOTOTODO:", todo);
   const { listName } = route.params;
 
   const [visible, setVisible] = useState(false);
@@ -72,8 +73,8 @@ const TaskDetailsScreen = () => {
   const handleDeleteTask = async () => {
     try {
       await dispatch(deleteTask(todo._id));
-      navigation.goBack();
       dispatch(fetchAllTasks());
+      navigation.goBack();
     } catch (error) {
       console.error("Error deleting Task:", error);
     }
