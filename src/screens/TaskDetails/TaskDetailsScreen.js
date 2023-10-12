@@ -17,7 +17,6 @@ import {
   updateTask
 } from "../../redux/API/ApiActions";
 import { useDispatch } from "react-redux";
-import ColorList from "../../components/ColorsPicker";
 import deleteAlert from "../../components/deleteAlert";
 
 const TaskDetailsScreen = () => {
@@ -73,8 +72,8 @@ const TaskDetailsScreen = () => {
   const handleDeleteTask = async () => {
     try {
       await dispatch(deleteTask(todo._id));
-      dispatch(fetchAllTasks());
       navigation.goBack();
+      dispatch(fetchAllTasks());
     } catch (error) {
       console.error("Error deleting Task:", error);
     }
